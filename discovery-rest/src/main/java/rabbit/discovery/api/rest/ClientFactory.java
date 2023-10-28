@@ -139,7 +139,7 @@ public abstract class ClientFactory implements InvocationHandler, FactoryBean {
     protected void cacheHttpRequests() {
         for (Method method : type.getDeclaredMethods()) {
             HttpRequest httpRequest = createHttpRequest(method);
-            afterRequestCreated(httpRequest);
+            afterRequestCreated(httpRequest, method);
             requestCache.put(method, httpRequest);
         }
     }
@@ -161,9 +161,10 @@ public abstract class ClientFactory implements InvocationHandler, FactoryBean {
      * createHttpRequest(method)  后置事件
      *
      * @param request
+     * @param method
      */
-    protected void afterRequestCreated(HttpRequest request) {
-        // do nothing;
+    protected void afterRequestCreated(HttpRequest request, Method method) {
+        request.setMethod(method);
     }
 
     /**

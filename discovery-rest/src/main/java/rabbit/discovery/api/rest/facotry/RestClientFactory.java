@@ -9,6 +9,7 @@ import rabbit.discovery.api.rest.anno.RestClient;
 import rabbit.discovery.api.rest.http.HttpRequest;
 import rabbit.discovery.api.rest.http.RestClientExecutor;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.function.Function;
 
@@ -66,9 +67,10 @@ public class RestClientFactory extends ClientFactory {
      * 拼接context path
      *
      * @param request
+     * @param method
      */
     @Override
-    protected void afterRequestCreated(HttpRequest request) {
+    protected void afterRequestCreated(HttpRequest request, Method method) {
         request.setUri(this.contextPath.concat(request.getUri()));
     }
 
@@ -81,6 +83,7 @@ public class RestClientFactory extends ClientFactory {
     @Override
     protected HttpRequest cloneRequest(HttpRequest request) {
         HttpRequest httpRequest = createHttpRequest();
+        httpRequest.setMethod(request.getMethod());
         httpRequest.setHttpMethod(request.getHttpMethod());
         httpRequest.setUri(request.getUri());
         httpRequest.setResultType(request.getMethod().getGenericReturnType());
