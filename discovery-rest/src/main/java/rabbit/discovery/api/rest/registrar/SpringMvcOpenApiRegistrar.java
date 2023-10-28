@@ -1,6 +1,5 @@
 package rabbit.discovery.api.rest.registrar;
 
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.PropertyResourceConfigurer;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -38,7 +37,6 @@ public class SpringMvcOpenApiRegistrar extends PropertyResourceConfigurer implem
      *
      * @param configurableListableBeanFactory
      * @param properties
-     * @throws BeansException
      */
     @Override
     protected void processProperties(ConfigurableListableBeanFactory configurableListableBeanFactory,
@@ -47,7 +45,7 @@ public class SpringMvcOpenApiRegistrar extends PropertyResourceConfigurer implem
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext context) throws BeansException {
+    public void setApplicationContext(ApplicationContext context) {
         init((ConfigurableApplicationContext) context);
     }
 
