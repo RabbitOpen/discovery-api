@@ -1,0 +1,1 @@
+org.springframework.boot.env.EnvironmentPostProcessor=rabbit.discovery.api.config.SpringBootConfigProcessor

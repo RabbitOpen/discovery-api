@@ -1,0 +1,3 @@
+rabbit.discovery.api.plugins.client.matcher.HardCodedTargetMatcher
+rabbit.discovery.api.plugins.client.matcher.OpenFeignLoadBalancerMatcher
+rabbit.discovery.api.plugins.client.matcher.SpringCloudLoadBalancerMatcher
