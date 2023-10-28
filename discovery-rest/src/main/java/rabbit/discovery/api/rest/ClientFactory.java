@@ -145,11 +145,11 @@ public abstract class ClientFactory implements InvocationHandler, FactoryBean {
     }
 
     /**
-     * 读取属性配置
+     * 读取el表达式属性配置
      * @param property
      * @return
      */
-    protected String readPropertyFromConfig(String property) {
+    protected String readConfigProperty(String property) {
         if (property.startsWith("${") && property.endsWith("}")) {
             return propertyReader.apply(property.substring(2, property.length() - 1));
         } else {

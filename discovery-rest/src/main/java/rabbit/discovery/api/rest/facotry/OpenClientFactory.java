@@ -70,7 +70,7 @@ public class OpenClientFactory extends ClientFactory {
      * @return
      */
     private String getGlobalCredential() {
-        return readPropertyFromConfig(this.credential);
+        return readConfigProperty(this.credential);
     }
 
     // ------ spring 构建bean时调用set方法设置属性 --------

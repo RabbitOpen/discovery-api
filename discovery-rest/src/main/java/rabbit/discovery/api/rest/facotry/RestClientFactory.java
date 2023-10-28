@@ -26,11 +26,13 @@ public class RestClientFactory extends ClientFactory {
     private RestClientExecutor restClientExecutor;
 
     public RestClientFactory(Class<?> type) {
-        super.type = type;
+        super(type, null);
     }
 
-    public RestClientFactory(String application, Class<?> objectType, RestClientExecutor restClientExecutor) {
+    public RestClientFactory(String application, Class<?> objectType, RestClientExecutor restClientExecutor,
+                             Function<String, String> propertyReader) {
         this(objectType);
+        setPropertyReader(propertyReader);
         this.restClientExecutor = restClientExecutor;
         setApplication(application);
         this.contextPath = resolveContextPath(type.getAnnotation(RestClient.class));
@@ -47,6 +49,7 @@ public class RestClientFactory extends ClientFactory {
         if (isEmpty(cp)) {
             return "";
         }
+        cp = readConfigProperty(cp);
         if (!cp.startsWith("/")) {
             cp = "/".concat(cp);
         }
@@ -56,7 +59,7 @@ public class RestClientFactory extends ClientFactory {
 
     @Override
     protected HttpRequest createHttpRequest() {
-        return new HttpRequest(application, this);
+        return new HttpRequest(readConfigProperty(application), this);
     }
 
     /**
@@ -99,7 +102,7 @@ public class RestClientFactory extends ClientFactory {
     @Override
     public Object getObject() {
         return Proxy.newProxyInstance(RestClientFactory.class.getClassLoader(), new Class[]{getObjectType()},
-                new RestClientFactory(application, getObjectType(), restClientExecutor));
+                new RestClientFactory(application, getObjectType(), restClientExecutor, propertyReader));
     }
 
     /**

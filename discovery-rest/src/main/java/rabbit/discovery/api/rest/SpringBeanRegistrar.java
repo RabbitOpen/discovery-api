@@ -44,8 +44,9 @@ public class SpringBeanRegistrar {
      *
      * @param registry
      * @param basePackages
+     * @param propertyReader
      */
-    public void registerRestClients(BeanDefinitionRegistry registry, String[] basePackages) {
+    public void registerRestClients(BeanDefinitionRegistry registry, String[] basePackages, Function<String, String> propertyReader) {
         if (CollectionUtils.isEmpty(basePackages)) {
             return;
         }
@@ -54,7 +55,7 @@ public class SpringBeanRegistrar {
         for (String basePackage : basePackages) {
             Set<BeanDefinition> beanDefinitions = scanner.findCandidateComponents(basePackage);
             for (BeanDefinition definition : beanDefinitions) {
-                registerRestClientBeanDefinition(registry, definition);
+                registerRestClientBeanDefinition(registry, definition, propertyReader);
             }
         }
     }
@@ -80,7 +81,7 @@ public class SpringBeanRegistrar {
         }
     }
 
-    private void registerRestClientBeanDefinition(BeanDefinitionRegistry registry, BeanDefinition definition) {
+    private void registerRestClientBeanDefinition(BeanDefinitionRegistry registry, BeanDefinition definition, Function<String, String> propertyReader) {
         if (!(definition instanceof AnnotatedBeanDefinition)) {
             return;
         }
@@ -91,6 +92,7 @@ public class SpringBeanRegistrar {
         builder.setScope(SCOPE_SINGLETON);
         builder.setAutowireMode(AUTOWIRE_BY_TYPE);
         builder.addPropertyValue("application", attributes.get("application"));
+        builder.addPropertyValue("propertyReader", propertyReader);
         builder.addConstructorArgValue(meta.getClassName());
         registry.registerBeanDefinition(beanName, builder.getBeanDefinition());
     }

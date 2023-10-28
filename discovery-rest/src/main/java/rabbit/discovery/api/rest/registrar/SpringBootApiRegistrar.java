@@ -14,6 +14,7 @@ import rabbit.flt.common.utils.CollectionUtils;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * spring boot环境下通过该类实现 open api / rest api 的自动注册
@@ -33,9 +34,10 @@ public class SpringBootApiRegistrar implements ImportBeanDefinitionRegistrar, Re
     @Override
     public void registerBeanDefinitions(AnnotationMetadata meta, BeanDefinitionRegistry registry) {
         SpringBeanRegistrar registrar = new SpringBeanRegistrar(resourceLoader, environment);
-        registrar.registerRestClients(registry, resolvePackages4Scan(meta, EnableRestClients.class));
+        Function<String, String> propertyReader = propertyName -> environment.getProperty(propertyName);
+        registrar.registerRestClients(registry, resolvePackages4Scan(meta, EnableRestClients.class), propertyReader);
         registrar.registerOpenApiClients(registry, resolvePackages4Scan(meta, EnableOpenClients.class),
-                propertyName -> environment.getProperty(propertyName));
+                propertyReader);
     }
 
     private <T extends Annotation> String[] resolvePackages4Scan(AnnotationMetadata metadata, Class<T> clz) {
