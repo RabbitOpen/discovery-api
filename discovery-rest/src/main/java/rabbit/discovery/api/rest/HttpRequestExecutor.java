@@ -236,17 +236,17 @@ public abstract class HttpRequestExecutor {
      */
     protected void initDefaultConverter() {
         defaultTypeConverter.put(String.class, o -> o);
-        defaultTypeConverter.put(Integer.class, o -> Integer.parseInt(o));
-        defaultTypeConverter.put(int.class, o -> Integer.parseInt(o));
-        defaultTypeConverter.put(Long.class, o -> Long.parseLong(o));
-        defaultTypeConverter.put(long.class, o -> Long.parseLong(o));
-        defaultTypeConverter.put(Short.class, o -> Short.parseShort(o));
-        defaultTypeConverter.put(short.class, o -> Short.parseShort(o));
-        defaultTypeConverter.put(Boolean.class, o -> Boolean.parseBoolean(o));
-        defaultTypeConverter.put(boolean.class, o -> Boolean.parseBoolean(o));
-        defaultTypeConverter.put(Float.class, o -> Float.parseFloat(o));
-        defaultTypeConverter.put(float.class, o -> Float.parseFloat(o));
-        defaultTypeConverter.put(Double.class, o -> Double.parseDouble(o));
-        defaultTypeConverter.put(double.class, o -> Double.parseDouble(o));
+        defaultTypeConverter.put(Integer.class, Integer::parseInt);
+        defaultTypeConverter.put(int.class, Integer::parseInt);
+        defaultTypeConverter.put(Long.class, Long::parseLong);
+        defaultTypeConverter.put(long.class, Long::parseLong);
+        defaultTypeConverter.put(Short.class, Short::parseShort);
+        defaultTypeConverter.put(short.class, Short::parseShort);
+        defaultTypeConverter.put(Boolean.class, Boolean::parseBoolean);
+        defaultTypeConverter.put(boolean.class, Boolean::parseBoolean);
+        defaultTypeConverter.put(Float.class, Float::parseFloat);
+        defaultTypeConverter.put(float.class, Float::parseFloat);
+        defaultTypeConverter.put(Double.class, Double::parseDouble);
+        defaultTypeConverter.put(double.class, Double::parseDouble);
     }
 }
