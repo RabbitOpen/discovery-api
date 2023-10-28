@@ -68,6 +68,10 @@ public final class HttpRequest {
         this.clientFactory = clientFactory;
     }
 
+    public void setHeader(String name, String value) {
+        this.headers.put(name, value);
+    }
+
     public String getUri() {
         return uri;
     }
