@@ -61,6 +61,7 @@ public class SpringBeanRegistrar {
 
     /**
      * 注册open api spring bean
+     *
      * @param registry
      * @param basePackages
      * @param propertyReader
@@ -94,7 +95,7 @@ public class SpringBeanRegistrar {
         registry.registerBeanDefinition(beanName, builder.getBeanDefinition());
     }
 
-    private void registerOpenApiBeanDefinition(BeanDefinitionRegistry registry, BeanDefinition definition,  Function<String, String> propertyReader) {
+    private void registerOpenApiBeanDefinition(BeanDefinitionRegistry registry, BeanDefinition definition, Function<String, String> propertyReader) {
         if (!(definition instanceof AnnotatedBeanDefinition)) {
             return;
         }

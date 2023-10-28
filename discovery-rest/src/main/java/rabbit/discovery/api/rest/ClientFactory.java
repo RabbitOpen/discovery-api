@@ -27,12 +27,14 @@ public abstract class ClientFactory implements InvocationHandler {
 
     /**
      * 创建请求
+     *
      * @return
      */
     protected abstract HttpRequest createHttpRequest();
 
     /**
      * 复制一个请求
+     *
      * @param request
      * @return
      */
@@ -40,12 +42,14 @@ public abstract class ClientFactory implements InvocationHandler {
 
     /**
      * 获取请求执行对象
+     *
      * @return
      */
     protected abstract HttpRequestExecutor getRequestExecutor();
 
     /**
      * 从方法上读取请求信息
+     *
      * @param method
      * @return
      */
@@ -101,6 +105,7 @@ public abstract class ClientFactory implements InvocationHandler {
 
     /**
      * createHttpRequest(method)  后置事件
+     *
      * @param request
      */
     protected void afterRequestCreated(HttpRequest request) {
@@ -109,6 +114,7 @@ public abstract class ClientFactory implements InvocationHandler {
 
     /**
      * 读取请求分组信息
+     *
      * @param args
      * @param parameters
      * @return

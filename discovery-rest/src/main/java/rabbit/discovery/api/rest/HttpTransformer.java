@@ -22,10 +22,11 @@ public interface HttpTransformer {
 
     /**
      * 转换响应
-     * @param method                请求方法
-     * @param resultType            响应java类型
-     * @param responseHeaders       响应头
-     * @param responseBody          响应内容
+     *
+     * @param method          请求方法
+     * @param resultType      响应java类型
+     * @param responseHeaders 响应头
+     * @param responseBody    响应内容
      * @param <T>
      * @return
      */

@@ -18,12 +18,14 @@ public @interface Declaration {
 
     /**
      * 定义的方法
+     *
      * @return
      */
     String[] methods() default {};
 
     /**
      * 声明策略
+     *
      * @return
      */
     Policy policy() default INCLUDE;

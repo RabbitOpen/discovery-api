@@ -14,6 +14,7 @@ public @interface EnableRestClients {
 
     /**
      * 需要扫描的包路径，默认是引入当前注解的类所处的包
+     *
      * @return
      */
     String[] basePackages() default {};

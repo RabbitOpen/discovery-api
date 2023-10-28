@@ -8,6 +8,7 @@ import rabbit.flt.common.utils.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
+
 public class PostMappingReader extends MappingReader<PostMapping> {
 
     public PostMappingReader(PostMapping mapping) {

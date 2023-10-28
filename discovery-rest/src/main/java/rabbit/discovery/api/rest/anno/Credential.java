@@ -14,6 +14,7 @@ public @interface Credential {
 
     /**
      * 凭据
+     *
      * @return
      */
     String value();

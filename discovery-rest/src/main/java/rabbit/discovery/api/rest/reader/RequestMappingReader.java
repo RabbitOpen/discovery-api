@@ -31,7 +31,7 @@ public class RequestMappingReader extends MappingReader<RequestMapping> {
 
     @Override
     protected HttpMethod getHttpMethod() {
-        if (CollectionUtils.isEmpty(mapping.method()))  {
+        if (CollectionUtils.isEmpty(mapping.method())) {
             return HttpMethod.GET;
         } else {
             try {

@@ -18,18 +18,21 @@ public abstract class MappingReader<T extends Annotation> {
 
     /**
      * 获取声明的请求路径
+     *
      * @return
      */
     protected abstract List<String> getDeclaredPaths();
 
     /**
      * 获取方法类型
+     *
      * @return
      */
     protected abstract HttpMethod getHttpMethod();
 
     /**
      * 包装request
+     *
      * @param request
      * @return
      */

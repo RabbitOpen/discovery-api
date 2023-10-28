@@ -26,6 +26,7 @@ public class SpringBootApiRegistrar implements ImportBeanDefinitionRegistrar, Re
 
     /**
      * 注册接口定义
+     *
      * @param meta
      * @param registry
      */
@@ -46,9 +47,9 @@ public class SpringBootApiRegistrar implements ImportBeanDefinitionRegistrar, Re
         if (CollectionUtils.isEmpty(basePackages)) {
             String targetClassName = metadata.getClassName();
             if (-1 != targetClassName.indexOf('.')) {
-                basePackages = new String[] {targetClassName.substring(0, targetClassName.lastIndexOf('.'))};
+                basePackages = new String[]{targetClassName.substring(0, targetClassName.lastIndexOf('.'))};
             } else {
-                basePackages = new String[] {""};
+                basePackages = new String[]{""};
             }
         }
         return basePackages;

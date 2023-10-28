@@ -53,6 +53,7 @@ public class SpringMvcOpenApiRegistrar extends PropertyResourceConfigurer implem
 
     /**
      * 初始化（幂等）
+     *
      * @param context
      */
     private synchronized void init(ConfigurableApplicationContext context) {

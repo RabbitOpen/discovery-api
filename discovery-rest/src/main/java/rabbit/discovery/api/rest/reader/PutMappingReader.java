@@ -8,6 +8,7 @@ import rabbit.flt.common.utils.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
+
 public class PutMappingReader extends MappingReader<PutMapping> {
 
     public PutMappingReader(PutMapping mapping) {

@@ -11,12 +11,14 @@ public @interface RestClient {
 
     /**
      * 服务方应用
+     *
      * @return
      */
     String application();
 
     /**
      * contextPath
+     *
      * @return
      */
     String contextPath() default "";
