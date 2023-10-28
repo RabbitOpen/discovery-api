@@ -10,6 +10,7 @@ import rabbit.discovery.api.rest.http.HttpRequest;
 import rabbit.discovery.api.rest.http.RestClientExecutor;
 
 import java.lang.reflect.Proxy;
+import java.util.function.Function;
 
 import static rabbit.flt.common.utils.StringUtils.isEmpty;
 
@@ -33,7 +34,7 @@ public class RestClientFactory extends ClientFactory {
         this.restClientExecutor = restClientExecutor;
         setApplication(application);
         this.contextPath = resolveContextPath(type.getAnnotation(RestClient.class));
-        cacheHttpRequests(super.type);
+        cacheHttpRequests();
     }
 
     /**

@@ -14,7 +14,7 @@ import rabbit.discovery.api.rest.anno.OpenApiClient;
 import rabbit.discovery.api.rest.anno.RestClient;
 import rabbit.discovery.api.rest.facotry.OpenClientFactory;
 import rabbit.discovery.api.rest.facotry.RestClientFactory;
-import rabbit.discovery.api.rest.http.OpenApiExecutor;
+import rabbit.discovery.api.rest.http.OpenClientExecutor;
 import rabbit.discovery.api.rest.http.RestClientExecutor;
 import rabbit.flt.common.utils.CollectionUtils;
 
@@ -70,7 +70,7 @@ public class SpringBeanRegistrar {
         if (CollectionUtils.isEmpty(basePackages)) {
             return;
         }
-        registerExecutorDefinition(registry, OpenApiExecutor.class);
+        registerExecutorDefinition(registry, OpenClientExecutor.class);
         ClassPathScanningCandidateComponentProvider scanner = createScanner(basePackages, OpenApiClient.class);
         for (String basePackage : basePackages) {
             Set<BeanDefinition> beanDefinitions = scanner.findCandidateComponents(basePackage);

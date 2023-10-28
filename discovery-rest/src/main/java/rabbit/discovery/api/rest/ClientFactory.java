@@ -20,6 +20,7 @@ import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
  * rest/open client 工程类
@@ -32,9 +33,19 @@ public abstract class ClientFactory implements InvocationHandler, FactoryBean {
     protected Class<?> type;
 
     /**
+     * 属性阅读器
+     */
+    protected Function<String, String> propertyReader;
+
+    /**
      * 请求缓存
      */
     protected Map<Method, HttpRequest> requestCache = new ConcurrentHashMap<>();
+
+    public ClientFactory(Class<?> type, Function<String, String> propertyReader) {
+        this.type = type;
+        this.propertyReader = propertyReader;
+    }
 
     /**
      * 创建请求
@@ -124,13 +135,25 @@ public abstract class ClientFactory implements InvocationHandler, FactoryBean {
 
     /**
      * 缓存接口下方法对应的请求对象
-     * @param clz
      */
-    protected void cacheHttpRequests(Class<?> clz) {
-        for (Method method : clz.getDeclaredMethods()) {
+    protected void cacheHttpRequests() {
+        for (Method method : type.getDeclaredMethods()) {
             HttpRequest httpRequest = createHttpRequest(method);
             afterRequestCreated(httpRequest);
             requestCache.put(method, httpRequest);
+        }
+    }
+
+    /**
+     * 读取属性配置
+     * @param property
+     * @return
+     */
+    protected String readPropertyFromConfig(String property) {
+        if (property.startsWith("${") && property.endsWith("}")) {
+            return propertyReader.apply(property.substring(2, property.length() - 1));
+        } else {
+            return property;
         }
     }
 
@@ -257,8 +280,13 @@ public abstract class ClientFactory implements InvocationHandler, FactoryBean {
         return map;
     }
 
+    public void setPropertyReader(Function<String, String> propertyReader) {
+        this.propertyReader = propertyReader;
+    }
+
     @Override
     public String toString() {
         return type.getSimpleName();
     }
+
 }
