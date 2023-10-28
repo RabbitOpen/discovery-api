@@ -6,9 +6,9 @@ import rabbit.discovery.api.rest.http.HttpResponse;
 
 /**
  * http client manager
- * @param <Request>
+ * @param <T>
  */
-public abstract class HttpClientManager<Request> {
+public abstract class HttpClientManager<T> {
 
     private HttpTransformer transformer;
 
