@@ -4,6 +4,7 @@ import rabbit.discovery.api.common.enums.HttpMethod;
 import rabbit.discovery.api.rest.ClientFactory;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,6 +67,31 @@ public final class HttpRequest {
 
     public HttpRequest(ClientFactory clientFactory) {
         this.clientFactory = clientFactory;
+    }
+
+    /**
+     * 是异步请求
+     * @return
+     */
+    public boolean isAsyncRequest() {
+        if (resultType instanceof ParameterizedType) {
+            String typeName = ((ParameterizedType) resultType).getRawType().getTypeName();
+            return "reactor.core.publisher.Mono".equals(typeName);
+        }
+        return false;
+    }
+
+    /**
+     * 判断请求是否关心响应头
+     * @return
+     */
+    public boolean careResponseHeader() {
+        if (isAsyncRequest()) {
+            Type realType = ((ParameterizedType) resultType).getActualTypeArguments()[0];
+            return (realType instanceof ParameterizedType) && ((ParameterizedType) realType).getRawType() == HttpResponse.class;
+        } else {
+            return (resultType instanceof ParameterizedType) && ((ParameterizedType) resultType).getRawType() == HttpResponse.class;
+        }
     }
 
     public void setHeader(String name, String value) {
@@ -142,5 +168,13 @@ public final class HttpRequest {
 
     public void setQueryParameters(Map<String, String> queryParameters) {
         this.queryParameters = queryParameters;
+    }
+
+    public String getTargetApplication() {
+        return targetApplication;
+    }
+
+    public ClientFactory getClientFactory() {
+        return clientFactory;
     }
 }

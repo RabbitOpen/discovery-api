@@ -103,6 +103,10 @@ public class OpenClientFactory extends ClientFactory {
         return Proxy.newProxyInstance(OpenClientFactory.class.getClassLoader(), new Class[]{getObjectType()}, factory);
     }
 
+    public ServerNode getServerNode() {
+        return serverNode;
+    }
+
     // ------ spring 构建bean时调用set方法设置属性 --------
     public void setCredential(String credential) {
         this.credential = credential;
@@ -125,4 +129,5 @@ public class OpenClientFactory extends ClientFactory {
     public void setOpenClientExecutor(OpenClientExecutor openClientExecutor) {
         this.openClientExecutor = openClientExecutor;
     }
+
 }

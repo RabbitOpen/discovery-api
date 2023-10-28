@@ -1,7 +1,5 @@
 package rabbit.discovery.api.config.context;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rabbit.discovery.api.common.utils.JsonUtils;
@@ -41,8 +39,6 @@ public class FlexibleValueMeta {
      * 属性类的meta，key是字段名
      */
     protected Map<String, FlexibleValueMeta> childBeanMeta = new ConcurrentHashMap<>();
-
-    private static final ObjectMapper mapper = new ObjectMapper();
 
     // spring bean
     protected Object bean;
@@ -348,7 +344,5 @@ public class FlexibleValueMeta {
         funcMap.put(float.class, o -> Float.parseFloat(o.toString()));
         funcMap.put(Double.class, o -> Double.parseDouble(o.toString()));
         funcMap.put(double.class, o -> Double.parseDouble(o.toString()));
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
     }
 }

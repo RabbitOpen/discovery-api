@@ -6,6 +6,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import rabbit.discovery.api.common.ServerNode;
+import rabbit.discovery.api.common.enums.Schema;
 import rabbit.discovery.api.common.utils.GZipUtils;
 import rabbit.discovery.api.common.utils.HexUtils;
 import rabbit.discovery.api.common.utils.RsaUtils;
@@ -60,4 +62,13 @@ public class UtilTest {
         TestCase.assertFalse(RsaUtils.verifyWithPublicKey(signBytes, plainText + "1", publicKey));
     }
 
+    @Test
+    public void serverNodeTest() {
+        ServerNode node = new ServerNode("https://192.168.0.1:10101//abc?a=1");
+        TestCase.assertEquals(Schema.HTTPS, node.getSchema());
+        TestCase.assertEquals(10101, node.getPort());
+        TestCase.assertEquals("192.168.0.1", node.getHost());
+        TestCase.assertEquals("/abc", node.getPath());
+        TestCase.assertEquals("https://192.168.0.1:10101/abc", node.address().concat(node.getPath()));
+    }
 }

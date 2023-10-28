@@ -2,6 +2,7 @@ package rabbit.discovery.api.common;
 
 import rabbit.discovery.api.common.enums.Schema;
 import rabbit.discovery.api.common.exception.DiscoveryException;
+import rabbit.discovery.api.common.utils.PathParser;
 
 import java.net.URI;
 
@@ -17,12 +18,15 @@ public class ServerNode {
 
     private int port;
 
+    private String path;
+
     public ServerNode(String address) {
         try {
             URI uri = new URI(address);
             setSchema(uri);
             setHost(uri);
             setPort(uri);
+            setPath(uri.getPath());
         } catch (Exception e) {
             throw new DiscoveryException(e);
         }
@@ -38,6 +42,11 @@ public class ServerNode {
         this.port = port;
     }
 
+    public String address() {
+        return new StringBuilder(schema.name().toLowerCase()).append("://").append(host)
+                .append(":").append(port).toString();
+    }
+
     public Schema getSchema() {
         return schema;
     }
@@ -46,7 +55,7 @@ public class ServerNode {
         if (null == uri.getScheme()) {
             this.schema = HTTP;
         } else {
-            this.schema = Schema.valueOf(uri.getScheme());
+            this.schema = Schema.valueOf(uri.getScheme().toUpperCase());
         }
     }
 
@@ -76,5 +85,13 @@ public class ServerNode {
 
     public boolean isHttps() {
         return HTTPS == this.schema;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = PathParser.removeRepeatedSeparator(path);
     }
 }

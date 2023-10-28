@@ -19,6 +19,6 @@ public class OpenFeignLoadBalancerPlugin extends DiscoveryPlugin {
     public Object doIntercept(Method method, Object[] args, Object target) {
         BaseLoadBalancer balancer = (BaseLoadBalancer) target;
         ServerNode node = getProviderNode(balancer.getName());
-        return new Server(node.getSchema().name(), node.getHost(), node.getPort());
+        return new Server(node.getSchema().name().toLowerCase(), node.getHost(), node.getPort());
     }
 }
