@@ -3,11 +3,11 @@ package rabbit.discovery.api.rest.reader;
 import org.springframework.web.bind.annotation.PostMapping;
 import rabbit.discovery.api.common.enums.HttpMethod;
 import rabbit.discovery.api.rest.MappingReader;
+import rabbit.flt.common.utils.CollectionUtils;
+import rabbit.flt.common.utils.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
-import rabbit.flt.common.utils.CollectionUtils;
-import rabbit.flt.common.utils.StringUtils;
 public class PostMappingReader extends MappingReader<PostMapping> {
 
     public PostMappingReader(PostMapping mapping) {
