@@ -5,7 +5,7 @@ import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.config.ConfigLoader;
 import rabbit.discovery.api.config.PropertyHandler;
 import rabbit.discovery.api.config.context.InjectType;
-import rabbit.flt.common.utils.StringUtil;
+import rabbit.flt.common.utils.StringUtils;
 
 import java.util.Comparator;
 import java.util.List;
@@ -26,13 +26,13 @@ public class SpringMvcConfigLoader extends ConfigLoader {
 
     @Override
     public String readProperty(String propertyName) {
-        return StringUtil.toString(properties.get(propertyName));
+        return StringUtils.toString(properties.get(propertyName));
     }
 
     @Override
     protected String readProperty(String propertyName, String defaultValue) {
         String value = readProperty(propertyName);
-        return StringUtil.isEmpty(value) ? defaultValue : value;
+        return StringUtils.isEmpty(value) ? defaultValue : value;
     }
 
     @Override

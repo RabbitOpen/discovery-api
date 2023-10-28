@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static rabbit.discovery.api.config.context.InjectType.UPDATE;
-import static rabbit.flt.common.utils.StringUtil.isEmpty;
+import static rabbit.flt.common.utils.StringUtils.isEmpty;
 
 /**
  * 需要动态更新的属性的meta值

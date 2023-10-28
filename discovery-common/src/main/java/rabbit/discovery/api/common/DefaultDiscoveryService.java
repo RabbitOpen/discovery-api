@@ -18,7 +18,7 @@ import rabbit.discovery.api.common.utils.PathParser;
 import rabbit.discovery.api.common.utils.PathPattern;
 import rabbit.discovery.api.common.utils.RsaUtils;
 import rabbit.flt.common.Metrics;
-import rabbit.flt.common.utils.StringUtil;
+import rabbit.flt.common.utils.StringUtils;
 import rabbit.flt.rpc.common.GzipUtil;
 
 import java.security.PrivateKey;
@@ -168,7 +168,7 @@ public class DefaultDiscoveryService implements DiscoveryService {
         instance = new ApplicationInstance(configuration.getApplicationCode());
         instance.setPort(configuration.getPort());
         instance.setGroupName(configuration.getGroupName());
-        if (!StringUtil.isEmpty(configuration.getHost())) {
+        if (!StringUtils.isEmpty(configuration.getHost())) {
             instance.setHost(configuration.getHost());
         } else {
             instance.setHost(Metrics.getHostIp());

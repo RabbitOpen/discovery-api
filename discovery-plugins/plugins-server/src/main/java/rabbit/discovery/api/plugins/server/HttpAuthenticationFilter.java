@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static rabbit.discovery.api.common.enums.SecurityMode.WHITE;
-import static rabbit.flt.common.utils.StringUtil.isEmpty;
+import static rabbit.flt.common.utils.StringUtils.isEmpty;
 
 public abstract class HttpAuthenticationFilter extends SpringBeanSupplierHolder {
 

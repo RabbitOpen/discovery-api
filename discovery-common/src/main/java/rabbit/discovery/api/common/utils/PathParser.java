@@ -5,7 +5,7 @@ import rabbit.discovery.api.common.exception.TooManyWildcardException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static rabbit.flt.common.utils.StringUtil.isEmpty;
+import static rabbit.flt.common.utils.StringUtils.isEmpty;
 
 public class PathParser {
 

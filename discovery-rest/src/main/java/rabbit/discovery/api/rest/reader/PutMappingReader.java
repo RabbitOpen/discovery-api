@@ -3,12 +3,11 @@ package rabbit.discovery.api.rest.reader;
 import org.springframework.web.bind.annotation.PutMapping;
 import rabbit.discovery.api.common.enums.HttpMethod;
 import rabbit.discovery.api.rest.MappingReader;
-import rabbit.flt.common.utils.CollectionUtil;
-import rabbit.flt.common.utils.StringUtil;
 
 import java.util.Arrays;
 import java.util.List;
-
+import rabbit.flt.common.utils.CollectionUtils;
+import rabbit.flt.common.utils.StringUtils;
 public class PutMappingReader extends MappingReader<PutMapping> {
 
     public PutMappingReader(PutMapping mapping) {
@@ -17,13 +16,13 @@ public class PutMappingReader extends MappingReader<PutMapping> {
 
     @Override
     protected List<String> getDeclaredPaths() {
-        if (!StringUtil.isEmpty(mapping.name())) {
+        if (!StringUtils.isEmpty(mapping.name())) {
             return Arrays.asList(mapping.name());
         }
-        if (!CollectionUtil.isEmpty(mapping.value())) {
+        if (!CollectionUtils.isEmpty(mapping.value())) {
             return Arrays.asList(mapping.value());
         }
-        if (!CollectionUtil.isEmpty(mapping.path())) {
+        if (!CollectionUtils.isEmpty(mapping.path())) {
             return Arrays.asList(mapping.path());
         }
         return Arrays.asList("");

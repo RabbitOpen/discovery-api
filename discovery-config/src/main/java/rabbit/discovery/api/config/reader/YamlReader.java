@@ -3,8 +3,8 @@ package rabbit.discovery.api.config.reader;
 import org.yaml.snakeyaml.Yaml;
 import rabbit.discovery.api.config.ConfigReader;
 import rabbit.discovery.api.config.PropertyHandler;
-import rabbit.flt.common.utils.ResourceUtil;
-import rabbit.flt.common.utils.StringUtil;
+import rabbit.flt.common.utils.ResourceUtils;
+import rabbit.flt.common.utils.StringUtils;
 
 import java.io.StringReader;
 import java.util.Map;
@@ -15,7 +15,7 @@ public class YamlReader implements ConfigReader {
     @Override
     public Properties read(String content, PropertyHandler handler) {
         Properties properties = new Properties();
-        if (StringUtil.isEmpty(content)) {
+        if (StringUtils.isEmpty(content)) {
             return properties;
         }
         StringReader reader = new StringReader(content);
@@ -25,7 +25,7 @@ public class YamlReader implements ConfigReader {
             map.forEach((key, value) -> setValue2Properties(handler, properties, null, key, value));
             return properties;
         } finally {
-            ResourceUtil.close(reader);
+            ResourceUtils.close(reader);
         }
     }
 
@@ -34,7 +34,7 @@ public class YamlReader implements ConfigReader {
         if (value instanceof Map) {
             ((Map<String, Object>) value).forEach((k, v) -> setValue2Properties(handler, properties, realKey, k, v));
         } else {
-            properties.setProperty(realKey, handler.handle(realKey, StringUtil.toString(value)));
+            properties.setProperty(realKey, handler.handle(realKey, StringUtils.toString(value)));
         }
     }
 }

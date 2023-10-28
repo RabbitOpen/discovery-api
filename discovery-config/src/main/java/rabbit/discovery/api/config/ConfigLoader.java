@@ -14,8 +14,8 @@ import rabbit.discovery.api.config.context.FlexibleValueMeta;
 import rabbit.discovery.api.config.reader.PropertyReader;
 import rabbit.discovery.api.config.reader.YamlReader;
 import rabbit.discovery.api.config.rpc.ConfigService;
-import rabbit.flt.common.utils.CollectionUtil;
-import rabbit.flt.common.utils.StringUtil;
+import rabbit.flt.common.utils.CollectionUtils;
+import rabbit.flt.common.utils.StringUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import static rabbit.discovery.api.common.ApiProtocolHelper.getSignatureMap;
-import static rabbit.flt.common.utils.StringUtil.isEmpty;
+import static rabbit.flt.common.utils.StringUtils.isEmpty;
 
 /**
  * 配置加载器
@@ -122,7 +122,7 @@ public abstract class ConfigLoader extends Thread implements ConfigChangeListene
         } else {
             currentConfig = configService.loadConfig(applicationCode, configFiles, getSignatureMap(applicationCode, privateKey));
             List<RemoteConfig> configs = currentConfig.getConfigs();
-            if (!CollectionUtil.isEmpty(configs)) {
+            if (!CollectionUtils.isEmpty(configs)) {
                 configs.forEach(c -> c.setPriority(getPriority(c)));
                 configs.sort(Comparator.comparing(RemoteConfig::getPriority));
             }
@@ -151,7 +151,7 @@ public abstract class ConfigLoader extends Thread implements ConfigChangeListene
                         currentConfig.getVersion() < version) {
                     task.clear();
                     loadRemoteConfig();
-                    if (!CollectionUtil.isEmpty(currentConfig.getConfigs())) {
+                    if (!CollectionUtils.isEmpty(currentConfig.getConfigs())) {
                         this.updatePropertySources(currentConfig.getConfigs());
                     }
                 }
@@ -304,7 +304,7 @@ public abstract class ConfigLoader extends Thread implements ConfigChangeListene
         rc.setName(name);
         rc.setNamespace(namespace);
         String priority = readProperty(prefix.concat("priority"));
-        if (StringUtil.isEmpty(priority)) {
+        if (StringUtils.isEmpty(priority)) {
             rc.setPriority(1);
         } else {
             rc.setPriority(Integer.parseInt(priority.trim()));

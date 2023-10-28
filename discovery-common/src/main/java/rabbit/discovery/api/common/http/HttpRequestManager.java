@@ -2,7 +2,7 @@ package rabbit.discovery.api.common.http;
 
 import rabbit.discovery.api.common.exception.DiscoveryException;
 import rabbit.discovery.api.common.utils.JsonUtils;
-import rabbit.flt.common.utils.ResourceUtil;
+import rabbit.flt.common.utils.ResourceUtils;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -57,7 +57,7 @@ public class HttpRequestManager {
             }
             return sb;
         } finally {
-            ResourceUtil.close(reader);
+            ResourceUtils.close(reader);
         }
     }
 

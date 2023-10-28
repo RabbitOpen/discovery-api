@@ -1,7 +1,7 @@
 package rabbit.discovery.api.common.utils;
 
 import rabbit.discovery.api.common.exception.DiscoveryException;
-import rabbit.flt.common.utils.ResourceUtil;
+import rabbit.flt.common.utils.ResourceUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -34,9 +34,9 @@ public class GZipUtils {
         } catch (Exception e) {
             throw new DiscoveryException(e);
         } finally {
-            ResourceUtil.close(gzipIs);
-            ResourceUtil.close(os);
-            ResourceUtil.close(is);
+            ResourceUtils.close(gzipIs);
+            ResourceUtils.close(os);
+            ResourceUtils.close(is);
         }
     }
 }

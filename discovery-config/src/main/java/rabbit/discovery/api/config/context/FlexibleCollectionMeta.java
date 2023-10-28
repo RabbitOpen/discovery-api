@@ -2,7 +2,7 @@ package rabbit.discovery.api.config.context;
 
 import rabbit.discovery.api.common.utils.ReflectUtils;
 import rabbit.discovery.api.config.ValueChangeListener;
-import rabbit.flt.common.utils.StringUtil;
+import rabbit.flt.common.utils.StringUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -47,7 +47,7 @@ class FlexibleCollectionMeta extends FlexibleValueMeta {
         while (true) {
             StringBuilder keyBuilder = new StringBuilder(prefix).append("[").append(i).append("]");
             String value = propertyReader.apply(keyBuilder.toString());
-            if (StringUtil.isEmpty(value)) {
+            if (StringUtils.isEmpty(value)) {
                 break;
             }
             collectionObj.add(funcMap.get(paramType).apply(value));

@@ -7,7 +7,7 @@ import java.net.URI;
 
 import static rabbit.discovery.api.common.enums.Schema.HTTP;
 import static rabbit.discovery.api.common.enums.Schema.HTTPS;
-import static rabbit.flt.common.utils.StringUtil.isEmpty;
+import static rabbit.flt.common.utils.StringUtils.isEmpty;
 
 public class ServerNode {
 

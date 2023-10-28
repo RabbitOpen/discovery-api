@@ -9,7 +9,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import rabbit.discovery.api.common.Configuration;
 import rabbit.discovery.api.rest.SpringBeanRegistrar;
-import rabbit.flt.common.utils.StringUtil;
+import rabbit.flt.common.utils.StringUtils;
 
 import java.util.Properties;
 
@@ -65,7 +65,7 @@ public class SpringMvcOpenApiRegistrar extends PropertyResourceConfigurer implem
         // 声明Configuration
         registrar.registerBeanDefinition(registry, Configuration.class);
         registrar.registerOpenApiClients(registry, openApiPackages, property -> properties.containsKey(property)
-                ? StringUtil.toString(properties.containsKey(property)) : property);
+                ? StringUtils.toString(properties.containsKey(property)) : property);
     }
 
     @Override

@@ -3,7 +3,7 @@ package rabbit.discovery.api.common.protocol;
 import rabbit.discovery.api.common.ServerNode;
 import rabbit.discovery.api.common.exception.DiscoveryException;
 import rabbit.discovery.api.common.exception.LoadBalanceException;
-import rabbit.flt.common.utils.CollectionUtil;
+import rabbit.flt.common.utils.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -41,7 +41,7 @@ public class Provider {
             return new ServerNode(groupMeta.getGroupLoadBalanceHost().get(groupName));
         } else {
             List<ApplicationInstance> groupInstances = groupMeta.getGroupInstMap().get(groupName);
-            if (CollectionUtil.isEmpty(groupInstances)) {
+            if (CollectionUtils.isEmpty(groupInstances)) {
                 throw new LoadBalanceException(applicationCode, groupName);
             }
             int index = (int) (getCount(applicationCode) % groupInstances.size());

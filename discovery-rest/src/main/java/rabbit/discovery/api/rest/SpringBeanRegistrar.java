@@ -16,7 +16,7 @@ import rabbit.discovery.api.rest.facotry.OpenClientFactory;
 import rabbit.discovery.api.rest.facotry.RestClientFactory;
 import rabbit.discovery.api.rest.http.OpenApiExecutor;
 import rabbit.discovery.api.rest.http.RestClientExecutor;
-import rabbit.flt.common.utils.CollectionUtil;
+import rabbit.flt.common.utils.CollectionUtils;
 
 import java.lang.annotation.Annotation;
 import java.util.Set;
@@ -46,7 +46,7 @@ public class SpringBeanRegistrar {
      * @param basePackages
      */
     public void registerRestClients(BeanDefinitionRegistry registry, String[] basePackages) {
-        if (CollectionUtil.isEmpty(basePackages)) {
+        if (CollectionUtils.isEmpty(basePackages)) {
             return;
         }
         registerExecutorDefinition(registry, RestClientExecutor.class);
@@ -66,7 +66,7 @@ public class SpringBeanRegistrar {
      * @param propertyReader
      */
     public void registerOpenApiClients(BeanDefinitionRegistry registry, String[] basePackages, Function<String, String> propertyReader) {
-        if (CollectionUtil.isEmpty(basePackages)) {
+        if (CollectionUtils.isEmpty(basePackages)) {
             return;
         }
         registerExecutorDefinition(registry, OpenApiExecutor.class);

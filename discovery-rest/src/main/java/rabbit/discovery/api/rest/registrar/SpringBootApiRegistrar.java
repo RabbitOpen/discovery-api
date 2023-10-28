@@ -10,7 +10,7 @@ import org.springframework.core.type.AnnotationMetadata;
 import rabbit.discovery.api.rest.EnableOpenClients;
 import rabbit.discovery.api.rest.EnableRestClients;
 import rabbit.discovery.api.rest.SpringBeanRegistrar;
-import rabbit.flt.common.utils.CollectionUtil;
+import rabbit.flt.common.utils.CollectionUtils;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
@@ -43,7 +43,7 @@ public class SpringBootApiRegistrar implements ImportBeanDefinitionRegistrar, Re
             return new String[0];
         }
         String[] basePackages = (String[]) attributes.get("basePackages");
-        if (CollectionUtil.isEmpty(basePackages)) {
+        if (CollectionUtils.isEmpty(basePackages)) {
             String targetClassName = metadata.getClassName();
             if (-1 != targetClassName.indexOf('.')) {
                 basePackages = new String[] {targetClassName.substring(0, targetClassName.lastIndexOf('.'))};

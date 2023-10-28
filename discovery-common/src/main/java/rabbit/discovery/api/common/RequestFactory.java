@@ -6,7 +6,7 @@ import rabbit.discovery.api.common.http.PostRequest;
 import rabbit.discovery.api.common.http.Request;
 import rabbit.discovery.api.common.http.anno.Headers;
 import rabbit.discovery.api.common.http.anno.*;
-import rabbit.flt.common.utils.StringUtil;
+import rabbit.flt.common.utils.StringUtils;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -129,7 +129,7 @@ public class RequestFactory implements InvocationHandler {
             Parameter parameter = parameters[i];
             RequestPathVariable pv = parameter.getAnnotation(RequestPathVariable.class);
             if (null != pv) {
-                pathVariables.put(pv.value(), StringUtil.toString(args[i]));
+                pathVariables.put(pv.value(), StringUtils.toString(args[i]));
             }
         }
         return pathVariables;
