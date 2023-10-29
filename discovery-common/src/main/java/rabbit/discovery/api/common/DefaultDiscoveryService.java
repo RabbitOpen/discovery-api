@@ -19,7 +19,7 @@ import rabbit.discovery.api.common.utils.PathPattern;
 import rabbit.discovery.api.common.utils.RsaUtils;
 import rabbit.flt.common.Metrics;
 import rabbit.flt.common.utils.StringUtils;
-import rabbit.flt.rpc.common.GzipUtil;
+import rabbit.flt.rpc.common.GZipUtils;
 
 import java.security.PrivateKey;
 import java.util.ArrayList;
@@ -108,7 +108,7 @@ public class DefaultDiscoveryService implements DiscoveryService {
      */
     private void loadProviderPrivileges() {
         PrivilegeData data = protocolService.getProviderPrivileges(configuration.getApplicationCode(), getSignatureHeader());
-        byte[] bytes = GzipUtil.decompress(data.getCompressedPrivileges(), data.getPlainDataLength());
+        byte[] bytes = GZipUtils.decompress(data.getCompressedPrivileges(), data.getPlainDataLength());
         JavaType javaType = JsonUtils.constructListType(ArrayList.class, Privilege.class);
         List<Privilege> privileges = JsonUtils.readValue(new String(bytes), javaType);
         Map<String, List<PathPattern>> privilegeMap = new ConcurrentHashMap<>();
