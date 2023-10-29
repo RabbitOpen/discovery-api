@@ -27,11 +27,23 @@ public abstract class MappingReader<T extends Annotation> {
     private List<String> getDeclaredPaths() {
         List<String[]> groups = getDeclaredPathGroups();
         for (String[] paths : groups) {
-            if (!CollectionUtils.isEmpty(paths)) {
+            if (hasValidPath(paths)) {
                 return Arrays.asList(paths);
             }
         }
         return Arrays.asList("");
+    }
+
+    private boolean hasValidPath(String[] paths) {
+        if (CollectionUtils.isEmpty(paths)) {
+            return false;
+        }
+        for (String path : paths) {
+            if (!StringUtils.isEmpty(path)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

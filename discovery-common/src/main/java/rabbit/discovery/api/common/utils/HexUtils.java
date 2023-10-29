@@ -2,6 +2,8 @@ package rabbit.discovery.api.common.utils;
 
 public class HexUtils {
 
+    private HexUtils() {}
+
     /**
      * 转16进制
      *
@@ -24,10 +26,11 @@ public class HexUtils {
     /**
      * 16 进制转byte[]
      *
-     * @param hex
+     * @param hexStr
      * @return
      */
-    public static byte[] toBytes(String hex) {
+    public static byte[] toBytes(String hexStr) {
+        String hex = hexStr;
         if (1 == hex.length() % 2) {
             hex = "0".concat(hex);
         }

@@ -3,6 +3,7 @@ package rabbit.discovery.api.rest;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.*;
+import rabbit.discovery.api.common.http.anno.Body;
 import rabbit.discovery.api.common.http.anno.Header;
 import rabbit.discovery.api.common.http.anno.HeaderMap;
 import rabbit.discovery.api.common.http.anno.Headers;
@@ -146,6 +147,7 @@ public abstract class ClientFactory implements InvocationHandler, FactoryBean {
 
     /**
      * 读取el表达式属性配置
+     *
      * @param property
      * @return
      */
@@ -194,7 +196,8 @@ public abstract class ClientFactory implements InvocationHandler, FactoryBean {
     protected Object readRequestBody(Object[] args, Parameter[] parameters) {
         for (int i = 0; i < parameters.length; i++) {
             Parameter para = parameters[i];
-            if (null != para.getAnnotation(RequestBody.class)) {
+            if (null != para.getAnnotation(RequestBody.class)
+                    || null != para.getAnnotation(Body.class)) {
                 return args[i];
             }
         }

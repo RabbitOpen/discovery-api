@@ -40,7 +40,6 @@ public class Element {
         } else {
             this.variable = false;
         }
-
     }
 
     public Element(String value, boolean variable) {
@@ -78,6 +77,15 @@ public class Element {
             // 静态文本必须相同才算匹配
             return value.equals(text);
         }
+        return doVariableMatch(text);
+    }
+
+    /**
+     * 检查包含变量的匹配
+     * @param text
+     * @return
+     */
+    private boolean doVariableMatch(String text) {
         StringBuilder sb = new StringBuilder(text);
         boolean variablePrefix = false;
         for (int i = 0; i < elements.size(); i++) {
