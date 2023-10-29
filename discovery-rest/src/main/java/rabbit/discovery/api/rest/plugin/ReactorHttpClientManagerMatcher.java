@@ -15,7 +15,7 @@ public class ReactorHttpClientManagerMatcher extends PerformanceMatcher {
 
     @Override
     public ElementMatcher.Junction methodMatcher(TypeDescription typeDescription) {
-        return named("doRequest").or(named("exchange")).or(named("setRequestHeaders"));
+        return named("doRequest").or(named("exchange")).or(named("getHttpClient"));
     }
 
     @Override

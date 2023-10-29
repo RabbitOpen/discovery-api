@@ -31,7 +31,7 @@ public class ReactorHttpClientManagerPlugin extends PerformancePlugin {
                 stackInfo.getTraceData().setNodeName("doHttpRequest");
                 request.addAttachment(attachmentName, stackInfo.getTraceData());
             }
-        } else if ("setRequestHeaders".equals(method.getName())) {
+        } else if ("getHttpClient".equals(method.getName())) {
             // 添加链路追踪头
             HttpRequest request = (HttpRequest) args[0];
             request.setHeader(Headers.TRACE_ID, TraceContext.getTraceId());
