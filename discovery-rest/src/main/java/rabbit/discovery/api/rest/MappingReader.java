@@ -4,6 +4,7 @@ package rabbit.discovery.api.rest;
 import rabbit.discovery.api.common.enums.HttpMethod;
 import rabbit.discovery.api.common.utils.PathParser;
 import rabbit.discovery.api.rest.http.HttpRequest;
+import rabbit.flt.common.utils.CollectionUtils;
 import rabbit.flt.common.utils.StringUtils;
 
 import java.lang.annotation.Annotation;
@@ -24,9 +25,9 @@ public abstract class MappingReader<T extends Annotation> {
      * @return
      */
     private List<String> getDeclaredPaths() {
-        List<String[]> arr = getDeclaredPathGroups();
-        for (String[] paths : arr) {
-            if (!StringUtils.isEmpty(paths)) {
+        List<String[]> groups = getDeclaredPathGroups();
+        for (String[] paths : groups) {
+            if (!CollectionUtils.isEmpty(paths)) {
                 return Arrays.asList(paths);
             }
         }
