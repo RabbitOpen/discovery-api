@@ -23,7 +23,7 @@ public abstract class MappingReader<T extends Annotation> {
      *
      * @return
      */
-    protected List<String> getDeclaredPaths() {
+    private List<String> getDeclaredPaths() {
         List<String[]> arr = getDeclaredPathGroups();
         for (String[] paths : arr) {
             if (!StringUtils.isEmpty(paths)) {
