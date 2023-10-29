@@ -12,12 +12,12 @@ public class RsaUtils {
     /**
      * 签名算法
      */
-    private String SIGN_ALGORITHM = "SHA256withRSA";
+    private String signAlgorithm = "SHA256withRSA";
 
     /**
      * 摘要算法
      */
-    private String ENCODE_ALGORITHM = "SHA-256";
+    private String encodeAlgorithm = "SHA-256";
 
     private static final RsaUtils util = new RsaUtils();
 
@@ -32,9 +32,9 @@ public class RsaUtils {
      */
     public static byte[] signWithPrivateKey(String plainData, PrivateKey privateKey) {
         try {
-            MessageDigest digest = MessageDigest.getInstance(util.ENCODE_ALGORITHM);
+            MessageDigest digest = MessageDigest.getInstance(util.encodeAlgorithm);
             digest.update(plainData.getBytes());
-            Signature signature = Signature.getInstance(util.SIGN_ALGORITHM);
+            Signature signature = Signature.getInstance(util.signAlgorithm);
             signature.initSign(privateKey);
             signature.update(digest.digest());
             return signature.sign();
@@ -53,9 +53,9 @@ public class RsaUtils {
      */
     public static boolean verifyWithPublicKey(byte[] input, String plainData, PublicKey publicKey) {
         try {
-            MessageDigest digest = MessageDigest.getInstance(util.ENCODE_ALGORITHM);
+            MessageDigest digest = MessageDigest.getInstance(util.encodeAlgorithm);
             digest.update(plainData.getBytes());
-            Signature signature = Signature.getInstance(util.SIGN_ALGORITHM);
+            Signature signature = Signature.getInstance(util.signAlgorithm);
             signature.initVerify(publicKey);
             signature.update(digest.digest());
             return signature.verify(input);

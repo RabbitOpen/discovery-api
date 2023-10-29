@@ -6,13 +6,18 @@ import static rabbit.flt.common.utils.StringUtils.isEmpty;
 
 public class Environment {
 
-    private static String version;
+    private String version;
+
+    private static final Environment inst = new Environment();
+
+    private Environment() {
+    }
 
     public static String getVersion() {
-        if (!isEmpty(version)) {
-            return version;
+        if (!isEmpty(inst.version)) {
+            return inst.version;
         }
-        version = VersionUtils.getVersion("discovery.properties", "version");
-        return version;
+        inst.version = VersionUtils.getVersion("discovery.properties", "version");
+        return inst.version;
     }
 }
