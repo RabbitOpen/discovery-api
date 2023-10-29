@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import rabbit.discovery.api.common.enums.HttpMethod;
 import rabbit.discovery.api.rest.MappingReader;
 import rabbit.flt.common.utils.CollectionUtils;
-import rabbit.flt.common.utils.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,17 +15,8 @@ public class RequestMappingReader extends MappingReader<RequestMapping> {
     }
 
     @Override
-    protected List<String> getDeclaredPaths() {
-        if (!StringUtils.isEmpty(mapping.name())) {
-            return Arrays.asList(mapping.name());
-        }
-        if (!CollectionUtils.isEmpty(mapping.value())) {
-            return Arrays.asList(mapping.value());
-        }
-        if (!CollectionUtils.isEmpty(mapping.path())) {
-            return Arrays.asList(mapping.path());
-        }
-        return Arrays.asList("");
+    protected List<String[]> getDeclaredPathGroups() {
+        return Arrays.asList(new String[]{mapping.name()}, mapping.value(), mapping.path());
     }
 
     @Override

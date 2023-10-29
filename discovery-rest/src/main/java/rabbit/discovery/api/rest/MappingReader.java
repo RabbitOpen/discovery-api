@@ -4,8 +4,10 @@ package rabbit.discovery.api.rest;
 import rabbit.discovery.api.common.enums.HttpMethod;
 import rabbit.discovery.api.common.utils.PathParser;
 import rabbit.discovery.api.rest.http.HttpRequest;
+import rabbit.flt.common.utils.StringUtils;
 
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class MappingReader<T extends Annotation> {
@@ -21,7 +23,22 @@ public abstract class MappingReader<T extends Annotation> {
      *
      * @return
      */
-    protected abstract List<String> getDeclaredPaths();
+    protected List<String> getDeclaredPaths() {
+        List<String[]> arr = getDeclaredPathGroups();
+        for (String[] paths : arr) {
+            if (!StringUtils.isEmpty(paths)) {
+                return Arrays.asList(paths);
+            }
+        }
+        return Arrays.asList("");
+    }
+
+    /**
+     * 获取声明的请求路径组
+     *
+     * @return
+     */
+    protected abstract List<String[]> getDeclaredPathGroups();
 
     /**
      * 获取方法类型
