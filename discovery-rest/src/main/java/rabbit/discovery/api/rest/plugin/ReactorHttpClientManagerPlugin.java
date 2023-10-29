@@ -67,6 +67,13 @@ public class ReactorHttpClientManagerPlugin extends PerformancePlugin {
     }
 
     @Override
+    public void doFinal(Object objectEnhanced, Method method, Object[] args, Object result) throws Exception {
+        if ("doRequest".equals(method.getName())) {
+            super.doFinal(objectEnhanced, method, args, result);
+        }
+    }
+
+    @Override
     protected void handleTraceData(TraceData traceData) {
         // do nothing, 异步发送
     }
