@@ -194,12 +194,12 @@ public class FlexibleValueMeta {
      * @param collectionType
      * @return
      */
-    private Collection getCollectionBean(Class<? extends Collection> collectionType) {
+    private <T> T getCollectionBean(Class<? extends T> collectionType) {
         if (List.class.isAssignableFrom(collectionType)) {
-            return new ArrayList();
+            return (T) new ArrayList();
         }
         if (Set.class.isAssignableFrom(collectionType)) {
-            return new HashSet();
+            return (T) new HashSet();
         }
         return null;
     }

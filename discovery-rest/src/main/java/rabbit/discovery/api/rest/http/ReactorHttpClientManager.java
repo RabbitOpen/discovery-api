@@ -2,6 +2,7 @@ package rabbit.discovery.api.rest.http;
 
 import io.netty.channel.ChannelOption;
 import io.netty.handler.codec.http.HttpHeaderNames;
+import io.netty.handler.codec.http.HttpHeaders;
 import rabbit.discovery.api.common.exception.RestApiException;
 import rabbit.discovery.api.rest.HttpClientManager;
 import rabbit.discovery.api.rest.anno.ReadTimeout;
@@ -107,12 +108,18 @@ public class ReactorHttpClientManager extends HttpClientManager<HttpClient.Respo
                 .tcpConfiguration(t -> t.option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
                         getConfiguration().getConnectionTimeout()))
                 .responseTimeout(Duration.ofMillis(readTimeout))
-                .headers(h -> {
-                    if (!request.hasContentType()) {
-                        h.set(HttpHeaderNames.CONTENT_TYPE, "application/json;charset=utf-8");
-                    }
-                    request.getHeaders().forEach(h::set);
-                });
+                .headers(httpHeaders -> setRequestHeaders(request, httpHeaders));
+    }
 
+    /**
+     * 设置http请求头
+     * @param request
+     * @param httpHeaders
+     */
+    private void setRequestHeaders(HttpRequest request, HttpHeaders httpHeaders) {
+        if (!request.hasContentType()) {
+            httpHeaders.set(HttpHeaderNames.CONTENT_TYPE, "application/json;charset=utf-8");
+        }
+        request.getHeaders().forEach(httpHeaders::set);
     }
 }

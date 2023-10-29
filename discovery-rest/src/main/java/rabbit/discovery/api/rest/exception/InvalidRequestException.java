@@ -1,10 +1,12 @@
 package rabbit.discovery.api.rest.exception;
 
+import rabbit.discovery.api.common.exception.RestApiException;
+
 import java.lang.reflect.Method;
 
-public class InvalidRequestException extends NoRequestFoundException {
+public class InvalidRequestException extends RestApiException {
 
     public InvalidRequestException(Method method) {
-        super(method);
+        super("no request definition found on method[" + method + "]");
     }
 }

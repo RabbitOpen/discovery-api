@@ -23,9 +23,10 @@ public class PathPattern {
      */
     public boolean match(String path) {
         if (-1 != path.indexOf('?')) {
-            path = path.substring(0, path.indexOf('?'));
+            return match(PathParser.parseText(path.substring(0, path.indexOf('?'))));
+        } else {
+            return match(PathParser.parseText(path));
         }
-        return match(PathParser.parseText(path));
     }
 
     private boolean match(PathPattern pathPattern) {

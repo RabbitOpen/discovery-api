@@ -21,9 +21,10 @@ public class PathParser {
      */
     protected static PathPattern parseText(String path) {
         if (-1 != path.indexOf('?')) {
-            path = path.substring(0, path.indexOf('?'));
+            return parse(path.substring(0, path.indexOf('?')), false);
+        } else {
+            return parse(path, false);
         }
-        return parse(path, false);
     }
 
     /**
@@ -47,8 +48,8 @@ public class PathParser {
         if (isEmpty(path)) {
             return new PathPattern();
         }
-        path = removeRepeatedSeparator(path);
-        String[] split = path.split(SEPARATOR);
+        String text = removeRepeatedSeparator(path);
+        String[] split = text.split(SEPARATOR);
         List<Element> elementList = new ArrayList<>();
         int wildcardCount = 0;
         for (int i = 0; i < split.length; i++) {
@@ -61,10 +62,10 @@ public class PathParser {
                 wildcardCount++;
             }
             if (wildcardCount > 1) {
-                throw new TooManyWildcardException(path);
+                throw new TooManyWildcardException(text);
             }
         }
-        if (path.endsWith(SEPARATOR)) {
+        if (text.endsWith(SEPARATOR)) {
             elementList.add(new Element("", false));
         }
         return new PathPattern(elementList);

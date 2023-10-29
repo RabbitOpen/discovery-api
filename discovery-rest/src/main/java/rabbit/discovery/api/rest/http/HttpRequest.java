@@ -60,6 +60,11 @@ public final class HttpRequest {
 
     private ClientFactory clientFactory;
 
+    /**
+     * 绑定的附件
+     */
+    private Map<String, Object> attachments = new HashMap<>();
+
     public HttpRequest(String targetApplication, ClientFactory clientFactory) {
         this.targetApplication = targetApplication;
         this.clientFactory = clientFactory;
@@ -202,5 +207,13 @@ public final class HttpRequest {
 
     public ClientFactory getClientFactory() {
         return clientFactory;
+    }
+
+    public <T> void addAttachment(String name, T value) {
+        this.attachments.put(name, value);
+    }
+
+    public <T> T getAttachment(String name) {
+        return (T) this.attachments.get(name);
     }
 }
