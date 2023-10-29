@@ -94,6 +94,19 @@ public final class HttpRequest {
         }
     }
 
+    /**
+     * 获取请求content-type
+     * @return
+     */
+    public String getContentType() {
+        for (Map.Entry<String, String> entry : this.headers.entrySet()) {
+            if ("content-type".equalsIgnoreCase(entry.getKey())) {
+                return entry.getValue();
+            }
+        }
+        return "application/json;charset=UTF-8";
+    }
+
     public void setHeader(String name, String value) {
         this.headers.put(name, value);
     }

@@ -8,10 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rabbit.discovery.api.common.ServerNode;
 import rabbit.discovery.api.common.enums.Schema;
-import rabbit.discovery.api.common.utils.GZipUtils;
 import rabbit.discovery.api.common.utils.HexUtils;
 import rabbit.discovery.api.common.utils.RsaUtils;
-import rabbit.flt.rpc.common.GzipUtil;
+import rabbit.flt.rpc.common.GZipUtils;
 
 import java.security.KeyPair;
 import java.security.PrivateKey;
@@ -25,7 +24,7 @@ public class UtilTest {
     @Test
     public void gzipTest() {
         String text = "abc";
-        byte[] compress = GzipUtil.compress(text.getBytes());
+        byte[] compress = GZipUtils.compress(text.getBytes());
         byte[] bytes = GZipUtils.decompressIgnoreOriginalLength(compress, 1);
         TestCase.assertEquals(text, new String(bytes));
         bytes = GZipUtils.decompressIgnoreOriginalLength(compress, 1024);

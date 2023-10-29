@@ -15,7 +15,7 @@ public class HttpResponse<T> {
     /**
      * 响应头
      */
-    private Map<String, String> headers = new HashMap<>();
+    private Map<String, String> headers;
 
     private int statusCode;
 

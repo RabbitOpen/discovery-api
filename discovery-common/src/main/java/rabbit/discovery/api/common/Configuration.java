@@ -109,6 +109,12 @@ public class Configuration {
     private int connectionTimeout;
 
     /**
+     * 读超时
+     */
+    @Value("${discovery.application.http.read-timeout:30000}")
+    private int readTimeout;
+
+    /**
      * 最大连接数
      */
     @Value("${discovery.application.http.max-connection:50}")
@@ -346,5 +352,13 @@ public class Configuration {
 
     public void setApplicationGroupMap(Map<String, String> applicationGroupMap) {
         this.applicationGroupMap = applicationGroupMap;
+    }
+
+    public int getReadTimeout() {
+        return readTimeout;
+    }
+
+    public void setReadTimeout(int readTimeout) {
+        this.readTimeout = readTimeout;
     }
 }
