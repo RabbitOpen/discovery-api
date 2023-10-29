@@ -66,7 +66,9 @@ public abstract class HttpRequestExecutor {
             loadBalancer = new SimpleLoadBalancer(configuration);
         }
         if (null == requestInterceptor) {
-            requestInterceptor = request -> {};
+            requestInterceptor = request -> {
+                // do nothing
+            };
         }
         initHttpClientManager();
         initDefaultConverter();
