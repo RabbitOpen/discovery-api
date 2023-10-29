@@ -107,6 +107,19 @@ public final class HttpRequest {
         return "application/json;charset=UTF-8";
     }
 
+    /**
+     * 判断请求是否指定了content-type
+     * @return
+     */
+    public boolean hasContentType() {
+        for (Map.Entry<String, String> entry : this.headers.entrySet()) {
+            if ("content-type".equalsIgnoreCase(entry.getKey())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void setHeader(String name, String value) {
         this.headers.put(name, value);
     }

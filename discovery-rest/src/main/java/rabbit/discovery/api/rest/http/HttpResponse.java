@@ -49,6 +49,10 @@ public class HttpResponse<T> {
         this.headers = headers;
     }
 
+    public void setHeader(String name, String value) {
+        this.headers.put(name, value);
+    }
+
     public int getStatusCode() {
         return statusCode;
     }
@@ -56,4 +60,5 @@ public class HttpResponse<T> {
     public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
     }
+
 }
