@@ -69,7 +69,7 @@ public class ReactorHttpClientManager extends HttpClientManager<HttpClient.Respo
         }
         return receiver.responseSingle((resp, content) -> {
             response.setStatusCode(resp.status().code());
-            resp.responseHeaders().forEach((entry) -> response.setHeader(entry.getKey(), entry.getValue()));
+            resp.responseHeaders().forEach(entry -> response.setHeader(entry.getKey(), entry.getValue()));
             return content.asByteArray();
         }).map(bytes -> new String(unzipIfZipped(response.getHeaders(), bytes)));
     }
