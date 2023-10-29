@@ -150,7 +150,7 @@ public abstract class HttpRequestExecutor {
             Type rawType = ((ParameterizedType) resultType).getActualTypeArguments()[0];
             return (T) asyncResult.map(body -> readResponseByType(request, response, rawType, body));
         } else {
-            return readResponseByType(request, response, resultType, StringUtils.toString(response.getData()));
+            return (T) readResponseByType(request, response, resultType, StringUtils.toString(response.getData()));
         }
     }
 
@@ -160,20 +160,19 @@ public abstract class HttpRequestExecutor {
      * @param response
      * @param resultType
      * @param body
-     * @param <T>
      * @return
      */
-    private <T> T readResponseByType(HttpRequest request, HttpResponse response, Type resultType, String body) {
+    private Object readResponseByType(HttpRequest request, HttpResponse response, Type resultType, String body) {
         if (request.careResponseHeader()) {
             Type actualType = ((ParameterizedType) resultType).getActualTypeArguments()[0];
             if (defaultTypeConverter.containsKey(actualType)) {
                 Object data = defaultTypeConverter.get(actualType).apply(StringUtils.toString(response.getData()));
-                return (T) new HttpResponse(data, response.getHeaders());
+                return new HttpResponse(data, response.getHeaders());
             }
             Object result = transformer.transformResponse(request.getMethod(), actualType, response.getHeaders(), body);
-            return (T) new HttpResponse(result, response.getHeaders());
+            return new HttpResponse(result, response.getHeaders());
         } else {
-            return (T) transformer.transformResponse(request.getMethod(), resultType, response.getHeaders(), body);
+            return transformer.transformResponse(request.getMethod(), resultType, response.getHeaders(), body);
         }
     }
 
