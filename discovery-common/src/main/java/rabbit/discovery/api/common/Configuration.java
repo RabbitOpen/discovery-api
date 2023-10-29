@@ -109,7 +109,7 @@ public class Configuration {
     private int connectionTimeout;
 
     /**
-     * 读超时
+     * 读超时，单位毫秒
      */
     @Value("${discovery.application.http.read-timeout:30000}")
     private int readTimeout;

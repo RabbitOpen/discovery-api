@@ -18,6 +18,9 @@ import java.util.Map;
 
 import static rabbit.discovery.api.common.enums.HttpMethod.*;
 
+/**
+ * http client 3 连接管理对象
+ */
 public class HttpClient3Manager extends HttpClientManager<HttpMethodBase> {
 
     protected HttpConnectionManager connectionManager;
