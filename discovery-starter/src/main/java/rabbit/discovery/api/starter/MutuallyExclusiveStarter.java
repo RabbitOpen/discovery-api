@@ -8,6 +8,8 @@ import rabbit.discovery.api.common.DefaultDiscoveryService;
 import rabbit.discovery.api.common.DiscoveryService;
 import rabbit.discovery.api.common.exception.DiscoveryException;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.ServiceLoader;
 
 /**
@@ -32,10 +34,42 @@ abstract class MutuallyExclusiveStarter implements ApplicationContextAware {
         MutuallyExclusiveStarter.context = context;
     }
 
+    /**
+     * 获取定义的bean
+     * @param clz
+     * @param <T>
+     * @return
+     */
+    protected <T> T getBean(Class<T> clz) {
+        try {
+            return getContext().getBean(clz);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * 获取定义的beans
+     * @param clz
+     * @param <T>
+     * @return
+     */
+    protected <T> Collection<T> getBeans(Class<T> clz) {
+        try {
+            return getContext().getBeansOfType(clz).values();
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
+
     public static ApplicationContext getContext() {
         return context;
     }
 
+    /**
+     * 获取通信协议服务
+     * @return
+     */
     protected DiscoveryService getDiscoveryService() {
         DiscoveryService discoveryService = null;
         for (DiscoveryService ds : ServiceLoader.load(DiscoveryService.class)) {
