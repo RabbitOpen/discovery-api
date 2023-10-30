@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=rabbit.discovery.api.starter.DiscoveryAutoConfiguration
+org.springframework.context.ApplicationListener=rabbit.discovery.api.starter.listener.SpringBootStartListener

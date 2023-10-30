@@ -4,7 +4,6 @@ import net.bytebuddy.agent.ByteBuddyAgent;
 import net.bytebuddy.agent.builder.AgentBuilder;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import rabbit.discovery.api.common.Configuration;
@@ -26,8 +25,6 @@ import java.util.*;
  * class增强工具
  */
 public final class ClassUtils {
-
-    private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * 唯一实例
