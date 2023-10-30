@@ -6,7 +6,6 @@ import rabbit.discovery.api.common.*;
 import rabbit.discovery.api.common.enums.ConfigType;
 import rabbit.discovery.api.common.exception.ConfigException;
 import rabbit.discovery.api.common.spi.ConfigChangeListener;
-import rabbit.discovery.api.common.utils.ReflectUtils;
 import rabbit.discovery.api.common.utils.RsaUtils;
 import rabbit.discovery.api.config.anno.FlexibleBean;
 import rabbit.discovery.api.config.anno.FlexibleValue;
@@ -15,6 +14,7 @@ import rabbit.discovery.api.config.reader.PropertyReader;
 import rabbit.discovery.api.config.reader.YamlReader;
 import rabbit.discovery.api.config.rpc.ConfigService;
 import rabbit.flt.common.utils.CollectionUtils;
+import rabbit.flt.common.utils.ReflectUtils;
 import rabbit.flt.common.utils.StringUtils;
 
 import java.lang.reflect.Field;

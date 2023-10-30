@@ -3,11 +3,11 @@ package rabbit.discovery.api.config.context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rabbit.discovery.api.common.utils.JsonUtils;
-import rabbit.discovery.api.common.utils.ReflectUtils;
 import rabbit.discovery.api.config.ValueChangeListener;
 import rabbit.discovery.api.config.anno.FlexibleValue;
 import rabbit.discovery.api.config.exception.InvalidFormatException;
 import rabbit.discovery.api.config.exception.UnSupportedTypeException;
+import rabbit.flt.common.utils.ReflectUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;

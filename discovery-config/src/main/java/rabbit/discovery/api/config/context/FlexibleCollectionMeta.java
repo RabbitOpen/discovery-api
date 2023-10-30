@@ -1,7 +1,7 @@
 package rabbit.discovery.api.config.context;
 
-import rabbit.discovery.api.common.utils.ReflectUtils;
 import rabbit.discovery.api.config.ValueChangeListener;
+import rabbit.flt.common.utils.ReflectUtils;
 import rabbit.flt.common.utils.StringUtils;
 
 import java.lang.reflect.Field;
