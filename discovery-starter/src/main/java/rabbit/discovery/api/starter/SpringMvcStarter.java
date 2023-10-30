@@ -49,6 +49,7 @@ public class SpringMvcStarter extends MutuallyExclusiveStarter implements BeanPo
         registerBeans();
         Configuration configuration = getBean(Configuration.class);
         configuration.doValidation();
+        ClassUtils.setContext(getContext());
         DiscoveryService discoveryService = getDiscoveryService();
         discoveryService.setConfiguration(configuration);
         discoveryService.start();

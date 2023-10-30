@@ -32,7 +32,7 @@ public class SpringBootStarter extends MutuallyExclusiveStarter implements BeanP
     public void init() {
         registerSpringBean();
         configuration.doValidation();
-
+        ClassUtils.setContext(getContext());
         DiscoveryService discoveryService = getDiscoveryService();
         discoveryService.setConfiguration(configuration);
         discoveryService.start();
