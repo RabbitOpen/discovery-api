@@ -51,14 +51,14 @@ public class ReactorHttpClientManagerPlugin extends PerformancePlugin {
             input.setMethod(request.getHttpMethod().name());
             input.getRequestParameters().putAll(request.getQueryParameters());
             input.getHeaders().putAll(request.getHeaders());
-            traceData.setInput(input);
+            traceData.setHttpRequest(input);
             return ((Mono<String>) result).map(body -> {
                 rabbit.flt.common.trace.io.HttpResponse out = new rabbit.flt.common.trace.io.HttpResponse();
                 HttpResponse response = (HttpResponse) args[2];
                 out.setStatusCode(response.getStatusCode());
                 out.getHeaders().putAll(response.getHeaders());
                 traceData.setCost(System.currentTimeMillis() - traceData.getRequestTime());
-                traceData.setOutput(out);
+                traceData.setHttpResponse(out);
                 super.handleTraceData(traceData);
                 return body;
             });
