@@ -16,11 +16,6 @@ public class FlexiblePropertyProcessor implements SpringMvcPostBeanProcessor {
         ConfigLoaderUtil.getConfigLoader().injectProperty(bean, valueChangeListener);
     }
 
-    @Override
-    public void after(Object bean, String name) {
-        // do nothing
-    }
-
     public final void setValueChangeListener(ValueChangeListener valueChangeListener) {
         this.valueChangeListener = valueChangeListener;
     }
