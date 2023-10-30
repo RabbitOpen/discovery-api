@@ -2,7 +2,6 @@ package rabbit.discovery.api.starter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
@@ -10,13 +9,17 @@ import org.springframework.core.io.ResourceLoader;
 import rabbit.discovery.api.common.Configuration;
 import rabbit.discovery.api.common.DiscoveryService;
 import rabbit.discovery.api.common.TraceConfiguration;
+import rabbit.discovery.api.common.spi.SpringMvcPostBeanProcessor;
 import rabbit.discovery.api.config.ValueChangeListener;
 import rabbit.discovery.api.config.loader.ConfigLoaderUtil;
+import rabbit.discovery.api.config.spi.FlexiblePropertyProcessor;
 import rabbit.discovery.api.rest.SpringBeanRegistrar;
 import rabbit.discovery.api.rest.report.ApiCollector;
 
 import javax.annotation.PostConstruct;
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ServiceLoader;
 import java.util.function.Function;
 
 /**
@@ -44,6 +47,8 @@ public class SpringMvcStarter extends MutuallyExclusiveStarter implements BeanPo
     @Autowired(required = false)
     private ValueChangeListener changeListener;
 
+    private List<SpringMvcPostBeanProcessor> beanProcessors;
+
     @PostConstruct
     public void init() {
         registerBeans();
@@ -55,6 +60,22 @@ public class SpringMvcStarter extends MutuallyExclusiveStarter implements BeanPo
         discoveryService.start();
         // 注册 open / rest 接口
         registerApiClients();
+        beanProcessors = loadProcessors();
+    }
+
+    /**
+     * 加载后置处理器
+     * @return
+     */
+    private List<SpringMvcPostBeanProcessor> loadProcessors() {
+        List<SpringMvcPostBeanProcessor> processors = new ArrayList<>();
+        ServiceLoader.load(SpringMvcPostBeanProcessor.class).forEach(processor -> {
+            if (processor instanceof FlexiblePropertyProcessor) {
+                ((FlexiblePropertyProcessor) processor).setValueChangeListener(changeListener);
+            }
+            processors.add(processor);
+        });
+        return processors;
     }
 
     /**
@@ -85,6 +106,10 @@ public class SpringMvcStarter extends MutuallyExclusiveStarter implements BeanPo
     public Object postProcessBeforeInitialization(Object bean, String beanName) {
         ApiCollector collector = getBean(ApiCollector.class);
         collector.postProcessBeforeInitialization(bean, beanName);
+        for (SpringMvcPostBeanProcessor processor : beanProcessors) {
+            // 缓存配置项的meta信息
+            processor.before(bean, beanName);
+        }
         return bean;
     }
 
