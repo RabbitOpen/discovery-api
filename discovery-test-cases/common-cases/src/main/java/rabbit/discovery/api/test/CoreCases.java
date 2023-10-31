@@ -43,7 +43,7 @@ public class CoreCases {
         DiscoveryController discoveryController = context.getBean(DiscoveryController.class);
         // 新增配置版本号
         discoveryController.incrementConfigVersion();
-        MySpringBootConfigLoader.setCallBack(() -> semaphore.release());
+        MySpringBootConfigLoader.setCallBack(semaphore::release);
         return semaphore;
     }
 }
