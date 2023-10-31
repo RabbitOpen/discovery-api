@@ -1,5 +1,6 @@
 package rabbit.discovery.api.test.spi;
 
+import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.config.loader.SpringBootConfigLoader;
 
@@ -16,6 +17,11 @@ public class MySpringBootConfigLoader extends SpringBootConfigLoader {
         if (null != callback) {
             callback.run();
         }
+    }
+
+    @Override
+    public synchronized ConfigDetail loadRemoteConfig() {
+        return super.loadRemoteConfig();
     }
 
     public static void setCallBack(Runnable callBack) {

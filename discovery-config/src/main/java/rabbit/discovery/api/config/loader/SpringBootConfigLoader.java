@@ -18,7 +18,7 @@ public class SpringBootConfigLoader extends ConfigLoader {
     private ConfigurableEnvironment environment;
 
     @Override
-    public Framework getCompatibleFramework() {
+    public final Framework getCompatibleFramework() {
         return Framework.SPRING_BOOT;
     }
 

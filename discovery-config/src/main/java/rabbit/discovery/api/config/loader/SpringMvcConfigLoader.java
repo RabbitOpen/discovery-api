@@ -20,7 +20,7 @@ public class SpringMvcConfigLoader extends ConfigLoader {
     private Properties localProperties;
 
     @Override
-    public Framework getCompatibleFramework() {
+    public final Framework getCompatibleFramework() {
         return Framework.SPRING_MVC;
     }
 
