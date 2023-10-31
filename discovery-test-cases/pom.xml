@@ -13,6 +13,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>common-cases</module>
+        <module>spring-cloud-1.4.0</module>
+        <module>spring-cloud-2.7.2</module>
     </modules>
 
     <properties>
@@ -22,5 +24,15 @@
         <sonar.jacoco.reportPaths>${project.basedir}/../../target/jacoco.exec</sonar.jacoco.reportPaths>
         <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>rabbit.discovery.api</groupId>
+                <artifactId>common-cases</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>

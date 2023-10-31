@@ -4,6 +4,9 @@ import junit.framework.TestCase;
 import org.springframework.context.ApplicationContext;
 import rabbit.discovery.api.test.bean.People;
 import rabbit.discovery.api.test.controller.ConfigController;
+import rabbit.discovery.api.test.spi.MySpringBootConfigLoader;
+
+import java.util.concurrent.Semaphore;
 
 /**
  * 核心用例
@@ -15,7 +18,7 @@ public class CoreCases {
      * 加载远程配置case
      * @param context
      */
-    public void configLoadCase(ApplicationContext context) {
+    public void configLoadCase(ApplicationContext context) throws Exception {
         People people = context.getBean(People.class);
         ConfigController controller = context.getBean(ConfigController.class);
         TestCase.assertEquals(controller.getAge(), people.getAge());
@@ -23,5 +26,20 @@ public class CoreCases {
         TestCase.assertEquals(controller.getGender(), people.getGender());
         TestCase.assertEquals(controller.getCompanyName(), people.getCompanyObj().getName());
         TestCase.assertEquals(controller.getCompanyAddress(), people.getCompanyObj().getAddress());
+        Semaphore semaphore = createHoldOnSemaphore();
+        controller.update(12, "alipay");
+        semaphore.acquire();
+        TestCase.assertEquals(12, people.getAge());
+        TestCase.assertEquals("alipay", people.getCompanyObj().getName());
+    }
+
+    /**
+     * 创建hold on 信号量
+     * @return
+     */
+    protected Semaphore createHoldOnSemaphore() {
+        Semaphore semaphore = new Semaphore(0);
+        MySpringBootConfigLoader.setCallBack(() -> semaphore.release());
+        return semaphore;
     }
 }
