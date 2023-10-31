@@ -160,7 +160,9 @@ public abstract class ConfigLoader extends Thread implements ConfigChangeListene
                 if (null == currentConfig || null == currentConfig.getVersion() ||
                         currentConfig.getVersion() < version) {
                     task.clear();
+                    logger.info("begin loading configuration[{}]", version);
                     loadRemoteConfig();
+                    logger.info("loading configuration[{}] success", version);
                     if (!CollectionUtils.isEmpty(currentConfig.getConfigs())) {
                         this.updatePropertySources(currentConfig.getConfigs());
                     }

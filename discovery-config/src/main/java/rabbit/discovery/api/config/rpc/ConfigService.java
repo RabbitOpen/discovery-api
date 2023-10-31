@@ -17,7 +17,7 @@ public interface ConfigService {
      * @return
      */
     @Header(name = "Content-type", value = "application/json")
-    @Get("/config/load/{applicationCode}")
+    @Post("/config/load/{applicationCode}")
     ConfigDetail loadConfig(@RequestPathVariable("applicationCode") String applicationCode,
                             @Body List<RemoteConfig> configFiles,
                             @HeaderMap Map<String, String> signatures);

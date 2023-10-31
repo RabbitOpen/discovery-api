@@ -59,10 +59,6 @@ public abstract class Request {
         this.headers = headers;
     }
 
-    public Map<String, String> getPathVariables() {
-        return pathVariables;
-    }
-
     public void setPathVariables(Map<String, String> pathVariables) {
         this.pathVariables = pathVariables;
     }
@@ -79,7 +75,4 @@ public abstract class Request {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
 }

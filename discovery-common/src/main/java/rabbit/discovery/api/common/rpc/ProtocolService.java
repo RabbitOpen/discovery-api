@@ -40,7 +40,7 @@ public interface ProtocolService {
      * @return
      */
     @Header(name = "Content-type", value = "application/json")
-    @Post("/discovery/getPublicKey/{applicationCode}")
+    @Get("/discovery/getPublicKey/{applicationCode}")
     PublicKeyDesc getPublicKey(@RequestPathVariable("applicationCode") String applicationCode, @HeaderMap Map<String, String> signature);
 
     /**
@@ -49,7 +49,7 @@ public interface ProtocolService {
      * @return
      */
     @Header(name = "Content-type", value = "application/json")
-    @Post("/discovery/getRegistryAddress")
+    @Get("/discovery/getRegistryAddress")
     String getRegistryAddress(@HeaderMap Map<String, String> signature);
 
     /**

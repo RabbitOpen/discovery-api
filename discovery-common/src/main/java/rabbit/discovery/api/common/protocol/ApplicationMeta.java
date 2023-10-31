@@ -28,7 +28,7 @@ public class ApplicationMeta {
     /**
      * 配置版本号
      */
-    private Long configVersion = -1L;
+    private Long configVersion = 0L;
 
     /**
      * 白名单客户端

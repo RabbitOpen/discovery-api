@@ -3,10 +3,7 @@ package rabbit.discovery.api.test.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import rabbit.discovery.api.common.PublicKeyDesc;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
 import rabbit.discovery.api.common.protocol.ApplicationMeta;
@@ -66,7 +63,7 @@ public class DiscoveryController {
      * @return
      */
 
-    @PostMapping("/discovery/getPublicKey/{applicationCode}")
+    @GetMapping("/discovery/getPublicKey/{applicationCode}")
     public PublicKeyDesc getPublicKey(@PathVariable("applicationCode") String applicationCode) {
         logger.info("load app[{}] public key success!", applicationCode);
         String publicKey = "305C300D06092A864886F70D0101010500034B003048024100C5B76A3974FEED9144066469D95D3A0297288F626A54A3624901552353DFBDA20FA4156CE11C6048FC3F9DB79101DB047933E031074719C10D552E05658D16290203010001";
@@ -79,7 +76,7 @@ public class DiscoveryController {
     /**
      * 获取注册中心地址
      */
-    @PostMapping("/discovery/getRegistryAddress")
+    @GetMapping("/discovery/getRegistryAddress")
     public String getRegistryAddress() {
         logger.info("load registry address success!");
         return "localhost:".concat(Integer.toString(port));
@@ -95,5 +92,9 @@ public class DiscoveryController {
     public PrivilegeData getProviderPrivileges(@PathVariable("applicationCode") String applicationCode) {
         logger.info("application[{}] load privilege data success!", applicationCode);
         return new PrivilegeData();
+    }
+
+    public void incrementConfigVersion() {
+        applicationMeta.setConfigVersion(this.applicationMeta.getConfigVersion() + 1);
     }
 }

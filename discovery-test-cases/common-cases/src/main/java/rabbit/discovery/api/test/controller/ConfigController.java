@@ -1,12 +1,12 @@
 package rabbit.discovery.api.test.controller;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.enums.ConfigType;
-import rabbit.discovery.api.common.http.anno.Get;
 import rabbit.flt.common.utils.CollectionUtils;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 public class ConfigController {
 
-    private long configVersion = 1L;
+    private long configVersion = 0L;
 
     private int age = 10;
 
@@ -37,7 +37,7 @@ public class ConfigController {
      * @param configFiles
      * @return
      */
-    @Get("/config/load/{applicationCode}")
+    @PostMapping("/config/load/{applicationCode}")
     public ConfigDetail loadConfig(@PathVariable("applicationCode") String applicationCode,
                                    @RequestBody List<RemoteConfig> configFiles) {
         if (CollectionUtils.isEmpty(configFiles)) {
