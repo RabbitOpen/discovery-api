@@ -2,6 +2,7 @@ package rabbit.discovery.api.test;
 
 import junit.framework.TestCase;
 import org.springframework.context.ApplicationContext;
+import rabbit.discovery.api.common.Headers;
 import rabbit.discovery.api.rest.http.HttpResponse;
 import rabbit.discovery.api.test.bean.People;
 import rabbit.discovery.api.test.bean.User;
@@ -48,6 +49,18 @@ public class CoreCases {
         HttpResponse<User> response = apiSample.createUser(name, age);
         TestCase.assertEquals(name, response.getData().getName());
         TestCase.assertEquals(age, response.getData().getAge());
+        TestCase.assertEquals("c1", response.getHeaders().get(Headers.OPEN_API_CODE.toLowerCase()));
+        TestCase.assertEquals("c1", response.getHeaders().get(Headers.OPEN_API_CREDENTIAL.toLowerCase()));
+        TestCase.assertTrue(response.getHeaders().containsKey(Headers.OPEN_API_REQUEST_TIME.toLowerCase()));
+        TestCase.assertTrue(response.getHeaders().containsKey(Headers.OPEN_API_REQUEST_TIME_SIGNATURE.toLowerCase()));
+        response = apiSample.createUserWithC2(name, age);
+        TestCase.assertEquals(name, response.getData().getName());
+        TestCase.assertEquals(age, response.getData().getAge());
+        TestCase.assertEquals("c2", response.getHeaders().get(Headers.OPEN_API_CODE.toLowerCase()));
+        TestCase.assertEquals("c2", response.getHeaders().get(Headers.OPEN_API_CREDENTIAL.toLowerCase()));
+        TestCase.assertTrue(response.getHeaders().containsKey(Headers.OPEN_API_REQUEST_TIME.toLowerCase()));
+        TestCase.assertTrue(response.getHeaders().containsKey(Headers.OPEN_API_REQUEST_TIME_SIGNATURE.toLowerCase()));
+
     }
 
     /**

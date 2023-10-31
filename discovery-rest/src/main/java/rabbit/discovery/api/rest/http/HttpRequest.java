@@ -181,8 +181,8 @@ public final class HttpRequest {
         return headers;
     }
 
-    public void setHeaders(Map<String, String> headers) {
-        this.headers = headers;
+    public void addHeaders(Map<String, String> headers) {
+        this.headers.putAll(headers);
     }
 
     public Map<String, String> getPathVariables() {

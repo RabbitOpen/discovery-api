@@ -109,7 +109,7 @@ public abstract class HttpAuthenticationFilter extends SpringBeanSupplierHolder 
 
     private void identifyRequest(HttpRequest request) {
         String consumer = request.getConsumer();
-        String errorMsg = "request[".concat(request.getUrl()).concat("]error: ");
+        String errorMsg = "request[".concat(request.getUrl()).concat("] error: ");
         if (isEmpty(consumer)) {
             throw new DiscoveryException(errorMsg.concat("消费方信息不能为空"));
         }

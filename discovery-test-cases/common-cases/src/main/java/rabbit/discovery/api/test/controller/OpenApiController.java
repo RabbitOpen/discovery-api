@@ -24,7 +24,7 @@ public class OpenApiController {
             if ("Content-length".equalsIgnoreCase(n)) {
                 continue;
             }
-            response.setHeader(n, request.getHeader(n));
+            response.setHeader(n, request.getHeader(n).toLowerCase());
         }
         return new User(name, age);
     }
