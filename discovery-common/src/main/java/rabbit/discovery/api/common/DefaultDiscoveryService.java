@@ -108,6 +108,9 @@ public class DefaultDiscoveryService implements DiscoveryService {
      */
     private void loadProviderPrivileges() {
         PrivilegeData data = protocolService.getProviderPrivileges(configuration.getApplicationCode(), getSignatureHeader());
+        if (0 == data.getPlainDataLength()) {
+            return;
+        }
         byte[] bytes = GZipUtils.decompress(data.getCompressedPrivileges(), data.getPlainDataLength());
         JavaType javaType = JsonUtils.constructListType(ArrayList.class, Privilege.class);
         List<Privilege> privileges = JsonUtils.readValue(new String(bytes), javaType);
@@ -181,6 +184,6 @@ public class DefaultDiscoveryService implements DiscoveryService {
     }
 
     private void loadPrivateKey() {
-        RsaUtils.loadPrivateKeyFromString(configuration.getPrivateKey());
+        this.privateKey = RsaUtils.loadPrivateKeyFromString(configuration.getPrivateKey());
     }
 }

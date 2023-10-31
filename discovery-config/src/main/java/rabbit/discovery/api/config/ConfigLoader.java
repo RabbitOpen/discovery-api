@@ -120,7 +120,7 @@ public abstract class ConfigLoader extends Thread implements ConfigChangeListene
         if (configFiles.isEmpty()) {
             currentConfig = new ConfigDetail();
         } else {
-            currentConfig = configService.loadConfig(applicationCode, configFiles, getSignatureMap(applicationCode, privateKey));
+            currentConfig = loadConfigFromServer(applicationCode, configFiles);
             List<RemoteConfig> configs = currentConfig.getConfigs();
             if (!CollectionUtils.isEmpty(configs)) {
                 configs.forEach(c -> c.setPriority(getPriority(c)));
@@ -128,6 +128,16 @@ public abstract class ConfigLoader extends Thread implements ConfigChangeListene
             }
         }
         return currentConfig;
+    }
+
+    /**
+     * 读取远程配置
+     * @param applicationCode
+     * @param configFiles
+     * @return
+     */
+    protected ConfigDetail loadConfigFromServer(String applicationCode, List<RemoteConfig> configFiles) {
+        return configService.loadConfig(applicationCode, configFiles, getSignatureMap(applicationCode, privateKey));
     }
 
     private Integer getPriority(RemoteConfig c) {

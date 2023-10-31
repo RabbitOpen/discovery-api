@@ -21,11 +21,6 @@ public class ApplicationMeta {
     private Long authVersion = 0L;
 
     /**
-     * 密钥版本
-     */
-    private Long securityKeyVersion = 0L;
-
-    /**
      * 注册中心地址版本
      */
     private Long registryAddressVersion = 0L;
@@ -70,14 +65,6 @@ public class ApplicationMeta {
 
     public void setAuthVersion(Long authVersion) {
         this.authVersion = authVersion;
-    }
-
-    public Long getSecurityKeyVersion() {
-        return securityKeyVersion;
-    }
-
-    public void setSecurityKeyVersion(Long securityKeyVersion) {
-        this.securityKeyVersion = securityKeyVersion;
     }
 
     public Long getRegistryAddressVersion() {

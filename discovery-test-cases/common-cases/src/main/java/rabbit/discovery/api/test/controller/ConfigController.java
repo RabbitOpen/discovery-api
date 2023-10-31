@@ -22,13 +22,13 @@ public class ConfigController {
 
     private int age = 10;
 
-    private String name = "alibaba";
+    private String name = "zhang3";
 
     private String gender = "male";
 
-    private String companyName = "male";
+    private String companyName = "alibaba";
 
-    private String companyAddress = "male";
+    private String companyAddress = "chengdu";
 
     /**
      * 读取配置
@@ -51,8 +51,8 @@ public class ConfigController {
         rc.setName(configFiles.get(0).getName());
         rc.setApplicationCode(applicationCode);
         rc.setContent("people: \n" +
-                "  age: " + age + " + \n" +
-                "  gender: " + getGender() + " \n" +
+                "  age: " + age + "\n" +
+                "  gender: " + getGender() + "\n" +
                 "  company:\n" +
                 "    address: " + getCompanyAddress() + "\n" +
                 "    name: " + getCompanyName() + "\n" +
