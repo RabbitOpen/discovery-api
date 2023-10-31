@@ -2,9 +2,12 @@ package rabbit.discovery.api.test;
 
 import junit.framework.TestCase;
 import org.springframework.context.ApplicationContext;
+import rabbit.discovery.api.rest.http.HttpResponse;
 import rabbit.discovery.api.test.bean.People;
+import rabbit.discovery.api.test.bean.User;
 import rabbit.discovery.api.test.controller.ConfigController;
 import rabbit.discovery.api.test.controller.DiscoveryController;
+import rabbit.discovery.api.test.open.OpenApiSample;
 import rabbit.discovery.api.test.spi.MySpringBootConfigLoader;
 
 import java.util.concurrent.Semaphore;
@@ -35,13 +38,26 @@ public class CoreCases {
     }
 
     /**
+     * open api调用示例
+     * @param context
+     */
+    public void openApiCase(ApplicationContext context) {
+        OpenApiSample apiSample = context.getBean(OpenApiSample.class);
+        String name = "zhang3";
+        int age = 12;
+        HttpResponse<User> response = apiSample.createUser(name, age);
+        TestCase.assertEquals(name, response.getData().getName());
+        TestCase.assertEquals(age, response.getData().getAge());
+    }
+
+    /**
      * 创建hold on 信号量
      * @return
      */
     protected Semaphore createHoldOnSemaphore(ApplicationContext context) {
         Semaphore semaphore = new Semaphore(0);
         DiscoveryController discoveryController = context.getBean(DiscoveryController.class);
-        // 新增配置版本号
+        // 刷新配置版本号
         discoveryController.incrementConfigVersion();
         MySpringBootConfigLoader.setCallBack(semaphore::release);
         return semaphore;

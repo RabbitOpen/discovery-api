@@ -19,6 +19,7 @@ public class SpringCloud2Test {
     public void springCloud2Test() throws Exception {
         CoreCases cases = new CoreCases();
         cases.configLoadCase(applicationContext);
+        cases.openApiCase(applicationContext);
     }
 }
 
