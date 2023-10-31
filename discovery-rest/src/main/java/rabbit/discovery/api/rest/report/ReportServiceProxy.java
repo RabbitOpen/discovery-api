@@ -23,7 +23,7 @@ class ReportServiceProxy implements ApiReportService {
 
     private String agentServers;
 
-    private AgentRequestFactory requestFactory = new AgentRequestFactory();;
+    private AgentRequestFactory requestFactory = new AgentRequestFactory();
 
     @Override
     public void doReport(String application, String className, List<ApiDescription> apiList) {

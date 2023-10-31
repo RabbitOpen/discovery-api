@@ -19,7 +19,7 @@ public class RsaUtils {
      */
     private String encodeAlgorithm = "SHA-256";
 
-    private static final RsaUtils util = new RsaUtils();
+    private static final RsaUtils inst = new RsaUtils();
 
     private RsaUtils() {}
 
@@ -32,9 +32,9 @@ public class RsaUtils {
      */
     public static byte[] signWithPrivateKey(String plainData, PrivateKey privateKey) {
         try {
-            MessageDigest digest = MessageDigest.getInstance(util.encodeAlgorithm);
+            MessageDigest digest = MessageDigest.getInstance(inst.encodeAlgorithm);
             digest.update(plainData.getBytes());
-            Signature signature = Signature.getInstance(util.signAlgorithm);
+            Signature signature = Signature.getInstance(inst.signAlgorithm);
             signature.initSign(privateKey);
             signature.update(digest.digest());
             return signature.sign();
@@ -53,9 +53,9 @@ public class RsaUtils {
      */
     public static boolean verifyWithPublicKey(byte[] input, String plainData, PublicKey publicKey) {
         try {
-            MessageDigest digest = MessageDigest.getInstance(util.encodeAlgorithm);
+            MessageDigest digest = MessageDigest.getInstance(inst.encodeAlgorithm);
             digest.update(plainData.getBytes());
-            Signature signature = Signature.getInstance(util.signAlgorithm);
+            Signature signature = Signature.getInstance(inst.signAlgorithm);
             signature.initVerify(publicKey);
             signature.update(digest.digest());
             return signature.verify(input);

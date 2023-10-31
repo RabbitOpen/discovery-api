@@ -12,7 +12,7 @@ import static rabbit.discovery.api.common.Framework.SPRING_MVC;
 
 public class ConfigLoaderUtil {
 
-    private static final ConfigLoaderUtil util = new ConfigLoaderUtil();
+    private static final ConfigLoaderUtil inst = new ConfigLoaderUtil();
 
     private Map<Framework, ConfigLoader> loaderCache = new ConcurrentHashMap<>();
 
@@ -20,8 +20,8 @@ public class ConfigLoaderUtil {
     }
 
     public static ConfigLoader getConfigLoader() {
-        return util.loaderCache.computeIfAbsent(Framework.getFrameWork(), framework -> {
-            ConfigLoader loader = util.createConfigLoader();
+        return inst.loaderCache.computeIfAbsent(Framework.getFrameWork(), framework -> {
+            ConfigLoader loader = inst.createConfigLoader();
             if (null != loader) {
                 return loader;
             }

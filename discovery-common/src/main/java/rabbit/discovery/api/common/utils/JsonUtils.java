@@ -15,7 +15,7 @@ public class JsonUtils {
 
     private ObjectMapper mapper = new ObjectMapper();
 
-    private static final JsonUtils UTILS = new JsonUtils();
+    private static final JsonUtils inst = new JsonUtils();
 
     private JsonUtils() {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
@@ -26,7 +26,7 @@ public class JsonUtils {
 
     public static <T> T readValue(String json, Type type) {
         try {
-            return UTILS.getMapper().readValue(json, UTILS.getMapper().getTypeFactory().constructType(type));
+            return inst.getMapper().readValue(json, inst.getMapper().getTypeFactory().constructType(type));
         } catch (JsonProcessingException e) {
             throw new DiscoveryException(e);
         }
@@ -34,7 +34,7 @@ public class JsonUtils {
 
     public static <T> T readValue(String json, JavaType type) {
         try {
-            return UTILS.getMapper().readValue(json, type);
+            return inst.getMapper().readValue(json, type);
         } catch (JsonProcessingException e) {
             throw new DiscoveryException(e);
         }
@@ -42,14 +42,14 @@ public class JsonUtils {
 
     public static String writeObject(Object data) {
         try {
-            return UTILS.getMapper().writeValueAsString(data);
+            return inst.getMapper().writeValueAsString(data);
         } catch (JsonProcessingException e) {
             throw new DiscoveryException(e);
         }
     }
 
     public static JavaType constructListType(Class<? extends Collection> collectionClz, Class<?> elementType) {
-        return UTILS.getMapper().getTypeFactory().constructCollectionType(collectionClz, elementType);
+        return inst.getMapper().getTypeFactory().constructCollectionType(collectionClz, elementType);
     }
 
     private ObjectMapper getMapper() {
