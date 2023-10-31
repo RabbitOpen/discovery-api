@@ -14,7 +14,7 @@ discovery:
       pattern: "/"
     http:
       mode: SYNC
-    agent:
+    flt:
       servers: "localhost:12345,127.0.0.1:12345"
   # 注册中心
   registry:
