@@ -35,6 +35,7 @@ public class ConfigController {
      * @param configFiles
      * @return
      */
+    // !!! 注入applicationCode格式，防止（spring4下）被截断
     @PostMapping("/config/load/{applicationCode:.+}")
     public ConfigDetail loadConfig(@PathVariable("applicationCode") String applicationCode,
                                    @RequestBody(required = false) List<RemoteConfig> configFiles) {

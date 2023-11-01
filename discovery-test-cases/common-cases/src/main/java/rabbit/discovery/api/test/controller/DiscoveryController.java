@@ -9,6 +9,9 @@ import rabbit.discovery.api.common.protocol.ApplicationInstance;
 import rabbit.discovery.api.common.protocol.ApplicationMeta;
 import rabbit.discovery.api.common.protocol.PrivilegeData;
 import rabbit.discovery.api.common.protocol.RegisterResult;
+import rabbit.discovery.api.common.utils.PathParser;
+
+import static rabbit.discovery.api.common.utils.PathParser.urlDecode;
 
 /**
  * 注册服务
@@ -62,10 +65,9 @@ public class DiscoveryController {
      * @param applicationCode
      * @return
      */
-
-    @GetMapping("/discovery/getPublicKey/{applicationCode}")
+    @GetMapping("/discovery/getPublicKey/{applicationCode:.+}")
     public PublicKeyDesc getPublicKey(@PathVariable("applicationCode") String applicationCode) {
-        logger.info("load app[{}] public key success!", applicationCode);
+        logger.info("load app[{}] public key success!", urlDecode(applicationCode));
         String publicKey = "305C300D06092A864886F70D0101010500034B003048024100C5B76A3974FEED9144066469D95D3A0297288F626A54A3624901552353DFBDA20FA4156CE11C6048FC3F9DB79101DB047933E031074719C10D552E05658D16290203010001";
         PublicKeyDesc publicKeyDesc = new PublicKeyDesc();
         publicKeyDesc.setPublicKey(publicKey);
@@ -88,9 +90,9 @@ public class DiscoveryController {
      * @param applicationCode
      * @return
      */
-    @PostMapping("/discovery/authorizations/provider/{applicationCode}")
+    @PostMapping("/discovery/authorizations/provider/{applicationCode:.+}")
     public PrivilegeData getProviderPrivileges(@PathVariable("applicationCode") String applicationCode) {
-        logger.info("application[{}] load privilege data success!", applicationCode);
+        logger.info("application[{}] load privilege data success!", urlDecode(applicationCode));
         return new PrivilegeData();
     }
 
