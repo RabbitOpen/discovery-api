@@ -3,14 +3,19 @@ package rabbit.discovery.api.test;
 import junit.framework.TestCase;
 import org.springframework.context.ApplicationContext;
 import rabbit.discovery.api.common.Headers;
+import rabbit.discovery.api.common.enums.HttpMethod;
+import rabbit.discovery.api.common.rpc.ApiDescription;
 import rabbit.discovery.api.rest.http.HttpResponse;
 import rabbit.discovery.api.test.bean.People;
 import rabbit.discovery.api.test.bean.User;
 import rabbit.discovery.api.test.controller.ConfigController;
 import rabbit.discovery.api.test.controller.DiscoveryController;
+import rabbit.discovery.api.test.controller.ExcludeController;
 import rabbit.discovery.api.test.open.OpenApiSample;
 import rabbit.discovery.api.test.spi.MySpringBootConfigLoader;
+import rabbit.discovery.api.test.spi.TestApiReportService;
 
+import java.util.List;
 import java.util.concurrent.Semaphore;
 
 /**
@@ -38,6 +43,17 @@ public class CoreCases {
         TestCase.assertEquals("alipay", people.getCompanyObj().getName());
     }
 
+    public void reportServiceCase() {
+        TestCase.assertEquals(2, TestApiReportService.getMap().size());
+        List<ApiDescription> exclude = TestApiReportService.getMap().get(ExcludeController.class.getName());
+        TestCase.assertEquals(2, exclude.size());
+        TestCase.assertEquals(ExcludeController.class.getName().concat(".exclude"), exclude.get(0).getName());
+        TestCase.assertEquals("/exclude/exclude1", exclude.get(0).getPath());
+        TestCase.assertEquals(ExcludeController.class.getName().concat(".exclude"), exclude.get(1).getName());
+        TestCase.assertEquals("/exclude/exclude2", exclude.get(1).getPath());
+        TestCase.assertEquals(HttpMethod.GET, exclude.get(0).getMethod());
+    }
+
     /**
      * open api调用示例
      * @param context
@@ -60,7 +76,6 @@ public class CoreCases {
         TestCase.assertEquals("c2", response.getHeaders().get(Headers.OPEN_API_CREDENTIAL.toLowerCase()));
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.OPEN_API_REQUEST_TIME.toLowerCase()));
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.OPEN_API_REQUEST_TIME_SIGNATURE.toLowerCase()));
-
     }
 
     /**

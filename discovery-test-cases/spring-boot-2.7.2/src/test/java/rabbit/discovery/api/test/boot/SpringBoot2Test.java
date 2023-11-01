@@ -20,6 +20,7 @@ public class SpringBoot2Test {
         CoreCases cases = new CoreCases();
         cases.configLoadCase(applicationContext);
         cases.openApiCase(applicationContext);
+        cases.reportServiceCase();
     }
 }
 

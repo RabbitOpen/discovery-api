@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import rabbit.discovery.api.test.CoreCases;
 import rabbit.discovery.api.test.controller.DiscoveryController;
-import rabbit.discovery.api.test.spi.MySpringBootConfigLoader;
 import rabbit.discovery.api.test.spi.MySpringMvcConfigLoader;
 
 import javax.servlet.ServletException;
@@ -39,6 +38,7 @@ public class SpringMvc4Test {
                 };
                 coreCases.configLoadCase(ctx);
                 coreCases.openApiCase(ctx);
+                coreCases.reportServiceCase();
             } catch (Exception e) {
                 logger.error(e.getMessage());
             }
