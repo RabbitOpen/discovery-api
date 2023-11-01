@@ -18,7 +18,6 @@
 
     <dependencies>
 
-
         <dependency>
             <groupId>rabbit.discovery.api</groupId>
             <artifactId>discovery-common</artifactId>
