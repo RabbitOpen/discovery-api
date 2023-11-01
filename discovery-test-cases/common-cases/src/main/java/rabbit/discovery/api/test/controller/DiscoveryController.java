@@ -44,6 +44,7 @@ public class DiscoveryController {
         provider.getInstanceGroupMetas().computeIfAbsent("restApiSampleServer", k -> {
             InstanceGroupMeta meta = new InstanceGroupMeta();
             meta.addGroupLoadBalance("default", "http://localhost:1802");
+            meta.addGroupLoadBalance("local", "http://127.0.0.1:1802");
             return meta;
         });
         return RegisterResult.success("1", applicationMeta);

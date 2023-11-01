@@ -103,6 +103,10 @@ public class CoreCases {
         User user = apiSample.getUser(name, 123, new User(name, age));
         TestCase.assertEquals(name, user.getName());
         TestCase.assertEquals(123, user.getAge());
+        // 调用local分组
+        user = apiSample.getUser(name, 123, new User(name, age), "local");
+        TestCase.assertEquals(name, user.getName());
+        TestCase.assertEquals(123, user.getAge());
         HttpResponse<User> response = apiSample.getUserAndHeaders(name, 123, new User(name, age));
         TestCase.assertEquals(name, response.getData().getName());
         TestCase.assertEquals(123, response.getData().getAge());
