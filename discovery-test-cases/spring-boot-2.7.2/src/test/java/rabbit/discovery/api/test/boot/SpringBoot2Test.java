@@ -1,4 +1,4 @@
-package rabbit.discovery.api.test.cloud2;
+package rabbit.discovery.api.test.boot;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import rabbit.discovery.api.test.CoreCases;
-import rabbit.discovery.api.test.boot.SpringBoot2Entry;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SpringBoot2Entry.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)

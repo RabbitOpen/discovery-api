@@ -9,6 +9,8 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import static rabbit.discovery.api.common.enums.HttpMethod.GET;
+
 public class HttpRequestManager {
 
     private static final HttpRequestManager requestManager = new HttpRequestManager();
@@ -72,7 +74,7 @@ public class HttpRequestManager {
         connection.setReadTimeout(15 * 1000);
         request.getHeaders().forEach(connection::setRequestProperty);
         connection.connect();
-        if (null != request.getBody()) {
+        if (null != request.getBody() && GET != request.getMethod()) {
             OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
             writer.write(JsonUtils.writeObject(request.getBody()));
             writer.flush();

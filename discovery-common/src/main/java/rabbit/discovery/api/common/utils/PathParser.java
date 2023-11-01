@@ -1,7 +1,10 @@
 package rabbit.discovery.api.common.utils;
 
+import rabbit.discovery.api.common.exception.RestApiException;
 import rabbit.discovery.api.common.exception.TooManyWildcardException;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,5 +82,18 @@ public class PathParser {
     public static String removeRepeatedSeparator(String path) {
         String reg = String.format("(%s)\\1+", SEPARATOR);
         return path.replaceAll(reg, SEPARATOR);
+    }
+
+    /**
+     * url encode
+     * @param value
+     * @return
+     */
+    public static String urlEncode(String value) {
+        try {
+            return URLEncoder.encode(value, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return value;
+        }
     }
 }

@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import rabbit.discovery.api.test.CoreCases;
-import rabbit.discovery.api.test.cloud1.SpringBoot1Entry;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SpringBoot1Entry.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)

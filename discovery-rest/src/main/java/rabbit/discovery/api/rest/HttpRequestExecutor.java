@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import rabbit.discovery.api.common.Configuration;
 import rabbit.discovery.api.common.ServerNode;
 import rabbit.discovery.api.common.enums.HttpMode;
-import rabbit.discovery.api.common.exception.RestApiException;
+import rabbit.discovery.api.common.utils.PathParser;
 import rabbit.discovery.api.rest.http.HttpRequest;
 import rabbit.discovery.api.rest.http.HttpResponse;
 import rabbit.discovery.api.rest.http.SimpleLoadBalancer;
@@ -14,10 +14,8 @@ import reactor.core.publisher.Mono;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -187,7 +185,7 @@ public abstract class HttpRequestExecutor {
      * @param request
      */
     private void resolveRequestUri(HttpRequest request) {
-        request.getPathVariables().forEach((name, value) -> request.setUri(request.getUri().replace("{".concat(name).concat("}"), encode(value))));
+        request.getPathVariables().forEach((name, value) -> request.setUri(request.getUri().replace("{".concat(name).concat("}"), PathParser.urlEncode(value))));
         StringBuilder sb = new StringBuilder();
         request.getQueryParameters().forEach((name, value) -> {
             if (0 != sb.length()) {
@@ -195,17 +193,9 @@ public abstract class HttpRequestExecutor {
             } else {
                 sb.append("?");
             }
-            sb.append(name).append("=").append(encode(value));
+            sb.append(name).append("=").append(PathParser.urlEncode(value));
         });
         request.setUri(request.getUri().concat(sb.toString()));
-    }
-
-    private String encode(String value) {
-        try {
-            return URLEncoder.encode(value, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RestApiException(e);
-        }
     }
 
     /**

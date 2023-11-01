@@ -1,9 +1,6 @@
 package rabbit.discovery.api.test.controller;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.enums.ConfigType;
@@ -37,9 +34,9 @@ public class ConfigController {
      * @param configFiles
      * @return
      */
-    @PostMapping("/config/load/{applicationCode}")
+    @PostMapping("/config/load/{applicationCode:.+}")
     public ConfigDetail loadConfig(@PathVariable("applicationCode") String applicationCode,
-                                   @RequestBody List<RemoteConfig> configFiles) {
+                                   @RequestBody(required = false) List<RemoteConfig> configFiles) {
         if (CollectionUtils.isEmpty(configFiles)) {
             return new ConfigDetail(new ArrayList<>(), 1L);
         }

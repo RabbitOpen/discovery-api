@@ -1,6 +1,7 @@
 package rabbit.discovery.api.common.http;
 
 import rabbit.discovery.api.common.enums.HttpMethod;
+import rabbit.discovery.api.common.utils.PathParser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,7 +47,8 @@ public abstract class Request {
     public final String getRequestUrl() {
         String requestUrl = getUrl();
         for (Map.Entry<String, String> entry : pathVariables.entrySet()) {
-            requestUrl = requestUrl.replace("{".concat(entry.getKey()).concat("}"), entry.getValue());
+            requestUrl = requestUrl.replace("{".concat(entry.getKey()).concat("}"),
+                    PathParser.urlEncode(entry.getValue()));
         }
         return requestUrl;
     }
