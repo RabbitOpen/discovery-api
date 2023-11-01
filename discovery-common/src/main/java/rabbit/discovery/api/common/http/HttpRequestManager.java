@@ -70,8 +70,8 @@ public class HttpRequestManager {
         connection.setDoOutput(true);
         connection.setDoInput(true);
         connection.setUseCaches(false);
-        connection.setConnectTimeout(15 * 1000);
-        connection.setReadTimeout(15 * 1000);
+        connection.setConnectTimeout(5 * 1000);
+        connection.setReadTimeout(10 * 1000);
         request.getHeaders().forEach(connection::setRequestProperty);
         connection.connect();
         if (null != request.getBody() && GET != request.getMethod()) {
