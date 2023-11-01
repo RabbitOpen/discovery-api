@@ -25,6 +25,7 @@ public class SpringBoot2Test {
         cases.openApiCase(applicationContext);
         cases.restApiCase(applicationContext);
         cases.reportServiceCase();
+        cases.authorizationUrlCase(applicationContext);
 
     }
 }

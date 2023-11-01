@@ -88,7 +88,6 @@ public class PublicKeyManager {
             lock.lock();
             if (null == protocolService) {
                 protocolService = RequestFactory.proxy(ProtocolService.class, configuration);
-                privateKey = RsaUtils.loadPrivateKeyFromString(configuration.getPrivateKey().trim());
             }
             return protocolService;
         } finally {
@@ -97,6 +96,9 @@ public class PublicKeyManager {
     }
 
     public static void setConfiguration(Configuration configuration) {
-        keyManager.configuration = configuration;
+        if (null == keyManager.configuration) {
+            keyManager.configuration = configuration;
+            keyManager.privateKey = RsaUtils.loadPrivateKeyFromString(configuration.getPrivateKey().trim());
+        }
     }
 }

@@ -4,8 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import rabbit.discovery.api.common.Privilege;
 import rabbit.discovery.api.common.PublicKeyDesc;
 import rabbit.discovery.api.common.protocol.*;
+import rabbit.discovery.api.common.utils.JsonUtils;
+import rabbit.flt.common.utils.GZipUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static rabbit.discovery.api.common.utils.PathParser.urlDecode;
 
@@ -97,7 +103,17 @@ public class DiscoveryController {
     @PostMapping("/authorizations/provider/{applicationCode:.+}")
     public PrivilegeData getProviderPrivileges(@PathVariable("applicationCode") String applicationCode) {
         logger.info("application[{}] load privilege data success!", urlDecode(applicationCode));
-        return new PrivilegeData();
+        PrivilegeData privilegeData = new PrivilegeData();
+        List<Privilege> list = new ArrayList<>();
+        Privilege data = new Privilege();
+        data.setProvider(applicationCode);
+        data.setConsumer(applicationCode);
+        data.setPath("/black/authorized");
+        list.add(data);
+        byte[] bytes = JsonUtils.writeObject(list).getBytes();
+        privilegeData.setCompressedPrivileges(GZipUtils.compress(bytes));
+        privilegeData.setPlainDataLength(bytes.length);
+        return privilegeData;
     }
 
     public void incrementConfigVersion() {

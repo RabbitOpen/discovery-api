@@ -42,6 +42,7 @@ public class SpringMvc5Test {
                 coreCases.openApiCase(ctx);
                 coreCases.restApiCase(ctx);
                 coreCases.reportServiceCase();
+                coreCases.authorizationUrlCase(ctx);
             } catch (Exception e) {
                 logger.error(e.getMessage());
             }

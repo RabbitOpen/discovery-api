@@ -14,6 +14,7 @@ import rabbit.discovery.api.test.controller.DiscoveryController;
 import rabbit.discovery.api.test.controller.ExcludeController;
 import rabbit.discovery.api.test.controller.IncludeController;
 import rabbit.discovery.api.test.open.OpenApiSample;
+import rabbit.discovery.api.test.rest.AuthorizedApiSample;
 import rabbit.discovery.api.test.rest.RestApiSample;
 import rabbit.discovery.api.test.spi.MySpringBootConfigLoader;
 import rabbit.discovery.api.test.spi.TestApiReportService;
@@ -29,6 +30,7 @@ public class CoreCases {
 
     /**
      * 加载远程配置case
+     *
      * @param context
      */
     public void configLoadCase(ApplicationContext context) throws Exception {
@@ -70,6 +72,7 @@ public class CoreCases {
 
     /**
      * open api调用示例
+     *
      * @param context
      */
     public void openApiCase(ApplicationContext context) {
@@ -94,6 +97,7 @@ public class CoreCases {
 
     /**
      * rest api 用例
+     *
      * @param context
      */
     public void restApiCase(ApplicationContext context) {
@@ -117,7 +121,24 @@ public class CoreCases {
     }
 
     /**
+     * 授权接口访问用例
+     */
+    public void authorizationUrlCase(ApplicationContext context) {
+        AuthorizedApiSample apiSample = context.getBean(AuthorizedApiSample.class);
+        try {
+            apiSample.callUnAuthorized();
+            throw new RuntimeException();
+        } catch (RestApiException e) {
+            TestCase.assertTrue(e.getMessage().contains("unAuthorized api"));
+        }
+        User user = apiSample.callAuthorized();
+        TestCase.assertEquals(100, user.getAge());
+        TestCase.assertEquals("authorized", user.getName());
+    }
+
+    /**
      * 创建hold on 信号量
+     *
      * @return
      */
     protected Semaphore createHoldOnSemaphore(ApplicationContext context) {

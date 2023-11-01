@@ -6,14 +6,19 @@ import org.springframework.web.bind.annotation.RestController;
 import rabbit.discovery.api.test.bean.User;
 
 /**
- * 没有权限访问的接口
+ * 需要授权才能访问的接口
  */
 @RestController
-@RequestMapping("/forbidden")
+@RequestMapping("/black")
 public class BlackController {
 
-    @GetMapping("/getUser")
-    public User getUser() {
+    @GetMapping("/unAuthorized")
+    public User unAuthorized() {
         return new User();
+    }
+
+    @GetMapping("/authorized")
+    public User callAuthorized() {
+        return new User("authorized", 100);
     }
 }
