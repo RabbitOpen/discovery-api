@@ -39,7 +39,7 @@ public class PathPatternTest {
         TestCase.assertTrue(pattern.match(path));
         TestCase.assertTrue(springPattern.matches(PathContainer.parsePath(path)));
 
-        path = "/1*&@({z.3-10--f/tzs/t?a=b";
+        path = "/1* &@({z.3-10--f/tzs/t?a=b";
         TestCase.assertTrue(pattern.match(path));
     }
 
