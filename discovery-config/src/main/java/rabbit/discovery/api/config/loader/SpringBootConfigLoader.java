@@ -3,6 +3,7 @@ package rabbit.discovery.api.config.loader;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertiesPropertySource;
+import org.springframework.core.env.PropertySource;
 import rabbit.discovery.api.common.Framework;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.config.ConfigLoader;
@@ -10,6 +11,7 @@ import rabbit.discovery.api.config.PropertyHandler;
 import rabbit.discovery.api.config.context.InjectType;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -53,7 +55,15 @@ public class SpringBootConfigLoader extends ConfigLoader {
             Properties properties = readerCache.get(c.getType()).read(c.getContent(), handler);
             MutablePropertySources sources = environment.getPropertySources();
             String name = getConfigName(c);
-            if (sources.contains(name)) {
+            boolean exist = false;
+            Iterator<PropertySource<?>> iterator = sources.iterator();
+            while (iterator.hasNext()) {
+                PropertySource<?> next = iterator.next();
+                if (next.getName().equals(name)) {
+                    exist = true;
+                }
+            }
+            if (exist) {
                 sources.replace(name, new PropertiesPropertySource(name, properties));
             }
         });

@@ -11,6 +11,7 @@ import rabbit.discovery.api.rest.anno.Credential;
 import rabbit.discovery.api.rest.anno.OpenApiCode;
 import rabbit.discovery.api.rest.http.HttpRequest;
 import rabbit.discovery.api.rest.http.OpenClientExecutor;
+import rabbit.flt.common.utils.CollectionUtils;
 import rabbit.flt.common.utils.StringUtils;
 
 import java.lang.reflect.Proxy;
@@ -45,7 +46,7 @@ public class OpenClientFactory extends ClientFactory {
     public OpenClientFactory(String baseUri, Class<?> clzType, Function<String, String> propertyReader) {
         this(clzType);
         super.propertyReader = propertyReader;
-        setBaseUri(baseUri);
+        setBaseUri(new String[]{baseUri});
         this.serverNode = new ServerNode(readConfigProperty(baseUri.trim()));
         cacheHttpRequests();
     }
@@ -97,8 +98,8 @@ public class OpenClientFactory extends ClientFactory {
     public Object getObject() {
         OpenClientFactory factory = new OpenClientFactory(baseUri, getObjectType(), propertyReader);
         // 默认保存全局凭据
-        factory.setCredential(readConfigProperty(this.credential));
-        factory.setPrivateKey(readConfigProperty(privateKey));
+        factory.setCredential(new String[]{readConfigProperty(this.credential)});
+        factory.setPrivateKey(new String[]{readConfigProperty(privateKey)});
         factory.setOpenClientExecutor(openClientExecutor);
         return Proxy.newProxyInstance(OpenClientFactory.class.getClassLoader(), new Class[]{getObjectType()}, factory);
     }
@@ -108,21 +109,22 @@ public class OpenClientFactory extends ClientFactory {
     }
 
     // ------ spring 构建bean时调用set方法设置属性 --------
-    public void setCredential(String credential) {
-        this.credential = credential;
+    // 使用数组接收注解中的值(兼容低版本)
+    public void setCredential(String[] credential) {
+        this.credential = credential[0];
     }
 
-    public void setBaseUri(String baseUri) {
-        this.baseUri = baseUri;
+    public void setBaseUri(String[] baseUri) {
+        this.baseUri = baseUri[0];
     }
 
-    public void setPrivateKey(String privateKey) {
-        this.privateKey = privateKey;
-        if (StringUtils.isEmpty(privateKey)) {
+    public void setPrivateKey(String[] privateKey) {
+        if (CollectionUtils.isEmpty(privateKey)) {
             throw new RestApiException("密钥不能为空");
         }
+        this.privateKey = privateKey[0];
         if (null != propertyReader) {
-            rsaPrivateKey = RsaUtils.loadPrivateKeyFromString(readConfigProperty(privateKey));
+            rsaPrivateKey = RsaUtils.loadPrivateKeyFromString(readConfigProperty(privateKey[0]));
         }
     }
 
