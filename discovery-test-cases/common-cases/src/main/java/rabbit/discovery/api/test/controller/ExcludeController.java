@@ -4,6 +4,9 @@ import org.springframework.web.bind.annotation.*;
 import rabbit.discovery.api.rest.Policy;
 import rabbit.discovery.api.rest.anno.Declaration;
 
+/**
+ * 接口上报，排除策略
+ */
 @RestController
 @RequestMapping("/exclude")
 @Declaration(methods = {"getUser", "postUser", "requestUser", "deleteUser", "putUser", "patchUser"}, policy = Policy.EXCLUDE)

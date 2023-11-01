@@ -1,25 +1,19 @@
 package rabbit.discovery.api.test.controller;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import rabbit.discovery.api.rest.http.HttpResponse;
+import org.springframework.web.bind.annotation.*;
 import rabbit.discovery.api.test.bean.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Enumeration;
 
-/**
- * open api 演示
- */
 @RestController
-@RequestMapping("/open")
-public class OpenApiController {
+@RequestMapping("/rest")
+public class RestApiController {
 
     @PostMapping("/get/{name}/{age}")
     public User getUser(@PathVariable("name") String name, @PathVariable("age") int age,
+                           @RequestBody(required = false) User requestUser,
                            HttpServletRequest request, HttpServletResponse response) {
         Enumeration<String> names = request.getHeaderNames();
         while (names.hasMoreElements()) {
@@ -29,6 +23,12 @@ public class OpenApiController {
             }
             response.setHeader(n, request.getHeader(n).toLowerCase());
         }
-        return new User(name, age);
+        if (null == requestUser) {
+            return new User(name, age);
+        } else {
+            requestUser.setName(name);
+            requestUser.setAge(age);
+            return requestUser;
+        }
     }
 }

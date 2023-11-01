@@ -12,8 +12,8 @@ import rabbit.discovery.api.test.bean.User;
 public interface OpenApiSample {
 
     @OpenApiCode("c1")
-    @PostMapping("/open/create/{name}/{age}")
-    HttpResponse<User> createUser(@PathVariable("name") String name, @PathVariable("age") int age);
+    @PostMapping("/open/get/{name}/{age}")
+    HttpResponse<User> getUser(@PathVariable("name") String name, @PathVariable("age") int age);
 
     /**
      * 用凭据2调用
@@ -23,6 +23,6 @@ public interface OpenApiSample {
      */
     @OpenApiCode("c2")
     @Credential("c2")
-    @PostMapping("/open/create/{name}/{age}")
-    HttpResponse<User> createUserWithC2(@PathVariable("name") String name, @PathVariable("age") int age);
+    @PostMapping("/open/get/{name}/{age}")
+    HttpResponse<User> getUserWithC2(@PathVariable("name") String name, @PathVariable("age") int age);
 }

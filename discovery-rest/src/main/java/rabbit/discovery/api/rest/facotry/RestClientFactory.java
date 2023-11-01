@@ -35,13 +35,14 @@ public class RestClientFactory extends ClientFactory {
         this(objectType);
         setPropertyReader(propertyReader);
         this.restClientExecutor = restClientExecutor;
-        setApplication(application);
+        setApplication(new String[]{application});
         this.contextPath = resolveContextPath(type.getAnnotation(RestClient.class));
         cacheHttpRequests();
     }
 
     /**
      * 解析context path，确保以"/"开头，不以"/"结尾
+     *
      * @param client
      * @return
      */
@@ -71,6 +72,7 @@ public class RestClientFactory extends ClientFactory {
      */
     @Override
     protected void afterRequestCreated(HttpRequest request, Method method) {
+        super.afterRequestCreated(request, method);
         request.setUri(this.contextPath.concat(request.getUri()));
     }
 
@@ -113,7 +115,7 @@ public class RestClientFactory extends ClientFactory {
      *
      * @param application
      */
-    public void setApplication(String application) {
-        this.application = application;
+    public void setApplication(String[] application) {
+        this.application = application[0];
     }
 }

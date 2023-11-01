@@ -38,6 +38,7 @@ public class SpringMvc4Test {
                 };
                 coreCases.configLoadCase(ctx);
                 coreCases.openApiCase(ctx);
+                coreCases.restApiCase(ctx);
                 coreCases.reportServiceCase();
             } catch (Exception e) {
                 logger.error(e.getMessage());

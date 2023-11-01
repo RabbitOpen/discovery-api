@@ -25,5 +25,11 @@
                 <value>rabbit.discovery.api.test.open</value>
             </array>
         </property>
+
+        <property name="restApiPackages">
+            <array>
+                <value>rabbit.discovery.api.test.rest</value>
+            </array>
+        </property>
     </bean>
 </beans>
