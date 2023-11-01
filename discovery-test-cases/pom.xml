@@ -16,6 +16,7 @@
         <module>spring-boot-1.5.9</module>
         <module>spring-boot-2.7.2</module>
         <module>spring-mvc-4.x</module>
+        <module>spring-boot-2.7.2-openapi</module>
     </modules>
 
     <properties>

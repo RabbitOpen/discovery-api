@@ -6,8 +6,8 @@ import rabbit.discovery.api.common.Configuration;
 import rabbit.discovery.api.common.exception.RestApiException;
 import rabbit.discovery.api.rest.http.HttpRequest;
 import rabbit.discovery.api.rest.http.HttpResponse;
+import rabbit.flt.common.utils.GZipUtils;
 import rabbit.flt.common.utils.StringUtils;
-import rabbit.flt.rpc.common.GZipUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;

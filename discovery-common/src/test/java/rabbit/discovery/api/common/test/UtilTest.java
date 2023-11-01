@@ -10,7 +10,7 @@ import rabbit.discovery.api.common.ServerNode;
 import rabbit.discovery.api.common.enums.Schema;
 import rabbit.discovery.api.common.utils.HexUtils;
 import rabbit.discovery.api.common.utils.RsaUtils;
-import rabbit.flt.rpc.common.GZipUtils;
+import rabbit.flt.common.utils.GZipUtils;
 
 import java.security.KeyPair;
 import java.security.PrivateKey;

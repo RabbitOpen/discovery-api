@@ -26,6 +26,12 @@
         <dependency>
             <groupId>rabbit.discovery.api</groupId>
             <artifactId>plugins-common</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.bytebuddy</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -38,6 +44,11 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>rabbit.flt</groupId>
+            <artifactId>flt-common</artifactId>
         </dependency>
 
         <dependency>

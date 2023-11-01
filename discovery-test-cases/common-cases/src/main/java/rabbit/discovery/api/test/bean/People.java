@@ -8,10 +8,10 @@ import rabbit.discovery.api.config.anno.FlexibleValue;
 @Component
 public class People {
 
-    @Value("${people.name}")
+    @Value("${people.name:lucy}")
     private String name;
 
-    @Value("${people.gender}")
+    @Value("${people.gender:unknown}")
     private String gender;
 
     @FlexibleValue("${people.age}")

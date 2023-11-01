@@ -18,8 +18,8 @@ import rabbit.discovery.api.common.utils.PathParser;
 import rabbit.discovery.api.common.utils.PathPattern;
 import rabbit.discovery.api.common.utils.RsaUtils;
 import rabbit.flt.common.Metrics;
+import rabbit.flt.common.utils.GZipUtils;
 import rabbit.flt.common.utils.StringUtils;
-import rabbit.flt.rpc.common.GZipUtils;
 
 import java.security.PrivateKey;
 import java.util.ArrayList;
