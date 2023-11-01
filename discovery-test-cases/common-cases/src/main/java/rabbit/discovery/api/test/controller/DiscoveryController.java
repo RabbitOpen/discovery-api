@@ -5,10 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import rabbit.discovery.api.common.PublicKeyDesc;
-import rabbit.discovery.api.common.protocol.ApplicationInstance;
-import rabbit.discovery.api.common.protocol.ApplicationMeta;
-import rabbit.discovery.api.common.protocol.PrivilegeData;
-import rabbit.discovery.api.common.protocol.RegisterResult;
+import rabbit.discovery.api.common.protocol.*;
 
 import static rabbit.discovery.api.common.utils.PathParser.urlDecode;
 
@@ -43,6 +40,12 @@ public class DiscoveryController {
     public RegisterResult register(@RequestBody ApplicationInstance instance) {
         logger.info("application[{}] instance[{}:{}] register success!", instance.getApplicationCode(),
                 instance.getHost(), instance.getPort());
+        Provider provider = applicationMeta.getProvider();
+        provider.getInstanceGroupMetas().computeIfAbsent("restApiSampleServer", k -> {
+            InstanceGroupMeta meta = new InstanceGroupMeta();
+            meta.addGroupLoadBalance("default", "http://localhost:1802");
+            return meta;
+        });
         return RegisterResult.success("1", applicationMeta);
     }
 

@@ -98,8 +98,6 @@ public class CoreCases {
      */
     public void restApiCase(ApplicationContext context) {
         RestApiSample apiSample = context.getBean(RestApiSample.class);
-        TestLoadBalancer balancer = context.getBean(TestLoadBalancer.class);
-        balancer.setPort(1802);
         String name = "zhang3";
         int age = 12;
         User user = apiSample.getUser(name, 123, new User(name, age));

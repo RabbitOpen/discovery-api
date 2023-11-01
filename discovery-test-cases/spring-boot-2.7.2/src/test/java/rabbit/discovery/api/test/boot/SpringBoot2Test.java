@@ -17,6 +17,9 @@ public class SpringBoot2Test {
 
     @Test
     public void springBoot2Test() throws Exception {
+        TestLoadBalancer balancer = applicationContext.getBean(TestLoadBalancer.class);
+        balancer.setPort(1802);
+
         CoreCases cases = new CoreCases();
         cases.configLoadCase(applicationContext);
         cases.openApiCase(applicationContext);

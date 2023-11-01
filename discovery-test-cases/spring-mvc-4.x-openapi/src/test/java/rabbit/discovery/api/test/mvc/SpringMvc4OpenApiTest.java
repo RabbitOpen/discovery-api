@@ -14,11 +14,13 @@ public class SpringMvc4OpenApiTest {
 
     /**
      * discovery-rest 可单独作为api和open api的客户端使用
-     * 由于没有Discovery能力，所以需要自己实现LoadBalancer
+     * 由于没有Discovery能力，所以需要自己实现LoadBalancer 或者 自己启动DiscoveryService
      */
     @Test
     public void springMvc4OpenApiTest() throws ServletException, LifecycleException, IOException {
         new TomcatContainer(1802).execute(ctx -> {
+            TestLoadBalancer balancer = ctx.getBean(TestLoadBalancer.class);
+            balancer.setPort(1802);
             CoreCases coreCases = new CoreCases();
             coreCases.openApiCase(ctx);
             coreCases.restApiCase(ctx);

@@ -14,7 +14,7 @@ public class InstanceGroupMeta {
     /**
      * 分组的负载地址
      */
-    private Map<String,String> groupLoadBalanceHost = new ConcurrentHashMap<>();
+    private Map<String, String> groupLoadBalanceHost = new ConcurrentHashMap<>();
 
     public Map<String, List<ApplicationInstance>> getGroupInstMap() {
         return groupInstMap;

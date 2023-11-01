@@ -1,4 +1,4 @@
-package rabbit.discovery.api.test;
+package rabbit.discovery.api.test.mvc;
 
 import org.springframework.stereotype.Component;
 import rabbit.discovery.api.common.ServerNode;

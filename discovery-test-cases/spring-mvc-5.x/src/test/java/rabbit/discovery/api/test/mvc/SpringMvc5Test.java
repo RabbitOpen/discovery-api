@@ -24,6 +24,8 @@ public class SpringMvc5Test {
     public void springMvc5Test() throws ServletException, LifecycleException, IOException {
         new TomcatContainer(1802).execute(ctx -> {
             try {
+                TestLoadBalancer balancer = ctx.getBean(TestLoadBalancer.class);
+                balancer.setPort(1802);
                 CoreCases coreCases = new CoreCases() {
                     @Override
                     protected Semaphore createHoldOnSemaphore(ApplicationContext context) {
