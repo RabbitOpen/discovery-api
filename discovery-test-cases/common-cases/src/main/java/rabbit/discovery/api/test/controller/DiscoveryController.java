@@ -9,7 +9,6 @@ import rabbit.discovery.api.common.protocol.ApplicationInstance;
 import rabbit.discovery.api.common.protocol.ApplicationMeta;
 import rabbit.discovery.api.common.protocol.PrivilegeData;
 import rabbit.discovery.api.common.protocol.RegisterResult;
-import rabbit.discovery.api.common.utils.PathParser;
 
 import static rabbit.discovery.api.common.utils.PathParser.urlDecode;
 

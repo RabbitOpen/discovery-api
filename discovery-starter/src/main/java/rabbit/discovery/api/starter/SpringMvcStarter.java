@@ -37,7 +37,7 @@ public class SpringMvcStarter extends MutuallyExclusiveStarter implements BeanPo
     /**
      * rest client 接口包路径
      */
-    private String[] restClientPackages;
+    private String[] restApiPackages;
 
     /**
      * open client 接口包路径
@@ -86,7 +86,7 @@ public class SpringMvcStarter extends MutuallyExclusiveStarter implements BeanPo
         Function<String, String> propertyReader = property -> ConfigLoaderUtil.getConfigLoader().readProperty(property);
         BeanDefinitionRegistry registry = (BeanDefinitionRegistry) applicationContext.getBeanFactory();
         SpringBeanRegistrar registrar = new SpringBeanRegistrar(resourceLoader, environment);
-        registrar.registerRestClients(registry, restClientPackages, propertyReader);
+        registrar.registerRestClients(registry, restApiPackages, propertyReader);
         registrar.registerOpenApiClients(registry, openApiPackages, propertyReader);
     }
 
@@ -119,8 +119,8 @@ public class SpringMvcStarter extends MutuallyExclusiveStarter implements BeanPo
         return bean;
     }
 
-    public void setRestClientPackages(String[] restClientPackages) {
-        this.restClientPackages = restClientPackages;
+    public void setRestApiPackages(String[] restApiPackages) {
+        this.restApiPackages = restApiPackages;
     }
 
     public void setOpenApiPackages(String[] openApiPackages) {

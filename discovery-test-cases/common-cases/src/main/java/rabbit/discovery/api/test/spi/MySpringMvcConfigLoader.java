@@ -2,7 +2,6 @@ package rabbit.discovery.api.test.spi;
 
 import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.RemoteConfig;
-import rabbit.discovery.api.config.loader.SpringBootConfigLoader;
 import rabbit.discovery.api.config.loader.SpringMvcConfigLoader;
 import rabbit.discovery.api.test.controller.ConfigController;
 

@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import rabbit.discovery.api.rest.http.HttpResponse;
 import rabbit.discovery.api.test.bean.User;
 
 import javax.servlet.http.HttpServletRequest;
