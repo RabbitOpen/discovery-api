@@ -1,5 +1,6 @@
 package rabbit.discovery.api.test.rest;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,4 +19,6 @@ public interface RestApiSample {
     HttpResponse<User> getUserAndHeaders(@PathVariable("name") String name, @PathVariable("age") int age,
                                          @RequestBody User user);
 
+    @GetMapping("/forbidden/getUser")
+    User callForbiddenUrl();
 }

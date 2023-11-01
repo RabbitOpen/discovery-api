@@ -11,12 +11,13 @@ import rabbit.discovery.api.rest.SpringBeanRegistrar;
 import rabbit.flt.common.utils.StringUtils;
 
 import java.util.Properties;
+import java.util.function.Function;
 
 /**
- * spring mvc环境下通过该类实现 open api的自动注册
+ * spring mvc环境下通过该类实现 open api和rest api的自动注册
  * 该类可通过@Import注解注入或者xml配置注入
  */
-public class SpringMvcOpenApiRegistrar extends PropertyResourceConfigurer implements ResourceLoaderAware,
+public class SpringMvcApiRegistrar extends PropertyResourceConfigurer implements ResourceLoaderAware,
         EnvironmentAware, ApplicationContextAware {
 
     private ResourceLoader resourceLoader;
@@ -31,6 +32,11 @@ public class SpringMvcOpenApiRegistrar extends PropertyResourceConfigurer implem
      * open api 包路径
      */
     private String[] openApiPackages;
+
+    /**
+     * rest client 接口包路径
+     */
+    private String[] restApiPackages;
 
     /**
      * 获取全局配置
@@ -63,8 +69,10 @@ public class SpringMvcOpenApiRegistrar extends PropertyResourceConfigurer implem
         SpringBeanRegistrar registrar = new SpringBeanRegistrar(resourceLoader, environment);
         // 声明Configuration
         registrar.registerBeanDefinition(registry, Configuration.class);
-        registrar.registerOpenApiClients(registry, openApiPackages, property -> properties.containsKey(property)
-                ? StringUtils.toString(properties.containsKey(property)) : property);
+        Function<String, String> propertyReader = property -> properties.containsKey(property)
+                ? StringUtils.toString(properties.containsKey(property)) : property;
+        registrar.registerOpenApiClients(registry, openApiPackages, propertyReader);
+        registrar.registerRestClients(registry, restApiPackages, propertyReader);
     }
 
     @Override
@@ -86,4 +94,7 @@ public class SpringMvcOpenApiRegistrar extends PropertyResourceConfigurer implem
         this.openApiPackages = openApiPackages;
     }
 
+    public void setRestApiPackages(String[] restApiPackages) {
+        this.restApiPackages = restApiPackages;
+    }
 }

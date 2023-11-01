@@ -18,8 +18,8 @@
 
     <context:component-scan base-package="rabbit.discovery.api.test"/>
 
-    <!-- open api && rest api 自动注册工具 -->
-    <bean class="rabbit.discovery.api.rest.registrar.SpringMvcApiRegistrar">
+    <!-- spring mvc client starter -->
+    <bean class="rabbit.discovery.api.starter.SpringMvcStarter">
         <property name="openApiPackages">
             <array>
                 <value>rabbit.discovery.api.test.open</value>

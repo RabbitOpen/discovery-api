@@ -36,8 +36,7 @@ public class SpringBootApiRegistrar implements ImportBeanDefinitionRegistrar, Re
         SpringBeanRegistrar registrar = new SpringBeanRegistrar(resourceLoader, environment);
         Function<String, String> propertyReader = propertyName -> environment.getProperty(propertyName);
         registrar.registerRestClients(registry, resolvePackages4Scan(meta, EnableRestClients.class), propertyReader);
-        registrar.registerOpenApiClients(registry, resolvePackages4Scan(meta, EnableOpenClients.class),
-                propertyReader);
+        registrar.registerOpenApiClients(registry, resolvePackages4Scan(meta, EnableOpenClients.class), propertyReader);
     }
 
     private <T extends Annotation> String[] resolvePackages4Scan(AnnotationMetadata metadata, Class<T> clz) {
