@@ -102,12 +102,13 @@ public class DiscoveryController {
      */
     @PostMapping("/authorizations/provider/{applicationCode:.+}")
     public PrivilegeData getProviderPrivileges(@PathVariable("applicationCode") String applicationCode) {
-        logger.info("application[{}] load privilege data success!", urlDecode(applicationCode));
+        String appCode = urlDecode(applicationCode);
+        logger.info("application[{}] load privilege data success!", appCode);
         PrivilegeData privilegeData = new PrivilegeData();
         List<Privilege> list = new ArrayList<>();
         Privilege data = new Privilege();
-        data.setProvider(applicationCode);
-        data.setConsumer(applicationCode);
+        data.setProvider(appCode);
+        data.setConsumer(appCode);
         data.setPath("/black/authorized");
         list.add(data);
         byte[] bytes = JsonUtils.writeObject(list).getBytes();
