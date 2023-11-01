@@ -4,6 +4,7 @@ import rabbit.discovery.api.common.exception.RestApiException;
 import rabbit.discovery.api.common.exception.TooManyWildcardException;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +93,14 @@ public class PathParser {
     public static String urlEncode(String value) {
         try {
             return URLEncoder.encode(value, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return value;
+        }
+    }
+
+    public static String urlDecode(String value) {
+        try {
+            return URLDecoder.decode(value, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             return value;
         }

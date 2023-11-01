@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.enums.ConfigType;
+import rabbit.discovery.api.common.utils.PathParser;
 import rabbit.flt.common.utils.CollectionUtils;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class ConfigController {
         rc.setPriority(-2);
         rc.setType(ConfigType.YAML);
         rc.setName(configFiles.get(0).getName());
-        rc.setApplicationCode(applicationCode);
+        rc.setApplicationCode(PathParser.urlDecode(applicationCode));
         rc.setContent("people: \n" +
                 "  age: " + age + "\n" +
                 "  gender: " + getGender() + "\n" +

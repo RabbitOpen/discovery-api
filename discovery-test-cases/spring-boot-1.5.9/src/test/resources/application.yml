@@ -4,7 +4,7 @@ server:
 
 discovery:
   application:
-    code: spring-boot-1.5.9
+    code: "spring-boot 1.5.9"
     groupName: default
     security:
       #rsa密钥
