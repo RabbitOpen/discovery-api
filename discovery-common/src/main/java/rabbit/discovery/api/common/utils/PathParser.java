@@ -1,6 +1,5 @@
 package rabbit.discovery.api.common.utils;
 
-import rabbit.discovery.api.common.exception.RestApiException;
 import rabbit.discovery.api.common.exception.TooManyWildcardException;
 
 import java.io.UnsupportedEncodingException;
