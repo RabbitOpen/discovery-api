@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>spring-mvc-4.x-openapi</artifactId>
+    <artifactId>spring-mvc-4.x-api</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
