@@ -12,10 +12,9 @@ import rabbit.discovery.api.plugins.common.Plugin;
 import rabbit.discovery.api.plugins.common.plugin.DiscoveryPlugin;
 import rabbit.discovery.api.starter.interceptor.DefaultMethodInterceptor;
 import rabbit.discovery.api.starter.interceptor.MethodCallback;
+import rabbit.flt.common.spi.ClassProxyListener;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.ServiceLoader;
 
 public class DiscoveryClassTransformer implements AgentBuilder.Transformer {
 
@@ -23,18 +22,18 @@ public class DiscoveryClassTransformer implements AgentBuilder.Transformer {
 
     private SpringBeanSupplier supplier;
 
-    private List<ClassProxyLogListener> listeners = new ArrayList<>();
+    private ClassProxyListener proxyLogListener;
 
     public DiscoveryClassTransformer(List<Matcher> matchers, SpringBeanSupplier supplier) {
         this.matchers = matchers;
         this.supplier = supplier;
-        ServiceLoader.load(ClassProxyLogListener.class).forEach(listeners::add);
+        proxyLogListener = new DefaultClassProxyListener();
     }
 
     @Override
     public DynamicType.Builder<?> transform(DynamicType.Builder<?> builder, TypeDescription typeDescription, ClassLoader classLoader, JavaModule module) {
         DynamicType.Builder<?> typeBuilder = builder;
-        listeners.forEach(l -> l.onProxy(typeDescription.getCanonicalName()));
+        proxyLogListener.onProxy(typeDescription.getCanonicalName());
         for (Matcher matcher : matchers) {
             if (!matcher.classMatcher().matches(typeDescription)) {
                 continue;

@@ -1,4 +1,4 @@
-package rabbit.discovery.api.test.controller;
+package rabbit.discovery.api.mvc;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
