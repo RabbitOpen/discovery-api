@@ -18,7 +18,7 @@ public class WebFluxFilterPlugin extends DiscoveryPlugin {
     @Override
     public boolean intercept(Method method, Object[] args, Object target) {
         try {
-            Field field = target.getClass().getDeclaredField("field");
+            Field field = target.getClass().getDeclaredField("filters");
             field.setAccessible(true);
             List<WebFilter> filters = (List<WebFilter>) field.get(target);
             if (filters.isEmpty() || !(filters.get(0) instanceof WebFluxFilter)) {

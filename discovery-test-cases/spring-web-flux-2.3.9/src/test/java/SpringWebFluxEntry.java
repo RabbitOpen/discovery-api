@@ -3,7 +3,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import rabbit.discovery.api.rest.EnableOpenClients;
 import rabbit.discovery.api.rest.EnableRestClients;
 
-@SpringBootApplication(scanBasePackages = {"rabbit.discovery.api.test"})
+@SpringBootApplication(scanBasePackages = {"rabbit.discovery.api.test", "rabbit.discovery.api.webflux"})
 @EnableOpenClients(basePackages = {"rabbit.discovery.api.test.open"})
 @EnableRestClients(basePackages = {"rabbit.discovery.api.test.rest"})
 public class SpringWebFluxEntry {

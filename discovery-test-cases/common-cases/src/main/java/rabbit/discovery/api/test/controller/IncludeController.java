@@ -1,16 +1,17 @@
-package rabbit.discovery.api.mvc;
+package rabbit.discovery.api.test.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import rabbit.discovery.api.rest.Policy;
 import rabbit.discovery.api.rest.anno.Declaration;
 
 /**
- * 接口上报，排除策略
+ * 接口上报，包含策略
  */
-@RestController
-@RequestMapping("/exclude")
-@Declaration(methods = {"getUser", "postUser", "requestUser", "deleteUser", "putUser", "patchUser"}, policy = Policy.EXCLUDE)
-public class ExcludeController {
+@Controller
+@RequestMapping("/include")
+@Declaration(methods = {"getUser", "postUser", "requestUser", "deleteUser", "putUser", "patchUser"}, policy = Policy.INCLUDE)
+public class IncludeController {
 
     @GetMapping("/getUser")
     public void getUser() {
@@ -42,7 +43,7 @@ public class ExcludeController {
 
     }
 
-    @RequestMapping(path = {"/exclude1", "/exclude2"})
+    @RequestMapping(path = "/exclude")
     public void exclude() {
 
     }

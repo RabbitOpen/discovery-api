@@ -1,4 +1,4 @@
-package rabbit.discovery.api.mvc;
+package rabbit.discovery.api.test.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
