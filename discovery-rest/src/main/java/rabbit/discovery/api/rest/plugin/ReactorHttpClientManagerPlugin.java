@@ -67,7 +67,7 @@ public class ReactorHttpClientManagerPlugin extends PerformancePlugin {
     }
 
     @Override
-    public void doFinal(Object objectEnhanced, Method method, Object[] args, Object result) throws Exception {
+    public void doFinal(Object objectEnhanced, Method method, Object[] args, Object result) {
         if ("doRequest".equals(method.getName())) {
             super.doFinal(objectEnhanced, method, args, result);
         }
