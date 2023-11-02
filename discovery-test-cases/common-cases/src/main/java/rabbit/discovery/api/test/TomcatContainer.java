@@ -1,4 +1,4 @@
-package rabbit.discovery.api.test.mvc;
+package rabbit.discovery.api.test;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
+import rabbit.discovery.api.starter.listener.SpringMvcStartListener;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -65,13 +66,21 @@ public class TomcatContainer {
         deployDir.mkdirs();
         // 添加当前应用到根目录
         Context context = tomcat.addWebapp("", deployDir.getAbsolutePath());
+        // 添加servlet listener
+        addServletListener(context);
+
         DispatcherServlet servlet = createDispatcherServlet();
+
         Wrapper wrapper = tomcat.addServlet("", "dispatcherServlet", servlet);
         //拦截所有请求
         wrapper.addMapping("/");
         tomcat.start();
         wrapper.load();
         return servlet.getWebApplicationContext();
+    }
+
+    protected void addServletListener(Context context) {
+        context.addServletContainerInitializer((sci, ctx) -> ctx.addListener(SpringMvcStartListener.class), null);
     }
 
     private DispatcherServlet createDispatcherServlet() {

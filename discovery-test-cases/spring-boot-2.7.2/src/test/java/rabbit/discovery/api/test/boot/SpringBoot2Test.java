@@ -5,11 +5,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import rabbit.discovery.api.test.CoreCases;
+import rabbit.discovery.api.test.TestLoadBalancer;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SpringBoot2Entry.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@Import(TestLoadBalancer.class)
 public class SpringBoot2Test {
 
     @Autowired

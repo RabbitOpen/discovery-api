@@ -1,10 +1,12 @@
-package rabbit.discovery.api.test.mvc;
+package rabbit.discovery.api.test;
 
-import org.springframework.stereotype.Component;
 import rabbit.discovery.api.common.ServerNode;
 import rabbit.discovery.api.rest.LoadBalancer;
 
-@Component
+
+/**
+ * 测试专用负载均衡器
+ */
 public class TestLoadBalancer implements LoadBalancer {
 
     private int port;

@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import rabbit.discovery.api.test.CoreCases;
+import rabbit.discovery.api.test.TestLoadBalancer;
+import rabbit.discovery.api.test.TomcatContainer;
 import rabbit.discovery.api.test.controller.DiscoveryController;
 import rabbit.discovery.api.test.spi.MySpringMvcConfigLoader;
 

@@ -18,6 +18,8 @@
 
     <context:component-scan base-package="rabbit.discovery.api.test"/>
 
+    <bean class="rabbit.discovery.api.test.TestLoadBalancer"/>
+
     <!-- spring mvc client starter -->
     <bean class="rabbit.discovery.api.starter.SpringMvcStarter">
         <property name="openApiPackages">

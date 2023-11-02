@@ -12,7 +12,7 @@ import rabbit.discovery.api.test.CoreCases;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SpringBoot2Entry.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class SpringBoot2OpenApiTest {
+public class SpringBoot2ApiTest {
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -26,7 +26,7 @@ public class SpringBoot2OpenApiTest {
      *  或者 自己启动DiscoveryService
      */
     @Test
-    public void springBoot2OpenApiTest() {
+    public void springBoot2ApiTest() {
         DefaultDiscoveryService discoveryService = new DefaultDiscoveryService();
         discoveryService.setConfiguration(configuration);
         discoveryService.start();

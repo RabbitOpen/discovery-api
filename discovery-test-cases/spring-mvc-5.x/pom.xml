@@ -71,7 +71,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-            <version>4.3.18.RELEASE</version>
         </dependency>
 
     </dependencies>
