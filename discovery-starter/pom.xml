@@ -125,10 +125,6 @@
                                     <shadedPattern>rabbit.bytebuddy</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>com.fasterxml.jackson</pattern>
-                                    <shadedPattern>rabbit.discovery.api.jackson</shadedPattern>
-                                </relocation>
-                                <relocation>
                                     <pattern>rabbit.flt.bytebuddy</pattern>
                                     <shadedPattern>rabbit.bytebuddy</shadedPattern>
                                 </relocation>
