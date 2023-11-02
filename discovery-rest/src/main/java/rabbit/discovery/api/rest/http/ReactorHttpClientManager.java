@@ -105,6 +105,7 @@ public class ReactorHttpClientManager extends HttpClientManager<HttpClient.Respo
         ReadTimeout rt = request.getMethod().getAnnotation(ReadTimeout.class);
         int readTimeout = null == rt ? getConfiguration().getReadTimeout() : rt.value();
         return HttpClient.create(connectionProvider)
+                // 1.1.0后该方法会被移除，使用option方法替换，web flux 2.3.9以下使用该方法
                 .tcpConfiguration(t -> t.option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
                         getConfiguration().getConnectionTimeout()))
                 .responseTimeout(Duration.ofMillis(readTimeout))
