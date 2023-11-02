@@ -114,7 +114,8 @@
                                     <!--需要一起打包的类-->
                                     <include>net.bytebuddy:byte-buddy:jar:</include>
                                     <include>net.bytebuddy:byte-buddy-agent:jar:</include>
-                                    <include>com.fasterxml.jackson.core:*:jar:</include>
+                                    <!--discovery-rest已经包含了-->
+                                    <!--<include>com.fasterxml.jackson.core:*:jar:</include>-->
                                 </includes>
                             </artifactSet>
 

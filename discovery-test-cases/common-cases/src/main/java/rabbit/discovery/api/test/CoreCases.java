@@ -18,6 +18,7 @@ import rabbit.discovery.api.test.rest.AuthorizedApiSample;
 import rabbit.discovery.api.test.rest.RestApiSample;
 import rabbit.discovery.api.test.spi.MySpringBootConfigLoader;
 import rabbit.discovery.api.test.spi.TestApiReportService;
+import rabbit.discovery.api.test.spi.TestClassProxyListener;
 
 import java.util.List;
 import java.util.concurrent.Semaphore;
@@ -118,6 +119,14 @@ public class CoreCases {
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.APPLICATION_CODE.toLowerCase()));
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.REQUEST_TIME.toLowerCase()));
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.REQUEST_TIME_SIGNATURE.toLowerCase()));
+    }
+
+    /**
+     * spring mvc 的trace增强已经完成
+     * @return
+     */
+    public boolean springMvcTraceEnhanced() {
+        return TestClassProxyListener.getClassList().contains("org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter");
     }
 
     /**
