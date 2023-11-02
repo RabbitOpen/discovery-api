@@ -55,6 +55,7 @@ public class ReactorHttpClientManager extends HttpClientManager<HttpClient.Respo
                     response.setData(body);
                     semaphore.release();
                 });
+                semaphore.acquire();
             } catch (Exception e) {
                 throw new RestApiException(e);
             }
