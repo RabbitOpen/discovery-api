@@ -6,7 +6,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import rabbit.discovery.api.common.Configuration;
-import rabbit.discovery.api.common.DefaultDiscoveryService;
 import rabbit.discovery.api.test.CoreCases;
 import rabbit.discovery.api.test.TestLoadBalancer;
 

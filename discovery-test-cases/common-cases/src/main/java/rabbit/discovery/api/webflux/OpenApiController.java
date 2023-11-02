@@ -1,17 +1,13 @@
 package rabbit.discovery.api.webflux;
 
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import rabbit.discovery.api.test.bean.User;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Enumeration;
 
 /**
  * open api 演示
