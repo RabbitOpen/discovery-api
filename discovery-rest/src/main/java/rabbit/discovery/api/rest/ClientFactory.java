@@ -214,20 +214,19 @@ public abstract class ClientFactory implements InvocationHandler, FactoryBean {
      */
     protected Map<String, String> readHttpHeaders(Method method, Object[] args, Parameter[] parameters) {
         Map<String, String> headerMap = new HashMap<>();
-        if (null != method.getAnnotation(AcceptGZipEncoding.class) ||
-                null != method.getDeclaringClass().getAnnotation(AcceptGZipEncoding.class)) {
-            headerMap.put("Accept-Encoding", "gzip");
-        }
-        Header header = method.getAnnotation(Header.class);
-        if (null != header) {
-            headerMap.put(header.name().trim(), header.value().trim());
-        }
-        Headers headers = method.getAnnotation(Headers.class);
-        if (null != headers) {
-            for (Header h : headers.value()) {
-                headerMap.put(h.name().trim(), h.value().trim());
-            }
-        }
+        headerMap.putAll(readHeadersFromMethod(method));
+        headerMap.putAll(readHeadersFromParameters(args, parameters));
+        return headerMap;
+    }
+
+    /**
+     * 从参数上读取header信息
+     * @param args
+     * @param parameters
+     * @return
+     */
+    private Map<String, String>  readHeadersFromParameters(Object[] args, Parameter[] parameters) {
+        Map<String, String> headerMap = new HashMap<>();
         for (int i = 0; i < parameters.length; i++) {
             Parameter para = parameters[i];
             RequestHeader rh = AnnotationUtils.findAnnotation(para, RequestHeader.class);
@@ -241,6 +240,30 @@ public abstract class ClientFactory implements InvocationHandler, FactoryBean {
             HeaderMap hm = AnnotationUtils.findAnnotation(para, HeaderMap.class);
             if (null != hm && null != args[i] && args[i] instanceof Map) {
                 ((Map) args[i]).forEach((k, v) -> headerMap.put(k.toString().trim(), v.toString().trim()));
+            }
+        }
+        return headerMap;
+    }
+
+    /**
+     * 从方法上读取header信息
+     * @param method
+     * @return
+     */
+    private Map<String, String> readHeadersFromMethod(Method method) {
+        Map<String, String> headerMap = new HashMap<>();
+        if (null != method.getAnnotation(AcceptGZipEncoding.class) ||
+                null != method.getDeclaringClass().getAnnotation(AcceptGZipEncoding.class)) {
+            headerMap.put("Accept-Encoding", "gzip");
+        }
+        Header header = method.getAnnotation(Header.class);
+        if (null != header) {
+            headerMap.put(header.name().trim(), header.value().trim());
+        }
+        Headers headers = method.getAnnotation(Headers.class);
+        if (null != headers) {
+            for (Header h : headers.value()) {
+                headerMap.put(h.name().trim(), h.value().trim());
             }
         }
         return headerMap;
