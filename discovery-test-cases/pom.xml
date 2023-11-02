@@ -21,6 +21,7 @@
         <module>spring-mvc-5.x</module>
         <module>spring-mvc-5.x-api</module>
         <module>spring-web-flux-2.3.9</module>
+        <module>spring-web-flux-2.7.2</module>
     </modules>
 
     <properties>
