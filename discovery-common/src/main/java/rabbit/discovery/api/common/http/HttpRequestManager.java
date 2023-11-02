@@ -3,6 +3,7 @@ package rabbit.discovery.api.common.http;
 import rabbit.discovery.api.common.exception.DiscoveryException;
 import rabbit.discovery.api.common.utils.JsonUtils;
 import rabbit.flt.common.utils.ResourceUtils;
+import rabbit.flt.common.utils.StringUtils;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -29,12 +30,13 @@ public class HttpRequestManager {
         try {
             HttpURLConnection connection = requestManager.getHttpConnection(request);
             int responseCode = connection.getResponseCode();
+            String charset = getResponseCharset(connection);
             if (200 != responseCode) {
-                StringBuilder sb = requestManager.readContent(connection.getErrorStream());
+                StringBuilder sb = requestManager.readContent(connection.getErrorStream(), charset);
                 connection.disconnect();
                 throw new DiscoveryException(sb.toString());
             }
-            StringBuilder sb = requestManager.readContent(connection.getInputStream());
+            StringBuilder sb = requestManager.readContent(connection.getInputStream(), charset);
             connection.disconnect();
             if (String.class == resultType) {
                 return (T) sb.toString();
@@ -46,8 +48,22 @@ public class HttpRequestManager {
         }
     }
 
-    private StringBuilder readContent(InputStream stream) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF8"));
+    private static String getResponseCharset(HttpURLConnection connection) {
+        String contentType = connection.getHeaderField("Content-Type");
+        if (!StringUtils.isEmpty(contentType) && contentType.toLowerCase().contains("charset")) {
+            return contentType.split(";")[1].split("=")[1].trim();
+        }
+        return null;
+    }
+
+    private StringBuilder readContent(InputStream stream, String charSet) throws IOException {
+        InputStreamReader in;
+        if (StringUtils.isEmpty(charSet)) {
+            in = new InputStreamReader(stream);
+        } else {
+            in = new InputStreamReader(stream, charSet);
+        }
+        BufferedReader reader = new BufferedReader(in);
         try {
             StringBuilder sb = new StringBuilder();
             while (true) {
