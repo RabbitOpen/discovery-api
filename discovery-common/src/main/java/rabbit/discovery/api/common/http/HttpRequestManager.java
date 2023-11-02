@@ -16,7 +16,8 @@ public class HttpRequestManager {
 
     private static final HttpRequestManager requestManager = new HttpRequestManager();
 
-    private HttpRequestManager() {}
+    private HttpRequestManager() {
+    }
 
     /**
      * 发起http请求
@@ -50,7 +51,8 @@ public class HttpRequestManager {
 
     private static String getResponseCharset(HttpURLConnection connection) {
         String contentType = connection.getHeaderField("Content-Type");
-        if (!StringUtils.isEmpty(contentType) && contentType.toLowerCase().contains("charset")) {
+        if (!StringUtils.isEmpty(contentType) && contentType.toLowerCase().contains("charset=") &&
+                contentType.contains(";")) {
             return contentType.split(";")[1].split("=")[1].trim();
         }
         return null;
