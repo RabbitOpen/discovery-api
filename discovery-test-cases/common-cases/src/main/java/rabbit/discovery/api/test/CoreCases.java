@@ -20,6 +20,7 @@ import rabbit.discovery.api.test.spi.MySpringBootConfigLoader;
 import rabbit.discovery.api.test.spi.TestApiReportService;
 import rabbit.discovery.api.test.spi.TestClassProxyListener;
 import rabbit.discovery.api.webflux.rest.MonoRestApiSample;
+import rabbit.flt.common.Traceable;
 
 import java.util.List;
 import java.util.Set;
@@ -107,6 +108,7 @@ public class CoreCases {
      *
      * @param context
      */
+    @Traceable
     public void restApiCase(ApplicationContext context) {
         RestApiSample apiSample = context.getBean(RestApiSample.class);
         String name = "zhang3";

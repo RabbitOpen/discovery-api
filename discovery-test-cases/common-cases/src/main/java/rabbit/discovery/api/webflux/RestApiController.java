@@ -10,7 +10,7 @@ import rabbit.discovery.api.test.bean.User;
 @RequestMapping("/rest")
 public class RestApiController {
 
-    @PostMapping("/get/{name}/{age}")
+    @RequestMapping(value = "/get/{name}/{age}", method = {RequestMethod.POST, RequestMethod.GET})
     public User getUser(@PathVariable("name") String name, @PathVariable("age") int age,
                         @RequestBody(required = false) User requestUser,
                         ServerHttpRequest request, ServerHttpResponse response) {
