@@ -6,7 +6,7 @@ import rabbit.flt.plugins.common.matcher.PerformanceMatcher;
 
 import static rabbit.flt.bytebuddy.matcher.ElementMatchers.named;
 
-public class ReactorHttpClientManagerMatcher extends PerformanceMatcher {
+public class ReactorHttpClientManagerMatcher implements PerformanceMatcher {
 
     @Override
     public ElementMatcher.Junction<TypeDescription> classMatcher() {
