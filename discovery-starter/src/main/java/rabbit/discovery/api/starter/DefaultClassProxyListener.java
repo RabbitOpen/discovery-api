@@ -12,11 +12,12 @@ class DefaultClassProxyListener implements ClassProxyListener {
 
     private Logger logger = LoggerFactory.getLogger("transformer");
 
-    private List<DefaultClassProxyListener> listeners = new ArrayList<>();
+    private List<ClassProxyListener> listeners = new ArrayList<>();
 
     public DefaultClassProxyListener() {
-        ServiceLoader.load(DefaultClassProxyListener.class).forEach(listeners::add);
+        ServiceLoader.load(ClassProxyListener.class).forEach(listeners::add);
     }
+
     @Override
     public void onProxy(String className) {
         logger.info("found target class: [{}]", className);
