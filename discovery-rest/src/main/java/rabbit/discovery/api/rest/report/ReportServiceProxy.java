@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import rabbit.discovery.api.common.rpc.ApiDescription;
 import rabbit.discovery.api.common.rpc.ApiReportService;
 import rabbit.flt.common.utils.StringUtils;
-import rabbit.flt.rpc.client.AgentRequestFactory;
+import rabbit.flt.rpc.client.FltRequestFactory;
 import rabbit.flt.rpc.client.pool.ConfigBuilder;
 import rabbit.flt.rpc.common.ServerNode;
 
@@ -23,7 +23,7 @@ class ReportServiceProxy implements ApiReportService {
 
     private String agentServers;
 
-    private AgentRequestFactory requestFactory = new AgentRequestFactory();
+    private FltRequestFactory requestFactory = new FltRequestFactory();
 
     @Override
     public void doReport(String application, String className, List<ApiDescription> apiList) {
