@@ -22,6 +22,7 @@ import rabbit.discovery.api.test.spi.TestClassProxyListener;
 import rabbit.discovery.api.webflux.rest.MonoRestApiSample;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Semaphore;
 
 import static rabbit.discovery.api.test.HttpRequestInterceptor.INTERCEPTOR_HEADER;
@@ -151,12 +152,31 @@ public class CoreCases {
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.REQUEST_TIME.toLowerCase()));
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.REQUEST_TIME_SIGNATURE.toLowerCase()));
     }
+
     /**
      * spring mvc 的trace增强已经完成
      * @return
      */
-    public boolean springMvcTraceEnhanced() {
-        return TestClassProxyListener.getClassList().contains("org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter");
+    public void springMvcTraceEnhanced() {
+        Set<String> classList = TestClassProxyListener.getClassList();
+        // 包含mvc认证增强
+        TestCase.assertTrue(classList.contains("org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter"));
+
+        // 不包含 web flux的认证增强
+        TestCase.assertFalse(classList.contains("org.springframework.web.server.adapter.WebHttpHandlerBuilder"));
+    }
+
+    /**
+     * spring web flux 的trace增强已经完成
+     * @return
+     */
+    public void webFluxTraceEnhanced() {
+        Set<String> classList = TestClassProxyListener.getClassList();
+        TestCase.assertFalse(classList.contains("org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter"));
+        // 包含web flux 认证filter增强
+        TestCase.assertTrue(classList.contains("org.springframework.web.server.adapter.WebHttpHandlerBuilder"));
+        // 包含web flux trace增强
+        TestCase.assertTrue(classList.contains("org.springframework.web.server.adapter.HttpWebHandlerAdapter"));
     }
 
     /**

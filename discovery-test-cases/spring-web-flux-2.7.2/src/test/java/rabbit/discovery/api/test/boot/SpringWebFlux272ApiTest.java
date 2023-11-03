@@ -40,6 +40,7 @@ public class SpringWebFlux272ApiTest {
         cases.monoRestApiCase(applicationContext);
         cases.reportServiceCase();
         cases.authorizationUrlCase(applicationContext);
+        cases.webFluxTraceEnhanced();
     }
 }
 

@@ -30,7 +30,7 @@ public class SpringBoot2Test {
         cases.restApiCase(applicationContext);
         cases.reportServiceCase();
         cases.authorizationUrlCase(applicationContext);
-
+        cases.springMvcTraceEnhanced();
     }
 }
 

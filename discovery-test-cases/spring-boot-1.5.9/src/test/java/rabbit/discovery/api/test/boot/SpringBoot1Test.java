@@ -29,6 +29,7 @@ public class SpringBoot1Test {
         cases.restApiCase(applicationContext);
         cases.reportServiceCase();
         cases.authorizationUrlCase(applicationContext);
+        cases.springMvcTraceEnhanced();
     }
 }
 

@@ -28,7 +28,7 @@ public class SpringMvc5Test {
             try {
                 TestLoadBalancer balancer = ctx.getBean(TestLoadBalancer.class);
                 balancer.setPort(1802);
-                CoreCases coreCases = new CoreCases() {
+                CoreCases cases = new CoreCases() {
                     @Override
                     protected Semaphore createHoldOnSemaphore(ApplicationContext context) {
                         Semaphore semaphore = new Semaphore(0);
@@ -40,11 +40,12 @@ public class SpringMvc5Test {
                         return semaphore;
                     }
                 };
-                coreCases.configLoadCase(ctx);
-                coreCases.openApiCase(ctx);
-                coreCases.restApiCase(ctx);
-                coreCases.reportServiceCase();
-                coreCases.authorizationUrlCase(ctx);
+                cases.configLoadCase(ctx);
+                cases.openApiCase(ctx);
+                cases.restApiCase(ctx);
+                cases.reportServiceCase();
+                cases.authorizationUrlCase(ctx);
+                cases.springMvcTraceEnhanced();
             } catch (Exception e) {
                 logger.error(e.getMessage());
             }

@@ -29,9 +29,9 @@ public class SpringMvc4ApiTest {
         }.execute(ctx -> {
             TestLoadBalancer balancer = ctx.getBean(TestLoadBalancer.class);
             balancer.setPort(1802);
-            CoreCases coreCases = new CoreCases();
-            coreCases.openApiCase(ctx);
-            coreCases.restApiCase(ctx);
+            CoreCases cases = new CoreCases();
+            cases.openApiCase(ctx);
+            cases.restApiCase(ctx);
         });
     }
 
