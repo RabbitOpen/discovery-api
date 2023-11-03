@@ -108,7 +108,7 @@
                         </goals>
                         <id>sonar-scan</id>
                         <configuration>
-                            <skip>${sonar.scan.ignore}</skip>
+                            <skip>${sonar.scan.skip}</skip>
                             <artifactSet>
                                 <includes>
                                     <include>rabbit.discovery.api:*:jar:</include>
@@ -136,7 +136,7 @@
                         </goals>
                         <id>shading</id>
                         <configuration>
-                            <skip>${shading.ignore}</skip>
+                            <skip>${shading.skip}</skip>
                             <artifactSet>
                                 <includes>
                                     <include>rabbit.discovery.api:*:jar:</include>
