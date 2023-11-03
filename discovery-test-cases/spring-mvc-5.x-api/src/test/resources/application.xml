@@ -19,6 +19,7 @@
     <context:component-scan base-package="rabbit.discovery.api.test, rabbit.discovery.api.mvc"/>
 
     <bean class="rabbit.discovery.api.test.TestLoadBalancer"/>
+    <bean class="rabbit.discovery.api.test.HttpRequestInterceptor"/>
 
     <!-- open api && rest api 自动注册工具 -->
     <bean class="rabbit.discovery.api.rest.registrar.SpringMvcApiRegistrar">

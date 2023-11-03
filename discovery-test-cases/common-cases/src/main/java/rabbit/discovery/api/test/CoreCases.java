@@ -23,6 +23,9 @@ import rabbit.discovery.api.test.spi.TestClassProxyListener;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
+import static rabbit.discovery.api.test.HttpRequestInterceptor.INTERCEPTOR_HEADER;
+import static rabbit.discovery.api.test.HttpRequestInterceptor.INTERCEPTOR_VALUE;
+
 /**
  * 核心用例
  */
@@ -92,6 +95,7 @@ public class CoreCases {
         TestCase.assertEquals(age, response.getData().getAge());
         TestCase.assertEquals("c2", response.getHeaders().get(Headers.OPEN_API_CODE.toLowerCase()));
         TestCase.assertEquals("c2", response.getHeaders().get(Headers.OPEN_API_CREDENTIAL.toLowerCase()));
+        TestCase.assertEquals(INTERCEPTOR_VALUE, response.getHeaders().get(INTERCEPTOR_HEADER));
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.OPEN_API_REQUEST_TIME.toLowerCase()));
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.OPEN_API_REQUEST_TIME_SIGNATURE.toLowerCase()));
     }
@@ -116,6 +120,7 @@ public class CoreCases {
         TestCase.assertEquals(name, response.getData().getName());
         TestCase.assertEquals(123, response.getData().getAge());
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.API_VERSION.toLowerCase()));
+        TestCase.assertEquals(INTERCEPTOR_VALUE, response.getHeaders().get(INTERCEPTOR_HEADER));
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.APPLICATION_CODE.toLowerCase()));
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.REQUEST_TIME.toLowerCase()));
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.REQUEST_TIME_SIGNATURE.toLowerCase()));

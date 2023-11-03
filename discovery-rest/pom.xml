@@ -83,6 +83,16 @@
 
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>deploy</id>
+            <properties>
+                <shading.skip>false</shading.skip>
+                <sonar.scan.skip>true</sonar.scan.skip>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>

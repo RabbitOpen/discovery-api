@@ -9,11 +9,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import rabbit.discovery.api.common.Configuration;
 import rabbit.discovery.api.test.CoreCases;
+import rabbit.discovery.api.test.HttpRequestInterceptor;
 import rabbit.discovery.api.test.TestLoadBalancer;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SpringWebFluxEntry.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@Import(TestLoadBalancer.class)
+@Import({TestLoadBalancer.class, HttpRequestInterceptor.class})
 public class SpringWebFlux272ApiTest {
 
     @Autowired
