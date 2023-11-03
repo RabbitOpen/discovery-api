@@ -7,7 +7,7 @@ import rabbit.discovery.api.rest.EnableRestClients;
 
 @SpringBootApplication(scanBasePackages = {"rabbit.discovery.api.test", "rabbit.discovery.api.webflux"})
 @EnableOpenClients(basePackages = {"rabbit.discovery.api.test.open"})
-@EnableRestClients(basePackages = {"rabbit.discovery.api.test.rest"})
+@EnableRestClients(basePackages = {"rabbit.discovery.api.test.rest", "rabbit.discovery.api.webflux.rest"})
 public class SpringWebFluxEntry {
 
     public static void main(String[] args) {

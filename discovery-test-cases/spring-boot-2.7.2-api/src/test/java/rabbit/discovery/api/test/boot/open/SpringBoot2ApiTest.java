@@ -11,7 +11,6 @@ import rabbit.discovery.api.common.Configuration;
 import rabbit.discovery.api.common.DefaultDiscoveryService;
 import rabbit.discovery.api.test.CoreCases;
 import rabbit.discovery.api.test.HttpRequestInterceptor;
-import rabbit.discovery.api.test.TestLoadBalancer;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SpringBoot2Entry.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)

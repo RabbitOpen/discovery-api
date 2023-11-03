@@ -37,6 +37,7 @@ public class SpringWebFlux239ApiTest {
         cases.configLoadCase(applicationContext);
         cases.openApiCase(applicationContext);
         cases.restApiCase(applicationContext);
+        cases.monoRestApiCase(applicationContext);
         cases.reportServiceCase();
         cases.authorizationUrlCase(applicationContext);
     }

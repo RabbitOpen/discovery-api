@@ -19,6 +19,7 @@ import rabbit.discovery.api.test.rest.RestApiSample;
 import rabbit.discovery.api.test.spi.MySpringBootConfigLoader;
 import rabbit.discovery.api.test.spi.TestApiReportService;
 import rabbit.discovery.api.test.spi.TestClassProxyListener;
+import rabbit.discovery.api.webflux.rest.MonoRestApiSample;
 
 import java.util.List;
 import java.util.concurrent.Semaphore;
@@ -126,6 +127,30 @@ public class CoreCases {
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.REQUEST_TIME_SIGNATURE.toLowerCase()));
     }
 
+    /**
+     * 异步调用
+     * @param context
+     */
+    public void monoRestApiCase(ApplicationContext context) {
+        MonoRestApiSample apiSample = context.getBean(MonoRestApiSample.class);
+        String name = "zhang3";
+        int age = 12;
+        User user = apiSample.getUser(name, 123, new User(name, age)).block();
+        TestCase.assertEquals(name, user.getName());
+        TestCase.assertEquals(123, user.getAge());
+        // 调用local分组
+        user = apiSample.getUser(name, 123, new User(name, age), "local").block();
+        TestCase.assertEquals(name, user.getName());
+        TestCase.assertEquals(123, user.getAge());
+        HttpResponse<User> response = apiSample.getUserAndHeaders(name, 123, new User(name, age)).block();
+        TestCase.assertEquals(name, response.getData().getName());
+        TestCase.assertEquals(123, response.getData().getAge());
+        TestCase.assertTrue(response.getHeaders().containsKey(Headers.API_VERSION.toLowerCase()));
+        TestCase.assertEquals(INTERCEPTOR_VALUE, response.getHeaders().get(INTERCEPTOR_HEADER));
+        TestCase.assertTrue(response.getHeaders().containsKey(Headers.APPLICATION_CODE.toLowerCase()));
+        TestCase.assertTrue(response.getHeaders().containsKey(Headers.REQUEST_TIME.toLowerCase()));
+        TestCase.assertTrue(response.getHeaders().containsKey(Headers.REQUEST_TIME_SIGNATURE.toLowerCase()));
+    }
     /**
      * spring mvc 的trace增强已经完成
      * @return
