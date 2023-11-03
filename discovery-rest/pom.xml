@@ -71,7 +71,8 @@
 
         <dependency>
             <groupId>io.projectreactor.netty</groupId>
-            <artifactId>reactor-netty-http</artifactId>
+            <artifactId>reactor-netty</artifactId>
+            <version>0.9.17.RELEASE</version>
             <scope>provided</scope>
         </dependency>
 
