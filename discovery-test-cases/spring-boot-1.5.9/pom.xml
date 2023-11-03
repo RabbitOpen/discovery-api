@@ -64,8 +64,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
+            <groupId>apache-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
         </dependency>
 
         <dependency>
