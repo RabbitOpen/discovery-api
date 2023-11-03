@@ -6,11 +6,13 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import rabbit.discovery.api.common.Environment;
 import rabbit.discovery.api.common.ServerNode;
 import rabbit.discovery.api.common.enums.Schema;
 import rabbit.discovery.api.common.utils.HexUtils;
 import rabbit.discovery.api.common.utils.RsaUtils;
 import rabbit.flt.common.utils.GZipUtils;
+import rabbit.flt.common.utils.StringUtils;
 
 import java.security.KeyPair;
 import java.security.PrivateKey;
@@ -69,5 +71,12 @@ public class UtilTest {
         TestCase.assertEquals("192.168.0.1", node.getHost());
         TestCase.assertEquals("/abc", node.getPath());
         TestCase.assertEquals("https://192.168.0.1:10101/abc", node.address().concat(node.getPath()));
+    }
+
+    @Test
+    public void versionTest() {
+        String version = Environment.getVersion();
+        TestCase.assertTrue(!StringUtils.isEmpty(version));
+        TestCase.assertFalse(version.contains("${"));
     }
 }
