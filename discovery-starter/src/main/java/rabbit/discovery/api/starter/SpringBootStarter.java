@@ -13,7 +13,6 @@ import rabbit.discovery.api.common.SpringBeanSupplierHolder;
 import rabbit.discovery.api.plugins.common.SpringBeanCreator;
 
 import javax.annotation.PostConstruct;
-import java.util.Collection;
 import java.util.ServiceLoader;
 
 import static org.springframework.beans.factory.config.AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE;
@@ -48,17 +47,7 @@ public class SpringBootStarter extends MutuallyExclusiveStarter implements BeanP
             builder.setScope(BeanDefinition.SCOPE_SINGLETON);
             builder.setAutowireMode(AUTOWIRE_BY_TYPE);
             if (SpringBeanSupplierHolder.class.isAssignableFrom(bean.getBeanClass())) {
-                builder.addPropertyValue("supplier", new SpringBeanSupplier() {
-                    @Override
-                    public <T> T getSpringBean(Class<T> clz) {
-                        return getBean(clz);
-                    }
-
-                    @Override
-                    public <T> Collection<T> getSpringBeans(Class<T> clz) {
-                        return getBeans(clz);
-                    }
-                });
+                builder.addPropertyValue("supplier", (SpringBeanSupplier) this::getBean);
             }
             registry.registerBeanDefinition(bean.getBeanName(), builder.getBeanDefinition());
         }

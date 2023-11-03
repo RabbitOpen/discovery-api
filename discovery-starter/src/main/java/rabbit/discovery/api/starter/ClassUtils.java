@@ -19,7 +19,10 @@ import rabbit.flt.common.utils.StringUtils;
 import rabbit.flt.core.AgentHelper;
 
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.ServiceLoader;
 
 /**
  * class增强工具
@@ -87,7 +90,7 @@ public final class ClassUtils {
      */
     private void initTraceAgent() {
         TraceConfiguration traceConfig = readConfigFromFile();
-        if (null != traceConfig && traceConfig.isFltDisabled()) {
+        if (null != traceConfig && !traceConfig.isFltEnabled()) {
             return;
         }
         initLoggerFactory();
@@ -101,6 +104,7 @@ public final class ClassUtils {
             protected AgentConfig getAgentConfig() {
                 TraceConfiguration tc = getBean(TraceConfiguration.class);
                 if (null == tc) {
+                    // traceConfig为空，代表工厂未就绪
                     return traceConfig;
                 }
                 if (StringUtils.isEmpty(tc.getServers())) {
@@ -122,17 +126,7 @@ public final class ClassUtils {
      * @return
      */
     public static SpringBeanSupplier getSupplier() {
-        return new SpringBeanSupplier() {
-            @Override
-            public <T> T getSpringBean(Class<T> clz) {
-                return inst.getBean(clz);
-            }
-
-            @Override
-            public <T> Collection<T> getSpringBeans(Class<T> clz) {
-                return inst.getBeans(clz);
-            }
-        };
+        return inst::getBean;
     }
 
     /**
@@ -147,21 +141,6 @@ public final class ClassUtils {
             return context.getBean(clz);
         } catch (Exception e) {
             return null;
-        }
-    }
-
-    /**
-     * 获取定义的beans
-     *
-     * @param clz
-     * @param <T>
-     * @return
-     */
-    private <T> Collection<T> getBeans(Class<T> clz) {
-        try {
-            return context.getBeansOfType(clz).values();
-        } catch (Exception e) {
-            return new ArrayList<>();
         }
     }
 
@@ -195,8 +174,8 @@ public final class ClassUtils {
             properties.load(stream);
             config.setIgnoreClasses(properties.getProperty("discovery.application.flt.ignoreClasses"));
             config.setIgnorePackages(properties.getProperty("discovery.application.flt.ignorePackages"));
-            boolean fltDisabled = Boolean.parseBoolean(properties.getProperty("discovery.application.flt.disabled", "false"));
-            config.setFltDisabled(fltDisabled);
+            boolean fltDisabled = Boolean.parseBoolean(properties.getProperty("discovery.application.flt.enabled", "true"));
+            config.setFltEnabled(fltDisabled);
             return config;
         } catch (Exception e) {
             return null;

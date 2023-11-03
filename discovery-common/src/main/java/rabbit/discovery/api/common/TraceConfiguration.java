@@ -6,9 +6,9 @@ import rabbit.flt.common.AgentConfig;
 public class TraceConfiguration extends AgentConfig {
 
     /**
-     * 禁用全链路追踪
+     * 启用全链路追踪
      */
-    private boolean fltDisabled = false;
+    private boolean fltEnabled = true;
 
     /**
      * 配置服务器
@@ -176,11 +176,11 @@ public class TraceConfiguration extends AgentConfig {
         super.setGcSampleIntervalSeconds(gcSampleIntervalSeconds);
     }
 
-    public boolean isFltDisabled() {
-        return fltDisabled;
+    public boolean isFltEnabled() {
+        return fltEnabled;
     }
 
-    public void setFltDisabled(boolean fltDisabled) {
-        this.fltDisabled = fltDisabled;
+    public void setFltEnabled(boolean fltEnabled) {
+        this.fltEnabled = fltEnabled;
     }
 }
