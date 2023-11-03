@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
-import rabbit.discovery.api.common.Configuration;
 import rabbit.discovery.api.test.CoreCases;
 import rabbit.discovery.api.test.HttpRequestInterceptor;
 import rabbit.discovery.api.test.TestLoadBalancer;
@@ -18,10 +17,7 @@ import rabbit.discovery.api.test.TestLoadBalancer;
 public class SpringWebFlux272ApiTest {
 
     @Autowired
-    private ApplicationContext applicationContext;
-
-    @Autowired
-    private Configuration configuration;
+    ApplicationContext applicationContext;
 
     /**
      * discovery-rest 可单独作为api和open api的客户端使用

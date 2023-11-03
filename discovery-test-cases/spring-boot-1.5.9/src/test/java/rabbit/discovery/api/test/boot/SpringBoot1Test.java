@@ -1,5 +1,6 @@
 package rabbit.discovery.api.test.boot;
 
+import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import rabbit.discovery.api.test.CoreCases;
 import rabbit.discovery.api.test.HttpRequestInterceptor;
 import rabbit.discovery.api.test.TestLoadBalancer;
+import rabbit.discovery.api.test.bean.User;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SpringBoot1Entry.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -17,7 +19,10 @@ import rabbit.discovery.api.test.TestLoadBalancer;
 public class SpringBoot1Test {
 
     @Autowired
-    private ApplicationContext applicationContext;
+    ApplicationContext applicationContext;
+
+    @Autowired
+    FeignServiceClient feignServiceClient;
 
     @Test
     public void springBoot1Test() throws Exception {
@@ -30,6 +35,15 @@ public class SpringBoot1Test {
         cases.reportServiceCase();
         cases.authorizationUrlCase(applicationContext);
         cases.springMvcTraceEnhanced();
+        runOpenFeignCase();
+    }
+
+    private void runOpenFeignCase() {
+        String name = "zhang3";
+        int age = 12;
+        User user = feignServiceClient.getUser(name, 123, new User(name, age));
+        TestCase.assertEquals(name, user.getName());
+        TestCase.assertEquals(123, user.getAge());
     }
 }
 

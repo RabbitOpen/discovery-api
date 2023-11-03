@@ -96,7 +96,8 @@
             </exclusions>
         </dependency>
 
-        <!--<dependency>
+        <!-- 添加feign后 config loader 读取的属性需要从bootstrap.yml获取  -->
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
             <version>${netflix.version}</version>
@@ -112,7 +113,7 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
             <version>${netflix.version}</version>
-        </dependency>-->
+        </dependency>
 
     </dependencies>
 

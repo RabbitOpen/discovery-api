@@ -1,5 +1,6 @@
 package rabbit.discovery.api.test.boot;
 
+import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
-import rabbit.discovery.api.common.Configuration;
 import rabbit.discovery.api.test.CoreCases;
 import rabbit.discovery.api.test.HttpRequestInterceptor;
 import rabbit.discovery.api.test.TestLoadBalancer;
+import rabbit.discovery.api.test.bean.User;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SpringWebFluxEntry.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -18,10 +19,10 @@ import rabbit.discovery.api.test.TestLoadBalancer;
 public class SpringWebFlux239ApiTest {
 
     @Autowired
-    private ApplicationContext applicationContext;
+    ApplicationContext applicationContext;
 
     @Autowired
-    private Configuration configuration;
+    FeignServiceClient feignServiceClient;
 
     /**
      * discovery-rest 可单独作为api和open api的客户端使用
@@ -41,6 +42,16 @@ public class SpringWebFlux239ApiTest {
         cases.reportServiceCase();
         cases.authorizationUrlCase(applicationContext);
         cases.webFluxTraceEnhanced();
+
+        runOpenFeignCase();
+    }
+
+    private void runOpenFeignCase() {
+        String name = "zhang3";
+        int age = 12;
+        User user = feignServiceClient.getUser(name, 123, new User(name, age));
+        TestCase.assertEquals(name, user.getName());
+        TestCase.assertEquals(123, user.getAge());
     }
 }
 
