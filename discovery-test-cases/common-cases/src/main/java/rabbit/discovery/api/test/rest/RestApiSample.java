@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import rabbit.discovery.api.common.http.anno.Body;
 import rabbit.discovery.api.rest.anno.Group;
 import rabbit.discovery.api.rest.anno.RestClient;
+import rabbit.discovery.api.rest.anno.Retry;
 import rabbit.discovery.api.rest.http.HttpResponse;
+import rabbit.discovery.api.test.bean.RetryData;
 import rabbit.discovery.api.test.bean.User;
 
 @RestClient(application = "restApiSampleServer", contextPath = "/rest")
@@ -31,4 +33,7 @@ public interface RestApiSample {
     User getUser(@PathVariable("name") String name, @PathVariable("age") int age,
                                          @RequestBody User user, @Group String group);
 
+    @Retry(3)
+    @PostMapping("/retry/{time}")
+    RetryData retry(@PathVariable("time") int time);
 }

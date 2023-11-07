@@ -6,8 +6,10 @@ import rabbit.discovery.api.common.Headers;
 import rabbit.discovery.api.common.enums.HttpMethod;
 import rabbit.discovery.api.common.exception.RestApiException;
 import rabbit.discovery.api.common.rpc.ApiDescription;
+import rabbit.discovery.api.common.utils.JsonUtils;
 import rabbit.discovery.api.rest.http.HttpResponse;
 import rabbit.discovery.api.test.bean.People;
+import rabbit.discovery.api.test.bean.RetryData;
 import rabbit.discovery.api.test.bean.User;
 import rabbit.discovery.api.test.controller.ConfigController;
 import rabbit.discovery.api.test.controller.DiscoveryController;
@@ -133,7 +135,26 @@ public class CoreCases {
     }
 
     /**
+     * 重试
+     * @param context
+     */
+    public void retryCase(ApplicationContext context) {
+        RestApiSample apiSample = context.getBean(RestApiSample.class);
+        try {
+            apiSample.retry(9);
+            throw new RuntimeException();
+        } catch (RestApiException e) {
+            RetryData r = JsonUtils.readValue(e.getMessage(), RetryData.class);
+            TestCase.assertEquals(4, r.getTime());
+        }
+        // 大于10不会重试
+        RetryData retry = apiSample.retry(19);
+        TestCase.assertEquals(1, retry.getTime());
+    }
+
+    /**
      * 异步调用
+     *
      * @param context
      */
     public void monoRestApiCase(ApplicationContext context) {
@@ -159,6 +180,7 @@ public class CoreCases {
 
     /**
      * spring mvc 的trace增强已经完成
+     *
      * @return
      */
     public void springMvcTraceEnhanced() {
@@ -172,6 +194,7 @@ public class CoreCases {
 
     /**
      * spring web flux 的trace增强已经完成
+     *
      * @return
      */
     public void webFluxTraceEnhanced() {
