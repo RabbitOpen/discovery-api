@@ -7,13 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit4.SpringRunner;
 import rabbit.discovery.api.test.CoreCases;
 import rabbit.discovery.api.test.HttpRequestInterceptor;
 import rabbit.discovery.api.test.TestLoadBalancer;
 import rabbit.discovery.api.test.bean.User;
 
-@RunWith(SpringRunner.class)
+/**
+ * 使用自定义SpringRunner，启动tcp server
+ */
+@RunWith(MySpringRunner.class)
 @SpringBootTest(classes = SpringBoot1Entry.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @Import({TestLoadBalancer.class, HttpRequestInterceptor.class})
 public class SpringBoot1Test {

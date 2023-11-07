@@ -80,7 +80,8 @@ public class DefaultDiscoveryService implements DiscoveryService {
         if (CommunicationMode.HTTP == configuration.getCommunicationMode()) {
             return RequestFactory.proxy(ProtocolService.class, configuration);
         } else{
-            return null;
+            RpcFactory.init(configuration);
+            return RpcFactory.proxy(ProtocolService.class);
         }
     }
 

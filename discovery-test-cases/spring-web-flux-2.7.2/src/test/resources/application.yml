@@ -16,6 +16,9 @@ discovery:
       mode: ASYNC
     flt:
       servers: "localhost:12345,127.0.0.1:12345"
+  #通信模式，默认tcp
+  communication:
+    mode: HTTP
   # 注册中心
   registry:
     address: "localhost:1802, 127.0.0.1:1802"

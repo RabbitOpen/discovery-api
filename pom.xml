@@ -101,6 +101,12 @@
 
             <dependency>
                 <groupId>rabbit.flt</groupId>
+                <artifactId>flt-rpc-server</artifactId>
+                <version>${rabbit.flt.core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>rabbit.flt</groupId>
                 <artifactId>flt-common</artifactId>
                 <version>${rabbit.flt.core.version}</version>
             </dependency>

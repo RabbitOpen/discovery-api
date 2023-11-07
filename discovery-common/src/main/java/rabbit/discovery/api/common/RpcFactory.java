@@ -15,10 +15,12 @@ public class RpcFactory {
 
     private Configuration configuration;
 
-    private RpcFactory() {}
+    private RpcFactory() {
+    }
 
     /**
      * 初始化
+     *
      * @param configuration
      */
     public static synchronized void init(Configuration configuration) {
@@ -43,7 +45,20 @@ public class RpcFactory {
                 .applicationCode(configuration.getApplicationCode())
                 .workerThreadCount(8)
                 .bossThreadCount(1)
+                // 降低内置心跳频率，业务上不依赖该操作维持心跳
+                .keepAliveIntervalSeconds(1800)
                 .password(configuration.getPrivateKey().substring(0, 16))
                 .build());
+    }
+
+    /**
+     * 代理接口
+     *
+     * @param clz
+     * @param <T>
+     * @return
+     */
+    public static <T> T proxy(Class<T> clz) {
+        return inst.requestFactory.proxy(clz);
     }
 }

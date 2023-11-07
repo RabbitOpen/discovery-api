@@ -26,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import static rabbit.discovery.api.common.ApiProtocolHelper.getSignatureMap;
+import static rabbit.discovery.api.common.CommunicationMode.HTTP;
 import static rabbit.flt.common.utils.StringUtils.isEmpty;
 
 /**
@@ -284,10 +285,23 @@ public abstract class ConfigLoader extends Thread implements ConfigChangeListene
             registryAddress = readProperty("discovery.registry.address");
             Configuration configuration = new Configuration();
             configuration.setRegistryAddress(registryAddress);
-            configService = RequestFactory.proxy(ConfigService.class, configuration);
+            configuration.setCommunicationMode(CommunicationMode.valueOf(readProperty("discovery.communication.mode", "TCP")));
             applicationCode = readProperty("discovery.application.code");
+            configuration.setApplicationCode(applicationCode);
             String propertyName = "discovery.application.security.key";
-            privateKey = RsaUtils.loadPrivateKeyFromString(readProperty(propertyName));
+            String privateKeyString = readProperty(propertyName);
+            privateKey = RsaUtils.loadPrivateKeyFromString(privateKeyString);
+            configuration.setPrivateKey(privateKeyString);
+            configService = getConfigService(configuration);
+        }
+    }
+
+    private ConfigService getConfigService(Configuration configuration) {
+        if (HTTP == configuration.getCommunicationMode()) {
+            return RequestFactory.proxy(ConfigService.class, configuration);
+        } else {
+            RpcFactory.init(configuration);
+            return RpcFactory.proxy(ConfigService.class);
         }
     }
 

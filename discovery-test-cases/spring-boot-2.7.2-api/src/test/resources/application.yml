@@ -19,7 +19,9 @@ discovery:
   # 注册中心
   registry:
     address: "localhost:1802, 127.0.0.1:1802"
-
+  #通信模式，默认tcp
+  communication:
+    mode: HTTP
 
 
 
