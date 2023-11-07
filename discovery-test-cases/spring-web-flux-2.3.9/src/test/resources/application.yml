@@ -19,13 +19,7 @@ discovery:
   # 注册中心
   registry:
     address: "localhost:1802, 127.0.0.1:1802"
-  config:
-    max: 8
-    handler: rabbit.discovery.api.test.PropertyLogHandler
-    items:
-      - name: yaml-config
-        priority: -1          # 优先级小于0的高于本地配置
-        namespace: n1
+
 
 
 

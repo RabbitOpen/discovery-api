@@ -42,6 +42,7 @@ public class CoreCases {
      */
     public void configLoadCase(ApplicationContext context) throws Exception {
         People people = context.getBean(People.class);
+        TestCase.assertEquals(10, people.getGlobalAge());
         ConfigController controller = context.getBean(ConfigController.class);
         TestCase.assertEquals(controller.getAge(), people.getAge());
         TestCase.assertEquals(controller.getName(), people.getName());
@@ -52,6 +53,7 @@ public class CoreCases {
         controller.update(12, "alipay");
         semaphore.acquire();
         TestCase.assertEquals(12, people.getAge());
+        TestCase.assertEquals(12, people.getGlobalAge());
         TestCase.assertEquals("alipay", people.getCompanyObj().getName());
     }
 

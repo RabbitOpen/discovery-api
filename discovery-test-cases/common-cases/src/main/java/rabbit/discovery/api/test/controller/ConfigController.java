@@ -6,11 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.RemoteConfig;
-import rabbit.discovery.api.common.enums.ConfigType;
-import rabbit.discovery.api.common.utils.PathParser;
-import rabbit.flt.common.utils.CollectionUtils;
+import rabbit.discovery.api.test.service.ConfigServiceImpl;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -19,17 +17,7 @@ import java.util.List;
 @RestController
 public class ConfigController {
 
-    private long configVersion = 0L;
-
-    private int age = 10;
-
-    private String name = "zhang3";
-
-    private String gender = "male";
-
-    private String companyName = "alibaba";
-
-    private String companyAddress = "chengdu";
+    private ConfigServiceImpl configService = ConfigServiceImpl.getInstance();
 
     /**
      * 读取配置
@@ -42,26 +30,7 @@ public class ConfigController {
     @PostMapping("/config/load/{applicationCode:.+}")
     public ConfigDetail loadConfig(@PathVariable("applicationCode") String applicationCode,
                                    @RequestBody(required = false) List<RemoteConfig> configFiles) {
-        if (CollectionUtils.isEmpty(configFiles)) {
-            return new ConfigDetail(new ArrayList<>(), 1L);
-        }
-        List<RemoteConfig> configs = new ArrayList<>();
-        RemoteConfig rc = new RemoteConfig();
-        rc.setNamespace(configFiles.get(0).getNamespace());
-        rc.setPriority(-2);
-        rc.setType(ConfigType.YAML);
-        rc.setName(configFiles.get(0).getName());
-        rc.setApplicationCode(PathParser.urlDecode(applicationCode));
-        rc.setContent("people: \n" +
-                "  age: " + age + "\n" +
-                "  gender: " + getGender() + "\n" +
-                "  company:\n" +
-                "    address: " + getCompanyAddress() + "\n" +
-                "    name: " + getCompanyName() + "\n" +
-                "  name: " + getName() + "\n"
-        );
-        configs.add(rc);
-        return new ConfigDetail(configs, configVersion);
+        return configService.loadConfig(applicationCode, configFiles, new HashMap<>());
     }
 
     /**
@@ -70,32 +39,26 @@ public class ConfigController {
      * @param companyName
      */
     public void update(int age, String companyName) {
-        this.age = age;
-        this.companyName = companyName;
-        this.configVersion++;
+        configService.update(age, companyName);
     }
 
     public int getAge() {
-        return age;
+        return configService.getAge();
     }
 
     public String getName() {
-        return name;
-    }
-
-    public long getConfigVersion() {
-        return configVersion;
+        return configService.getName();
     }
 
     public String getGender() {
-        return gender;
+        return configService.getGender();
     }
 
     public String getCompanyName() {
-        return companyName;
+        return configService.getCompanyName();
     }
 
     public String getCompanyAddress() {
-        return companyAddress;
+        return configService.getCompanyAddress();
     }
 }

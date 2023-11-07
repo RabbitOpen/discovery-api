@@ -5,6 +5,7 @@ import rabbit.discovery.api.common.Configuration;
 import rabbit.discovery.api.common.ServerNode;
 import rabbit.discovery.api.common.enums.HttpMode;
 import rabbit.discovery.api.common.utils.PathParser;
+import rabbit.discovery.api.rest.facotry.OpenClientFactory;
 import rabbit.discovery.api.rest.http.HttpRequest;
 import rabbit.discovery.api.rest.http.HttpResponse;
 import rabbit.discovery.api.rest.http.SimpleLoadBalancer;
@@ -51,6 +52,12 @@ public abstract class HttpRequestExecutor {
     protected LoadBalancer loadBalancer;
 
     /**
+     * 负载均衡器
+     */
+    @Autowired(required = false)
+    protected OpenLoadBalancer openLoadBalancer;
+
+    /**
      * 默认类型转换函数
      */
     protected Map<Type, Function<String, Object>> defaultTypeConverter = new HashMap<>();
@@ -67,6 +74,9 @@ public abstract class HttpRequestExecutor {
             requestInterceptor = request -> {
                 // do nothing
             };
+        }
+        if (null == openLoadBalancer) {
+            openLoadBalancer = openRequest -> ((OpenClientFactory) openRequest.getClientFactory()).getServerNode();
         }
         initHttpClientManager();
         initDefaultConverter();
@@ -122,19 +132,31 @@ public abstract class HttpRequestExecutor {
      * 执行请求
      *
      * @param request
+     * @param retryTimes   重试的次数
      * @param <T>
      * @return
      */
-    public final <T> T execute(HttpRequest request) {
-        ServerNode targetServer = getTargetServer(request);
-        request.setUri(getServerAddress(targetServer) + request.getUri());
-        resolveRequestUri(request);
-        getRequestInterceptor().beforeRequest(request);
-        return handleResponse(request, clientManager.execute(request));
+    public final <T> T execute(HttpRequest request, int retryTimes) {
+        try {
+            if (0 == retryTimes) {
+                // 第一次调用时完成解析
+                ServerNode targetServer = getTargetServer(request);
+                request.setUri(getServerAddress(targetServer) + request.getUri());
+                resolveRequestUri(request);
+                getRequestInterceptor().beforeRequest(request);
+            }
+            return handleResponse(request, clientManager.execute(request));
+        } catch (Exception e) {
+            if (request.getMaxRetryTimes() == retryTimes) {
+                throw e;
+            }
+            return execute(request, retryTimes + 1);
+        }
     }
 
     /**
      * 处理响应
+     *
      * @param request
      * @param response
      * @param <T>
@@ -156,6 +178,7 @@ public abstract class HttpRequestExecutor {
 
     /**
      * 读取响应
+     *
      * @param request
      * @param response
      * @param resultType
@@ -182,6 +205,7 @@ public abstract class HttpRequestExecutor {
 
     /**
      * 解析请求对象
+     *
      * @param request
      */
     private void resolveRequestUri(HttpRequest request) {
@@ -220,6 +244,10 @@ public abstract class HttpRequestExecutor {
 
     protected LoadBalancer getLoadBalancer() {
         return loadBalancer;
+    }
+
+    protected OpenLoadBalancer getOpenLoadBalancer() {
+        return openLoadBalancer;
     }
 
     /**

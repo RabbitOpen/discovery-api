@@ -17,6 +17,9 @@ public class People {
     @FlexibleValue("${people.age}")
     private int age;
 
+    @FlexibleValue("${global.age}")
+    private int globalAge;
+
     /**
      * 简单对象注入
      */
@@ -49,5 +52,13 @@ public class People {
 
     public String getGender() {
         return gender;
+    }
+
+    public int getGlobalAge() {
+        return globalAge;
+    }
+
+    public void setGlobalAge(int globalAge) {
+        this.globalAge = globalAge;
     }
 }

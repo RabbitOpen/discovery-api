@@ -26,7 +26,9 @@ discovery:
       - name: yaml-config
         priority: -1          # 优先级小于0的高于本地配置
         namespace: n1
-
+      - name: property-config
+        priority: -2          # 优先级小于0的高于本地配置
+        namespace: n2
 
 
 

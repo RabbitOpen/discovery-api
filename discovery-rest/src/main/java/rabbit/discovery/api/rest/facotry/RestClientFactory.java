@@ -85,6 +85,7 @@ public class RestClientFactory extends ClientFactory {
     @Override
     protected HttpRequest cloneRequest(HttpRequest request) {
         HttpRequest httpRequest = createHttpRequest();
+        httpRequest.setMaxRetryTimes(request.getMaxRetryTimes());
         httpRequest.setMethod(request.getMethod());
         httpRequest.setHttpMethod(request.getHttpMethod());
         httpRequest.setUri(request.getUri());

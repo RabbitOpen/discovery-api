@@ -1,4 +1,4 @@
-package rabbit.discovery.api.config.rpc;
+package rabbit.discovery.api.common.rpc;
 
 import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.RemoteConfig;

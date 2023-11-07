@@ -61,6 +61,11 @@ public final class HttpRequest {
     private ClientFactory clientFactory;
 
     /**
+     * 最大重试次数
+     */
+    private int maxRetryTimes = 0;
+
+    /**
      * 绑定的附件
      */
     private Map<String, Object> attachments = new HashMap<>();
@@ -215,5 +220,13 @@ public final class HttpRequest {
 
     public <T> T getAttachment(String name) {
         return (T) this.attachments.get(name);
+    }
+
+    public int getMaxRetryTimes() {
+        return maxRetryTimes;
+    }
+
+    public void setMaxRetryTimes(int maxRetryTimes) {
+        this.maxRetryTimes = maxRetryTimes;
     }
 }
