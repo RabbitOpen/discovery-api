@@ -60,6 +60,7 @@ public class SpringWebFlux272ApiTest {
 
         CoreCases cases = new CoreCases();
         cases.configLoadCase(applicationContext);
+        cases.monoRetryCase(applicationContext);
         cases.openApiCase(applicationContext);
         cases.restApiCase(applicationContext);
         cases.monoRestApiCase(applicationContext);

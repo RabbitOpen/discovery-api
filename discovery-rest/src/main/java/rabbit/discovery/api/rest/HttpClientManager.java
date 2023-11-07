@@ -65,30 +65,47 @@ public abstract class HttpClientManager<T> {
      * 执行http请求
      *
      * @param httpRequest
+     * @param retried     已经重试的次数
      * @return
      */
-    public final HttpResponse execute(HttpRequest httpRequest) {
-        T request = getRequestObject(httpRequest);
-        HttpResponse httpResponse = doRequest(httpRequest, request);
-        if (httpRequest.isAsyncRequest()) {
-            Mono<String> data = (Mono<String>) httpResponse.getData();
-            httpResponse.setData(data.map(b -> {
+    public final HttpResponse execute(HttpRequest httpRequest, int retried) {
+        try {
+            T request = getRequestObject(httpRequest);
+            HttpResponse httpResponse = doRequest(httpRequest, request);
+            if (httpRequest.isAsyncRequest()) {
+                Mono<String> data = (Mono<String>) httpResponse.getData();
+                Mono<String> map = data.map(b -> {
+                    if (200 != httpResponse.getStatusCode()) {
+                        throw new RestApiException(b);
+                    }
+                    return b;
+                }).onErrorResume(e -> {
+                    // 重试
+                    if (httpRequest.getMaxRetryTimes() == retried) {
+                        return Mono.error(e);
+                    }
+                    return (Mono<? extends String>) execute(httpRequest, retried + 1).getData();
+                });
+                httpResponse.setData(map);
+            } else {
+                Object body = httpResponse.getData();
                 if (200 != httpResponse.getStatusCode()) {
-                    throw new RestApiException(b);
+                    throw new RestApiException(StringUtils.toString(body));
                 }
-                return b;
-            }));
-        } else {
-            Object body = httpResponse.getData();
-            if (200 != httpResponse.getStatusCode()) {
-                throw new RestApiException(StringUtils.toString(body));
             }
+            return httpResponse;
+        } catch (Exception e) {
+            // 重试
+            if (httpRequest.getMaxRetryTimes() == retried) {
+                throw e;
+            }
+            return execute(httpRequest, retried + 1);
         }
-        return httpResponse;
     }
 
     /**
      * 添加请求body
+     *
      * @param requestObj
      * @param request
      */
@@ -160,6 +177,7 @@ public abstract class HttpClientManager<T> {
 
     /**
      * 判断是不是gzip数据
+     *
      * @param headers
      * @return
      */

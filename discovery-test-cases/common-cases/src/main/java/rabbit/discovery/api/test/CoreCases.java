@@ -23,6 +23,7 @@ import rabbit.discovery.api.test.spi.TestApiReportService;
 import rabbit.discovery.api.test.spi.TestClassProxyListener;
 import rabbit.discovery.api.webflux.rest.MonoRestApiSample;
 import rabbit.flt.common.Traceable;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Set;
@@ -136,6 +137,7 @@ public class CoreCases {
 
     /**
      * 重试
+     *
      * @param context
      */
     public void retryCase(ApplicationContext context) {
@@ -150,6 +152,23 @@ public class CoreCases {
         // 大于10不会重试
         RetryData retry = apiSample.retry(19);
         TestCase.assertEquals(1, retry.getTime());
+    }
+
+    /**
+     * 异步重试
+     *
+     * @param context
+     * @throws Exception
+     */
+    public void monoRetryCase(ApplicationContext context) throws Exception {
+        Semaphore semaphore = new Semaphore(0);
+        MonoRestApiSample apiSample = context.getBean(MonoRestApiSample.class);
+        apiSample.retry(8).onErrorResume(e -> Mono.just(JsonUtils.readValue(e.getMessage(), RetryData.class)))
+                .subscribe(r -> {
+                    TestCase.assertEquals(4, r.getTime());
+                    semaphore.release();
+                });
+        semaphore.acquire();
     }
 
     /**

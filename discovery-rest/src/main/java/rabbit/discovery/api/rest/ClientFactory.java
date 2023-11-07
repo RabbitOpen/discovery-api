@@ -129,7 +129,7 @@ public abstract class ClientFactory implements InvocationHandler, FactoryBean {
             httpRequest.setQueryParameters(readParameters(args, parameters));
             httpRequest.addHeaders(readHttpHeaders(method, args, parameters));
             httpRequest.setApplicationGroup(readGroup(args, parameters));
-            return getRequestExecutor().execute(httpRequest, 0);
+            return getRequestExecutor().execute(httpRequest);
         } else {
             throw new InvalidRequestException(method);
         }

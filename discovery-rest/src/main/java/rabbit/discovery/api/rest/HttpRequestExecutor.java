@@ -132,26 +132,16 @@ public abstract class HttpRequestExecutor {
      * 执行请求
      *
      * @param request
-     * @param retryTimes   重试的次数
      * @param <T>
      * @return
      */
-    public final <T> T execute(HttpRequest request, int retryTimes) {
-        try {
-            if (0 == retryTimes) {
-                // 第一次调用时完成解析
-                ServerNode targetServer = getTargetServer(request);
-                request.setUri(getServerAddress(targetServer) + request.getUri());
-                resolveRequestUri(request);
-                getRequestInterceptor().beforeRequest(request);
-            }
-            return handleResponse(request, clientManager.execute(request));
-        } catch (Exception e) {
-            if (request.getMaxRetryTimes() == retryTimes) {
-                throw e;
-            }
-            return execute(request, retryTimes + 1);
-        }
+    public final <T> T execute(HttpRequest request) {
+        // 第一次调用时完成解析
+        ServerNode targetServer = getTargetServer(request);
+        request.setUri(getServerAddress(targetServer) + request.getUri());
+        resolveRequestUri(request);
+        getRequestInterceptor().beforeRequest(request);
+        return handleResponse(request, clientManager.execute(request, 0));
     }
 
     /**
