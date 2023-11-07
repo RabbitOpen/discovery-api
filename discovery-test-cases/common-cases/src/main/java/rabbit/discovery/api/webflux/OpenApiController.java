@@ -7,7 +7,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import rabbit.discovery.api.test.bean.RetryData;
 import rabbit.discovery.api.test.bean.User;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * open api 演示
@@ -15,6 +20,8 @@ import rabbit.discovery.api.test.bean.User;
 @RestController
 @RequestMapping("/open")
 public class OpenApiController {
+
+    private Map<Integer, AtomicInteger> map = new HashMap<>();
 
     @PostMapping("/get/{name}/{age}")
     public User getUser(@PathVariable("name") String name, @PathVariable("age") int age,
@@ -27,5 +34,15 @@ public class OpenApiController {
             response.getHeaders().set(n, v.get(0));
         });
         return new User(name, age);
+    }
+
+    @PostMapping("/retry/{time}")
+    public RetryData retry(@PathVariable("time") int time, ServerHttpResponse response) {
+        map.computeIfAbsent(time, k->new AtomicInteger(0)).incrementAndGet();
+        if (time < 10) {
+            response.setRawStatusCode(500);
+        }
+        // 返回重试的次数
+        return new RetryData((map.get(time).get()));
     }
 }

@@ -21,6 +21,7 @@ import rabbit.discovery.api.test.rest.RestApiSample;
 import rabbit.discovery.api.test.spi.MySpringBootConfigLoader;
 import rabbit.discovery.api.test.spi.TestApiReportService;
 import rabbit.discovery.api.test.spi.TestClassProxyListener;
+import rabbit.discovery.api.webflux.open.MonoOpenApiSample;
 import rabbit.discovery.api.webflux.rest.MonoRestApiSample;
 import rabbit.flt.common.Traceable;
 import reactor.core.publisher.Mono;
@@ -169,6 +170,19 @@ public class CoreCases {
                     semaphore.release();
                 });
         semaphore.acquire();
+        // 大于10不会重试
+        TestCase.assertEquals(1, apiSample.retry(18).block().getTime());
+
+
+        MonoOpenApiSample openApiSample = context.getBean(MonoOpenApiSample.class);
+        openApiSample.monoOpenRetry(5).onErrorResume(e -> Mono.just(JsonUtils.readValue(e.getMessage(), RetryData.class)))
+                .subscribe(r -> {
+                    TestCase.assertEquals(4, r.getTime());
+                    semaphore.release();
+                });
+        semaphore.acquire();
+        // 大于10不会重试
+        TestCase.assertEquals(1, openApiSample.monoOpenRetry(138).block().getTime());
     }
 
     /**
