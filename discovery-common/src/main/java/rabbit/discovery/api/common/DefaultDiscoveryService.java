@@ -59,7 +59,7 @@ public class DefaultDiscoveryService implements DiscoveryService {
     @Override
     public void start() {
         loadPrivateKey();
-        protocolService = RequestFactory.proxy(ProtocolService.class, configuration);
+        protocolService = getProtocolService();
         initApplicationInstance();
         registerAndSynchronizeData();
         Thread thread = new Thread(() -> {
@@ -74,6 +74,14 @@ public class DefaultDiscoveryService implements DiscoveryService {
         });
         thread.setDaemon(false);
         thread.start();
+    }
+
+    private ProtocolService getProtocolService() {
+        if (CommunicationMode.HTTP == configuration.getCommunicationMode()) {
+            return RequestFactory.proxy(ProtocolService.class, configuration);
+        } else{
+            return null;
+        }
     }
 
     /**

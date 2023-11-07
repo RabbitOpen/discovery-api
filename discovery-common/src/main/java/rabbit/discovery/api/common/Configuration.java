@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static rabbit.discovery.api.common.CommunicationMode.TCP;
 import static rabbit.flt.common.utils.StringUtils.isEmpty;
 
 public class Configuration {
@@ -125,6 +126,12 @@ public class Configuration {
      */
     @Value("${discovery.application.http.max-connection-per-host:20}")
     private int maxConnectionPerHost;
+
+    /**
+     * 通信模式
+     */
+    @Value("${discovery.communication.mode:TCP}")
+    private CommunicationMode communicationMode = TCP;
 
     private List<String> serverList = new ArrayList<>();
 
@@ -360,5 +367,13 @@ public class Configuration {
 
     public void setReadTimeout(int readTimeout) {
         this.readTimeout = readTimeout;
+    }
+
+    public CommunicationMode getCommunicationMode() {
+        return communicationMode;
+    }
+
+    public void setCommunicationMode(CommunicationMode communicationMode) {
+        this.communicationMode = communicationMode;
     }
 }
