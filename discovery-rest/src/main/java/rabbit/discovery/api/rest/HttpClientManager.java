@@ -79,11 +79,11 @@ public abstract class HttpClientManager<T> {
                 }
                 return b;
             }).onErrorResume(e -> {
-                // 重试
+                // 异步重试
                 if (httpRequest.getMaxRetryTimes() == retried) {
                     return Mono.error(e);
                 }
-                return (Mono<? extends String>) execute(httpRequest, retried + 1).getData();
+                return (Mono<String>) execute(httpRequest, retried + 1).getData();
             });
             httpResponse.setData(map);
         } else {
@@ -92,6 +92,7 @@ public abstract class HttpClientManager<T> {
                 if (httpRequest.getMaxRetryTimes() == retried) {
                     throw new RestApiException(StringUtils.toString(body));
                 }
+                // 同步步重试
                 return execute(httpRequest, retried + 1);
             }
         }
