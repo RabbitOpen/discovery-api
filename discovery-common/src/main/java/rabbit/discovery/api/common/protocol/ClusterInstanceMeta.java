@@ -32,7 +32,7 @@ public class ClusterInstanceMeta {
         this.clusterLoadBalanceHost = clusterLoadBalanceHost;
     }
 
-    public void addGroupLoadBalance(String group, String balanceHost) {
-        getClusterLoadBalanceHost().put(group, balanceHost);
+    public void addClusterLoadBalance(String cluster, String balanceHost) {
+        getClusterLoadBalanceHost().put(cluster, balanceHost);
     }
 }

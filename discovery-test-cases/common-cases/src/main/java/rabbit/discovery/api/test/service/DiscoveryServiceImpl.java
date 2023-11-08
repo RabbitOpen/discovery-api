@@ -39,8 +39,8 @@ public class DiscoveryServiceImpl implements ProtocolService {
         Provider provider = applicationMeta.getProvider();
         provider.getInstanceGroupMetas().computeIfAbsent("restApiSampleServer", k -> {
             ClusterInstanceMeta meta = new ClusterInstanceMeta();
-            meta.addGroupLoadBalance("default", "http://localhost:1802");
-            meta.addGroupLoadBalance("local", "http://127.0.0.1:1802");
+            meta.addClusterLoadBalance("default", "http://localhost:1802");
+            meta.addClusterLoadBalance("local", "http://127.0.0.1:1802");
             return meta;
         });
         return RegisterResult.success("1", applicationMeta);
