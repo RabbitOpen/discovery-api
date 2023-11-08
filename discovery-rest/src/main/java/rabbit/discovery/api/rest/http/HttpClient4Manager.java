@@ -103,9 +103,6 @@ public class HttpClient4Manager extends HttpClientManager<HttpRequestBase> {
     }
 
     private HttpRequestBase getHttpRequestBase(HttpRequest request) {
-        if (POST == request.getHttpMethod()) {
-            return new HttpPost(request.getUri());
-        }
         if (GET == request.getHttpMethod()) {
             return new HttpGet(request.getUri());
         }
@@ -117,6 +114,9 @@ public class HttpClient4Manager extends HttpClientManager<HttpRequestBase> {
         }
         if (PATCH == request.getHttpMethod()) {
             return new HttpPatch(request.getUri());
+        }
+        if (POST == request.getHttpMethod()) {
+            return new HttpPost(request.getUri());
         }
         throw new RestApiException("unsupported method type: ".concat(request.getHttpMethod().name()));
     }

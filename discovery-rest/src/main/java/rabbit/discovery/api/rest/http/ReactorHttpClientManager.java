@@ -90,9 +90,6 @@ public class ReactorHttpClientManager extends HttpClientManager<HttpClient.Respo
      */
     protected HttpClient.ResponseReceiver getRequestObject(HttpRequest request) {
         HttpClient httpClient = getHttpClient(request);
-        if (POST == request.getHttpMethod()) {
-            return httpClient.post().uri(request.getUri());
-        }
         if (GET == request.getHttpMethod()) {
             return httpClient.get().uri(request.getUri());
         }
@@ -104,6 +101,9 @@ public class ReactorHttpClientManager extends HttpClientManager<HttpClient.Respo
         }
         if (PATCH == request.getHttpMethod()) {
             return httpClient.patch().uri(request.getUri());
+        }
+        if (POST == request.getHttpMethod()) {
+            return httpClient.post().uri(request.getUri());
         }
         throw new RestApiException("unsupported method type: ".concat(request.getHttpMethod().name()));
     }

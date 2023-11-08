@@ -167,17 +167,17 @@ public class HttpClient3Manager extends HttpClientManager<HttpMethodBase> {
     }
 
     private HttpMethodBase getHttpMethodBase(HttpRequest request) {
-        if (POST == request.getHttpMethod()) {
-            return new PostMethod(request.getUri());
-        }
-        if (GET == request.getHttpMethod()) {
-            return new GetMethod(request.getUri());
-        }
         if (PUT == request.getHttpMethod()) {
             return new PutMethod(request.getUri());
         }
         if (DELETE == request.getHttpMethod()) {
             return new DeleteMethod(request.getUri());
+        }
+        if (POST == request.getHttpMethod()) {
+            return new PostMethod(request.getUri());
+        }
+        if (GET == request.getHttpMethod()) {
+            return new GetMethod(request.getUri());
         }
         throw new RestApiException("unsupported method type: ".concat(request.getHttpMethod().name()));
     }
