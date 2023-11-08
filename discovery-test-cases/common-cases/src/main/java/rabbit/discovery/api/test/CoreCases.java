@@ -122,7 +122,7 @@ public class CoreCases {
         User user = apiSample.getUser(name, 123, new User(name, age));
         TestCase.assertEquals(name, user.getName());
         TestCase.assertEquals(123, user.getAge());
-        // 调用local分组
+        // 调用local集群
         user = apiSample.getUser(name, 123, new User(name, age), "local");
         TestCase.assertEquals(name, user.getName());
         TestCase.assertEquals(123, user.getAge());
@@ -198,7 +198,7 @@ public class CoreCases {
         User user = apiSample.getUser(name, 123, new User(name, age)).block();
         TestCase.assertEquals(name, user.getName());
         TestCase.assertEquals(123, user.getAge());
-        // 调用local分组
+        // 调用local集群
         user = apiSample.getUser(name, 123, new User(name, age), "local").block();
         TestCase.assertEquals(name, user.getName());
         TestCase.assertEquals(123, user.getAge());
