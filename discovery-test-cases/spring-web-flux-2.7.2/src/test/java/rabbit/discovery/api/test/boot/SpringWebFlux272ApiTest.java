@@ -3,8 +3,6 @@ package rabbit.discovery.api.test.boot;
 import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -27,8 +25,6 @@ import java.util.concurrent.Semaphore;
 @SpringBootTest(classes = SpringWebFluxEntry.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @Import({TestLoadBalancer.class, HttpRequestInterceptor.class})
 public class SpringWebFlux272ApiTest {
-
-    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     ApplicationContext applicationContext;
@@ -66,11 +62,12 @@ public class SpringWebFlux272ApiTest {
         }));
 
         CoreCases cases = new CoreCases();
-        cases.monoRetryCase(applicationContext);
         cases.configLoadCase(applicationContext);
         cases.openApiCase(applicationContext);
         cases.restApiCase(applicationContext);
+        cases.retryCase(applicationContext);
         cases.monoRestApiCase(applicationContext);
+        cases.monoRetryCase(applicationContext);
         cases.reportServiceCase();
         cases.authorizationUrlCase(applicationContext);
         cases.webFluxTraceEnhanced();
@@ -89,12 +86,46 @@ public class SpringWebFlux272ApiTest {
         TestCase.assertEquals("getUser", traceMap.get("0-0-0-0").getNodeName());
         TestCase.assertEquals("getUser", traceMap.get("0-1-0-0").getNodeName());
         TestCase.assertEquals("getUser", traceMap.get("0-2-0-0").getNodeName());
-        TestTraceDataHandler.resetHandler();
 
         traceMap.clear();
         List<TraceData> dataList = cache.get(monoRetryCaseTraceId);
         dataList.forEach(traceData -> traceMap.put(traceData.getSpanId(), traceData));
         TestCase.assertEquals(31, traceMap.size());
+
+        TestCase.assertEquals("monoRetryCase", traceMap.get("0").getNodeName());
+        TestCase.assertEquals("doHttpRequest", traceMap.get("0-0").getNodeName());
+        TestCase.assertEquals("doHttpRequest", traceMap.get("0-1").getNodeName());
+        TestCase.assertEquals("doHttpRequest", traceMap.get("0-2").getNodeName());
+        TestCase.assertEquals("doHttpRequest", traceMap.get("0-3").getNodeName());
+        TestCase.assertEquals("doHttpRequest", traceMap.get("0-4").getNodeName());
+        TestCase.assertEquals("doHttpRequest", traceMap.get("0-5").getNodeName());
+        TestCase.assertEquals("doHttpRequest", traceMap.get("0-6").getNodeName());
+        TestCase.assertEquals("doHttpRequest", traceMap.get("0-7").getNodeName());
+        TestCase.assertEquals("doHttpRequest", traceMap.get("0-8").getNodeName());
+        TestCase.assertEquals("doHttpRequest", traceMap.get("0-9").getNodeName());
+
+        TestCase.assertEquals("/rest/retry/{time}", traceMap.get("0-0-0").getNodeName());
+        TestCase.assertEquals("/rest/retry/{time}", traceMap.get("0-1-0").getNodeName());
+        TestCase.assertEquals("/rest/retry/{time}", traceMap.get("0-2-0").getNodeName());
+        TestCase.assertEquals("/rest/retry/{time}", traceMap.get("0-3-0").getNodeName());
+        TestCase.assertEquals("/rest/retry/{time}", traceMap.get("0-4-0").getNodeName());
+        TestCase.assertEquals("/open/retry/{time}", traceMap.get("0-5-0").getNodeName());
+        TestCase.assertEquals("/open/retry/{time}", traceMap.get("0-6-0").getNodeName());
+        TestCase.assertEquals("/open/retry/{time}", traceMap.get("0-7-0").getNodeName());
+        TestCase.assertEquals("/open/retry/{time}", traceMap.get("0-8-0").getNodeName());
+        TestCase.assertEquals("/open/retry/{time}", traceMap.get("0-9-0").getNodeName());
+
+        TestCase.assertEquals("retry", traceMap.get("0-0-0-0").getNodeName());
+        TestCase.assertEquals("retry", traceMap.get("0-1-0-0").getNodeName());
+        TestCase.assertEquals("retry", traceMap.get("0-2-0-0").getNodeName());
+        TestCase.assertEquals("retry", traceMap.get("0-3-0-0").getNodeName());
+        TestCase.assertEquals("retry", traceMap.get("0-4-0-0").getNodeName());
+        TestCase.assertEquals("retry", traceMap.get("0-5-0-0").getNodeName());
+        TestCase.assertEquals("retry", traceMap.get("0-6-0-0").getNodeName());
+        TestCase.assertEquals("retry", traceMap.get("0-7-0-0").getNodeName());
+        TestCase.assertEquals("retry", traceMap.get("0-8-0-0").getNodeName());
+        TestCase.assertEquals("retry", traceMap.get("0-9-0-0").getNodeName());
+        TestTraceDataHandler.resetHandler();
     }
 }
 
