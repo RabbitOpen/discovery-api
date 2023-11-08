@@ -16,12 +16,14 @@ public class SimpleLoadBalancer implements LoadBalancer {
     }
 
     @Override
-    public ServerNode choose(String application, String cluster) {
+    public ServerNode choose(HttpRequest request) {
         Provider provider = ApplicationMetaCache.getApplicationMeta().getProvider();
-        if (StringUtils.isEmpty(cluster)) {
+        String application = request.getTargetApplication();
+        String clusterName = request.getApplicationCluster();
+        if (StringUtils.isEmpty(clusterName)) {
             return provider.getProviderServerNode(application, configuration.getApplicationCluster(application));
         } else {
-            return provider.getProviderServerNode(application, cluster);
+            return provider.getProviderServerNode(application, clusterName);
         }
     }
 }

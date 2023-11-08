@@ -2,6 +2,7 @@ package rabbit.discovery.api.test;
 
 import rabbit.discovery.api.common.ServerNode;
 import rabbit.discovery.api.rest.LoadBalancer;
+import rabbit.discovery.api.rest.http.HttpRequest;
 
 
 /**
@@ -12,7 +13,7 @@ public class TestLoadBalancer implements LoadBalancer {
     private int port;
 
     @Override
-    public ServerNode choose(String application, String cluster) {
+    public ServerNode choose(HttpRequest request) {
         return new ServerNode("localhost", port);
     }
 
