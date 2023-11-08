@@ -8,7 +8,7 @@ import rabbit.discovery.api.common.http.anno.Header;
 import rabbit.discovery.api.common.http.anno.HeaderMap;
 import rabbit.discovery.api.common.http.anno.Headers;
 import rabbit.discovery.api.rest.anno.AcceptGZipEncoding;
-import rabbit.discovery.api.rest.anno.Group;
+import rabbit.discovery.api.rest.anno.Cluster;
 import rabbit.discovery.api.rest.anno.Retry;
 import rabbit.discovery.api.rest.exception.InvalidRequestException;
 import rabbit.discovery.api.rest.exception.NoRequestFoundException;
@@ -128,7 +128,7 @@ public abstract class ClientFactory implements InvocationHandler, FactoryBean {
             httpRequest.setBody(readRequestBody(args, parameters));
             httpRequest.setQueryParameters(readParameters(args, parameters));
             httpRequest.addHeaders(readHttpHeaders(method, args, parameters));
-            httpRequest.setApplicationGroup(readGroup(args, parameters));
+            httpRequest.setApplicationCluster(readCluster(args, parameters));
             return getRequestExecutor().execute(httpRequest);
         } else {
             throw new InvalidRequestException(method);
@@ -177,16 +177,16 @@ public abstract class ClientFactory implements InvocationHandler, FactoryBean {
     }
 
     /**
-     * 读取请求分组信息
+     * 读取请求集群信息
      *
      * @param args
      * @param parameters
      * @return
      */
-    protected String readGroup(Object[] args, Parameter[] parameters) {
+    protected String readCluster(Object[] args, Parameter[] parameters) {
         for (int i = 0; i < parameters.length; i++) {
             Parameter para = parameters[i];
-            if (null != para.getAnnotation(Group.class)) {
+            if (null != para.getAnnotation(Cluster.class)) {
                 return StringUtils.toString(args[i]);
             }
         }

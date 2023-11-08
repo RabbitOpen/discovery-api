@@ -13,9 +13,9 @@ import java.util.concurrent.atomic.AtomicLong;
 public class Provider {
 
     /**
-     * provider的实例组信息
+     * provider的集群实例信息， key是应用编码
      */
-    private Map<String, InstanceGroupMeta> instanceGroupMetas = new ConcurrentHashMap<>();
+    private Map<String, ClusterInstanceMeta> instanceGroupMetas = new ConcurrentHashMap<>();
 
     /**
      * counter
@@ -29,32 +29,32 @@ public class Provider {
     /**
      * 获取实例
      * @param applicationCode   provider的应用编码
-     * @param groupName         分组名
+     * @param clusterName       集群名
      * @return
      */
-    public ServerNode getProviderServerNode(String applicationCode, String groupName) {
-        InstanceGroupMeta groupMeta = getInstanceGroupMetas().get(applicationCode);
-        if (null == groupMeta) {
+    public ServerNode getProviderServerNode(String applicationCode, String clusterName) {
+        ClusterInstanceMeta clusterMeta = getInstanceGroupMetas().get(applicationCode);
+        if (null == clusterMeta) {
             throw new DiscoveryException("获取应用[".concat(applicationCode).concat("]信息失败"));
         }
-        if (groupMeta.getGroupLoadBalanceHost().containsKey(groupName)) {
-            return new ServerNode(groupMeta.getGroupLoadBalanceHost().get(groupName));
+        if (clusterMeta.getClusterLoadBalanceHost().containsKey(clusterName)) {
+            return new ServerNode(clusterMeta.getClusterLoadBalanceHost().get(clusterName));
         } else {
-            List<ApplicationInstance> groupInstances = groupMeta.getGroupInstMap().get(groupName);
-            if (CollectionUtils.isEmpty(groupInstances)) {
-                throw new LoadBalanceException(applicationCode, groupName);
+            List<ApplicationInstance> clusterInstances = clusterMeta.getClusterInstMap().get(clusterName);
+            if (CollectionUtils.isEmpty(clusterInstances)) {
+                throw new LoadBalanceException(applicationCode, clusterName);
             }
-            int index = (int) (getCount(applicationCode) % groupInstances.size());
-            ApplicationInstance instance = groupInstances.get(index);
+            int index = (int) (getCount(applicationCode) % clusterInstances.size());
+            ApplicationInstance instance = clusterInstances.get(index);
             return new ServerNode(instance.getHost(), instance.getPort());
         }
     }
 
-    public Map<String, InstanceGroupMeta> getInstanceGroupMetas() {
+    public Map<String, ClusterInstanceMeta> getInstanceGroupMetas() {
         return instanceGroupMetas;
     }
 
-    public void setInstanceGroupMetas(Map<String, InstanceGroupMeta> instanceGroupMetas) {
+    public void setInstanceGroupMetas(Map<String, ClusterInstanceMeta> instanceGroupMetas) {
         this.instanceGroupMetas = instanceGroupMetas;
     }
 }

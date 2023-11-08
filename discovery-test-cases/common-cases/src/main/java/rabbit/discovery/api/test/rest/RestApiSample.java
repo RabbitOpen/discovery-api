@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import rabbit.discovery.api.common.http.anno.Body;
-import rabbit.discovery.api.rest.anno.Group;
+import rabbit.discovery.api.rest.anno.Cluster;
 import rabbit.discovery.api.rest.anno.RestClient;
 import rabbit.discovery.api.rest.anno.Retry;
 import rabbit.discovery.api.rest.http.HttpResponse;
@@ -31,7 +31,7 @@ public interface RestApiSample {
      */
     @PostMapping("/get/{name}/{age}")
     User getUser(@PathVariable("name") String name, @PathVariable("age") int age,
-                                         @RequestBody User user, @Group String group);
+                                         @RequestBody User user, @Cluster String group);
 
     @Retry(3)
     @PostMapping("/retry/{time}")

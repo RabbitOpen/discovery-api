@@ -12,7 +12,7 @@ public class TestLoadBalancer implements LoadBalancer {
     private int port;
 
     @Override
-    public ServerNode choose(String application, String group) {
+    public ServerNode choose(String application, String cluster) {
         return new ServerNode("localhost", port);
     }
 

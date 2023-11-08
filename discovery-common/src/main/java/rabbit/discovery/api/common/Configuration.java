@@ -32,10 +32,10 @@ public class Configuration {
     private String applicationCode;
 
     /**
-     * 应用分组
+     * 应用集群
      */
-    @Value("${discovery.application.groupName:default}")
-    private String groupName = "default";
+    @Value("${discovery.application.clusterName:default}")
+    private String clusterName = "default";
 
     /**
      * 用户强制指定的服务端口（默认从serverPort字段读取，如果设置了该字段则忽略serverPort）
@@ -86,10 +86,10 @@ public class Configuration {
     private int replayWindow;
 
     /**
-     * 格式 {app1}:{group1},{app2}:{group2}
+     * 格式 {app1}:{cluster1},{app2}:{cluster2}
      */
-    @Value("${discovery.provider.applicationGroups:}")
-    private String applicationGroups;
+    @Value("${discovery.provider.applicationClusters:}")
+    private String applicationClusters;
 
     /**
      * 代理feign
@@ -137,20 +137,20 @@ public class Configuration {
 
     private long serverIndex = 0L;
 
-    private Map<String, String> applicationGroupMap = new ConcurrentHashMap<>();
+    private Map<String, String> applicationClusterMap = new ConcurrentHashMap<>();
 
     @PostConstruct
     public void init() {
         this.serverList = resolveServerList(getRegistryAddress());
-        if (isEmpty(applicationGroups)) {
+        if (isEmpty(applicationClusters)) {
             return;
         }
-        for (String group : applicationGroups.trim().split(",")) {
-            String[] kv = group.split(":");
+        for (String cluster : applicationClusters.trim().split(",")) {
+            String[] kv = cluster.split(":");
             if (2 != kv.length) {
                 continue;
             }
-            applicationGroupMap.put(kv[0].trim(), kv[1].trim());
+            applicationClusterMap.put(kv[0].trim(), kv[1].trim());
         }
     }
 
@@ -175,13 +175,13 @@ public class Configuration {
     }
 
     /**
-     * 获取指定应用的分组（消费时）
+     * 获取指定应用的集群（消费时）
      *
      * @param applicationCode
      * @return
      */
-    public String getApplicationGroup(String applicationCode) {
-        return applicationGroupMap.computeIfAbsent(applicationCode, app -> "default");
+    public String getApplicationCluster(String applicationCode) {
+        return applicationClusterMap.computeIfAbsent(applicationCode, app -> "default");
     }
 
     public String nextRegistryAddress() {
@@ -207,12 +207,12 @@ public class Configuration {
         this.applicationCode = applicationCode;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public String getClusterName() {
+        return clusterName;
     }
 
-    public void setGroupName(String groupName) {
-        this.groupName = groupName.trim();
+    public void setClusterName(String clusterName) {
+        this.clusterName = clusterName.trim();
     }
 
     /**
@@ -305,12 +305,12 @@ public class Configuration {
         this.replayWindow = replayWindow;
     }
 
-    public String getApplicationGroups() {
-        return applicationGroups;
+    public String getApplicationClusters() {
+        return applicationClusters;
     }
 
-    public void setApplicationGroups(String applicationGroups) {
-        this.applicationGroups = applicationGroups;
+    public void setApplicationClusters(String applicationClusters) {
+        this.applicationClusters = applicationClusters;
     }
 
     public boolean isProxyFeign() {
@@ -353,12 +353,12 @@ public class Configuration {
         this.maxConnectionPerHost = maxConnectionPerHost;
     }
 
-    public Map<String, String> getApplicationGroupMap() {
-        return applicationGroupMap;
+    public Map<String, String> getApplicationClusterMap() {
+        return applicationClusterMap;
     }
 
-    public void setApplicationGroupMap(Map<String, String> applicationGroupMap) {
-        this.applicationGroupMap = applicationGroupMap;
+    public void setApplicationClusterMap(Map<String, String> applicationClusterMap) {
+        this.applicationClusterMap = applicationClusterMap;
     }
 
     public int getReadTimeout() {

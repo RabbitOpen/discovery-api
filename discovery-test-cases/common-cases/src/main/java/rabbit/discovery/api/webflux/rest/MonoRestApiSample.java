@@ -2,7 +2,7 @@ package rabbit.discovery.api.webflux.rest;
 
 import org.springframework.web.bind.annotation.*;
 import rabbit.discovery.api.common.http.anno.Body;
-import rabbit.discovery.api.rest.anno.Group;
+import rabbit.discovery.api.rest.anno.Cluster;
 import rabbit.discovery.api.rest.anno.RestClient;
 import rabbit.discovery.api.rest.anno.Retry;
 import rabbit.discovery.api.rest.http.HttpResponse;
@@ -31,7 +31,7 @@ public interface MonoRestApiSample {
      */
     @GetMapping("/get/{name}/{age}")
     Mono<User> getUser(@PathVariable("name") String name, @PathVariable("age") int age,
-                       @RequestBody User user, @Group String group);
+                       @RequestBody User user, @Cluster String group);
 
     @Retry(3)
     @PostMapping("/retry/{time}")

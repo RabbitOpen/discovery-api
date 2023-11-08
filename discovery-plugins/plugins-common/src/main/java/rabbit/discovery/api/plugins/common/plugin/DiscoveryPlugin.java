@@ -28,8 +28,8 @@ public abstract class DiscoveryPlugin extends SpringBeanSupplierHolder implement
      */
     protected ServerNode getProviderNode(String providerAppCode) {
         Configuration configuration = getConfiguration();
-        String group = configuration.getApplicationGroup(providerAppCode);
+        String cluster = configuration.getApplicationCluster(providerAppCode);
         Provider provider = ApplicationMetaCache.getApplicationMeta().getProvider();
-        return provider.getProviderServerNode(providerAppCode, group);
+        return provider.getProviderServerNode(providerAppCode, cluster);
     }
 }

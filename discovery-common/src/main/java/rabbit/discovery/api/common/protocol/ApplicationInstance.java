@@ -6,9 +6,9 @@ package rabbit.discovery.api.common.protocol;
 public class ApplicationInstance {
 
     /**
-     * 分组名
+     * 所属集群名
      */
-    private String groupName;
+    private String clusterName;
 
     /**
      * 实例ip
@@ -38,12 +38,12 @@ public class ApplicationInstance {
     public ApplicationInstance() {
     }
 
-    public String getGroupName() {
-        return groupName;
+    public String getClusterName() {
+        return clusterName;
     }
 
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
+    public void setClusterName(String clusterName) {
+        this.clusterName = clusterName;
     }
 
     public String getHost() {

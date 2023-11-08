@@ -27,9 +27,9 @@ public final class HttpRequest {
     private Type resultType;
 
     /**
-     * 目标应用分组
+     * 目标应用集群
      */
-    private String applicationGroup;
+    private String applicationCluster;
 
     /**
      * 接口函数
@@ -158,12 +158,12 @@ public final class HttpRequest {
         this.resultType = resultType;
     }
 
-    public String getApplicationGroup() {
-        return applicationGroup;
+    public String getApplicationCluster() {
+        return applicationCluster;
     }
 
-    public void setApplicationGroup(String applicationGroup) {
-        this.applicationGroup = applicationGroup;
+    public void setApplicationCluster(String applicationCluster) {
+        this.applicationCluster = applicationCluster;
     }
 
     public Method getMethod() {

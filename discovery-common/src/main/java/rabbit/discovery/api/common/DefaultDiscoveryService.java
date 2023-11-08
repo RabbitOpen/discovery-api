@@ -154,7 +154,7 @@ public class DefaultDiscoveryService implements DiscoveryService {
             result = protocolService.register(instance, getSignatureHeader());
             if (result.isSuccess()) {
                 instance.setId(result.getId());
-                logger.info("应用[{}.{}]注册成功，实例id: {}", instance.getApplicationCode(), instance.getGroupName(), instance.getId());
+                logger.info("应用[{}.{}]注册成功，实例id: {}", instance.getApplicationCode(), instance.getClusterName(), instance.getId());
                 registered = true;
                 return result.getApplicationMeta();
             }
@@ -179,7 +179,7 @@ public class DefaultDiscoveryService implements DiscoveryService {
     private void initApplicationInstance() {
         instance = new ApplicationInstance(configuration.getApplicationCode());
         instance.setPort(configuration.getPort());
-        instance.setGroupName(configuration.getGroupName());
+        instance.setClusterName(configuration.getClusterName());
         if (!StringUtils.isEmpty(configuration.getHost())) {
             instance.setHost(configuration.getHost());
         } else {
