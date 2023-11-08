@@ -22,16 +22,16 @@ public interface RestApiSample {
                                          @RequestBody User user);
 
     /**
-     * 调用指定group的服务
+     * 调用指定cluster的服务
      * @param name
      * @param age
      * @param user
-     * @param group
+     * @param cluster
      * @return
      */
     @PostMapping("/get/{name}/{age}")
     User getUser(@PathVariable("name") String name, @PathVariable("age") int age,
-                                         @RequestBody User user, @Cluster String group);
+                                         @RequestBody User user, @Cluster String cluster);
 
     @Retry(3)
     @PostMapping("/retry/{time}")

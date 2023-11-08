@@ -21,17 +21,17 @@ public interface MonoRestApiSample {
                                                @RequestBody User user);
 
     /**
-     * 调用指定group的服务
+     * 调用指定cluster的服务
      *
      * @param name
      * @param age
      * @param user
-     * @param group
+     * @param cluster
      * @return
      */
     @GetMapping("/get/{name}/{age}")
     Mono<User> getUser(@PathVariable("name") String name, @PathVariable("age") int age,
-                       @RequestBody User user, @Cluster String group);
+                       @RequestBody User user, @Cluster String cluster);
 
     @Retry(3)
     @PostMapping("/retry/{time}")
