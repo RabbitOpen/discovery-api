@@ -27,7 +27,7 @@ public class RestApiController {
             if ("Content-length".equalsIgnoreCase(n)) {
                 continue;
             }
-            response.setHeader(n, request.getHeader(n).toLowerCase());
+            response.setHeader(n.toLowerCase(), request.getHeader(n));
         }
         if (null == requestUser) {
             return new User(name, age);
