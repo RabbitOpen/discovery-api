@@ -3,6 +3,7 @@ package rabbit.discovery.api.rest;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.*;
+import rabbit.discovery.api.common.ServerNode;
 import rabbit.discovery.api.common.http.anno.Body;
 import rabbit.discovery.api.common.http.anno.Header;
 import rabbit.discovery.api.common.http.anno.HeaderMap;
@@ -10,6 +11,7 @@ import rabbit.discovery.api.common.http.anno.Headers;
 import rabbit.discovery.api.rest.anno.AcceptGZipEncoding;
 import rabbit.discovery.api.rest.anno.Cluster;
 import rabbit.discovery.api.rest.anno.Retry;
+import rabbit.discovery.api.rest.anno.TargetServer;
 import rabbit.discovery.api.rest.exception.InvalidRequestException;
 import rabbit.discovery.api.rest.exception.NoRequestFoundException;
 import rabbit.discovery.api.rest.http.HttpRequest;
@@ -129,6 +131,7 @@ public abstract class ClientFactory implements InvocationHandler, FactoryBean {
             httpRequest.setQueryParameters(readParameters(args, parameters));
             httpRequest.addHeaders(readHttpHeaders(method, args, parameters));
             httpRequest.setApplicationCluster(readCluster(args, parameters));
+            httpRequest.setTargetServer(readTargetServer(args, parameters));
             return getRequestExecutor().execute(httpRequest);
         } else {
             throw new InvalidRequestException(method);
@@ -174,6 +177,23 @@ public abstract class ClientFactory implements InvocationHandler, FactoryBean {
         } else {
             request.setMaxRetryTimes(0);
         }
+    }
+
+    /**
+     * 读取本次请求的目标服务节点
+     * @param args
+     * @param parameters
+     * @return
+     */
+    protected ServerNode readTargetServer(Object[] args, Parameter[] parameters) {
+        for (int i = 0; i < parameters.length; i++) {
+            Parameter para = parameters[i];
+            if (null != para.getAnnotation(TargetServer.class) && null != args[i]
+                    && args[i] instanceof ServerNode) {
+                return (ServerNode) args[i];
+            }
+        }
+        return null;
     }
 
     /**
@@ -228,11 +248,12 @@ public abstract class ClientFactory implements InvocationHandler, FactoryBean {
 
     /**
      * 从参数上读取header信息
+     *
      * @param args
      * @param parameters
      * @return
      */
-    private Map<String, String>  readHeadersFromParameters(Object[] args, Parameter[] parameters) {
+    private Map<String, String> readHeadersFromParameters(Object[] args, Parameter[] parameters) {
         Map<String, String> headerMap = new HashMap<>();
         for (int i = 0; i < parameters.length; i++) {
             Parameter para = parameters[i];
@@ -254,6 +275,7 @@ public abstract class ClientFactory implements InvocationHandler, FactoryBean {
 
     /**
      * 从方法上读取header信息
+     *
      * @param method
      * @return
      */

@@ -54,7 +54,7 @@ public class SpringWebFlux272ApiTest {
             if ("monoRetryCase".equals(t.getNodeName())) {
                 monoRetryCaseTraceId = t.getTraceId();
             }
-            if (!StringUtils.isEmpty(restApiCaseTraceId) && 10 == cache.get(restApiCaseTraceId).size()
+            if (!StringUtils.isEmpty(restApiCaseTraceId) && 13 == cache.get(restApiCaseTraceId).size()
                     && !StringUtils.isEmpty(monoRetryCaseTraceId) && 31 == cache.get(monoRetryCaseTraceId).size()) {
                 // restApiCase下所有的trace都上报完毕
                 semaphore.release();
@@ -80,12 +80,15 @@ public class SpringWebFlux272ApiTest {
         TestCase.assertEquals("doHttpRequest", traceMap.get("0-0").getNodeName());
         TestCase.assertEquals("doHttpRequest", traceMap.get("0-1").getNodeName());
         TestCase.assertEquals("doHttpRequest", traceMap.get("0-2").getNodeName());
+        TestCase.assertEquals("doHttpRequest", traceMap.get("0-3").getNodeName());
         TestCase.assertEquals("/rest/get/{name}/{age}", traceMap.get("0-0-0").getNodeName());
         TestCase.assertEquals("/rest/get/{name}/{age}", traceMap.get("0-1-0").getNodeName());
         TestCase.assertEquals("/rest/get/{name}/{age}", traceMap.get("0-2-0").getNodeName());
+        TestCase.assertEquals("/rest/get/{name}/{age}", traceMap.get("0-3-0").getNodeName());
         TestCase.assertEquals("getUser", traceMap.get("0-0-0-0").getNodeName());
         TestCase.assertEquals("getUser", traceMap.get("0-1-0-0").getNodeName());
         TestCase.assertEquals("getUser", traceMap.get("0-2-0-0").getNodeName());
+        TestCase.assertEquals("getUser", traceMap.get("0-3-0-0").getNodeName());
 
         traceMap.clear();
         List<TraceData> dataList = cache.get(monoRetryCaseTraceId);

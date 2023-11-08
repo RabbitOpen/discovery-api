@@ -3,6 +3,7 @@ package rabbit.discovery.api.common;
 import rabbit.discovery.api.common.enums.Schema;
 import rabbit.discovery.api.common.exception.DiscoveryException;
 import rabbit.discovery.api.common.utils.PathParser;
+import rabbit.flt.common.utils.StringUtils;
 
 import java.net.URI;
 
@@ -92,6 +93,11 @@ public class ServerNode {
     }
 
     public void setPath(String path) {
-        this.path = PathParser.removeRepeatedSeparator(path);
+        if (!StringUtils.isEmpty(path)) {
+            this.path = PathParser.removeRepeatedSeparator(path);
+            if ("/".equals(this.path)) {
+                this.path = "";
+            }
+        }
     }
 }

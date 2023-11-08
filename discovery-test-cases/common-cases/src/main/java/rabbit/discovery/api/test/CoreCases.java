@@ -3,6 +3,7 @@ package rabbit.discovery.api.test;
 import junit.framework.TestCase;
 import org.springframework.context.ApplicationContext;
 import rabbit.discovery.api.common.Headers;
+import rabbit.discovery.api.common.ServerNode;
 import rabbit.discovery.api.common.enums.HttpMethod;
 import rabbit.discovery.api.common.exception.RestApiException;
 import rabbit.discovery.api.common.rpc.ApiDescription;
@@ -107,6 +108,15 @@ public class CoreCases {
         TestCase.assertEquals(INTERCEPTOR_VALUE, response.getHeaders().get(INTERCEPTOR_HEADER));
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.OPEN_API_REQUEST_TIME.toLowerCase()));
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.OPEN_API_REQUEST_TIME_SIGNATURE.toLowerCase()));
+
+        response = apiSample.getUser(name, age, new ServerNode("http://127.0.0.1:1802//"));
+        TestCase.assertEquals(name, response.getData().getName());
+        TestCase.assertEquals(age, response.getData().getAge());
+        TestCase.assertEquals("c9", response.getHeaders().get(Headers.OPEN_API_CODE.toLowerCase()));
+        TestCase.assertEquals("c3", response.getHeaders().get(Headers.OPEN_API_CREDENTIAL.toLowerCase()));
+        TestCase.assertEquals(INTERCEPTOR_VALUE, response.getHeaders().get(INTERCEPTOR_HEADER));
+        TestCase.assertTrue(response.getHeaders().containsKey(Headers.OPEN_API_REQUEST_TIME.toLowerCase()));
+        TestCase.assertTrue(response.getHeaders().containsKey(Headers.OPEN_API_REQUEST_TIME_SIGNATURE.toLowerCase()));
     }
 
     /**
@@ -134,6 +144,17 @@ public class CoreCases {
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.APPLICATION_CODE.toLowerCase()));
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.REQUEST_TIME.toLowerCase()));
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.REQUEST_TIME_SIGNATURE.toLowerCase()));
+
+        response = apiSample.getUser(name, 127, new User(name, age),
+                new ServerNode("http://localhost:1802"));
+        TestCase.assertEquals(name, response.getData().getName());
+        TestCase.assertEquals(127, response.getData().getAge());
+        TestCase.assertTrue(response.getHeaders().containsKey(Headers.API_VERSION.toLowerCase()));
+        TestCase.assertEquals(INTERCEPTOR_VALUE, response.getHeaders().get(INTERCEPTOR_HEADER));
+        TestCase.assertTrue(response.getHeaders().containsKey(Headers.APPLICATION_CODE.toLowerCase()));
+        TestCase.assertTrue(response.getHeaders().containsKey(Headers.REQUEST_TIME.toLowerCase()));
+        TestCase.assertTrue(response.getHeaders().containsKey(Headers.REQUEST_TIME_SIGNATURE.toLowerCase()));
+
     }
 
     /**

@@ -15,7 +15,8 @@ public final class RestClientExecutor extends HttpRequestExecutor {
      */
     @Override
     protected ServerNode getTargetServer(HttpRequest request) {
-        return getLoadBalancer().choose(request);
+        ServerNode targetServer = request.getTargetServer();
+        return null == targetServer ? getLoadBalancer().choose(request) : targetServer;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package rabbit.discovery.api.rest.http;
 
+import rabbit.discovery.api.common.ServerNode;
 import rabbit.discovery.api.common.enums.HttpMethod;
 import rabbit.discovery.api.rest.ClientFactory;
 
@@ -64,6 +65,11 @@ public final class HttpRequest {
      * 最大重试次数
      */
     private int maxRetryTimes = 0;
+
+    /**
+     * 本次请求的目标服务
+     */
+    private ServerNode targetServer;
 
     /**
      * 绑定的附件
@@ -228,5 +234,13 @@ public final class HttpRequest {
 
     public void setMaxRetryTimes(int maxRetryTimes) {
         this.maxRetryTimes = maxRetryTimes;
+    }
+
+    public ServerNode getTargetServer() {
+        return targetServer;
+    }
+
+    public void setTargetServer(ServerNode targetServer) {
+        this.targetServer = targetServer;
     }
 }

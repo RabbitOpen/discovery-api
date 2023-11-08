@@ -36,4 +36,5 @@ public interface MonoRestApiSample {
     @Retry(3)
     @PostMapping("/retry/{time}")
     Mono<RetryData> retry(@PathVariable("time") int time);
+
 }
