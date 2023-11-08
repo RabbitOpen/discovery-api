@@ -33,7 +33,10 @@ public class SpringWebFlux272ApiTest {
     @Autowired
     ApplicationContext applicationContext;
 
-    private String targetTraceId;
+    private String restApiCaseTraceId;
+
+    private String monoRetryCaseTraceId;
+
     /**
      * discovery-rest 可单独作为api和open api的客户端使用
      * 由于没有Discovery能力，所以需要自己实现LoadBalancer
@@ -50,17 +53,21 @@ public class SpringWebFlux272ApiTest {
         TestTraceDataHandler.setRealHandler(list -> list.forEach(t -> {
             cache.computeIfAbsent(t.getTraceId(), traceId -> new ArrayList<>()).add(t);
             if ("restApiCase".equals(t.getNodeName())) {
-                targetTraceId = t.getTraceId();
+                restApiCaseTraceId = t.getTraceId();
             }
-            if (!StringUtils.isEmpty(targetTraceId) && 10 == cache.get(targetTraceId).size()) {
+            if ("monoRetryCase".equals(t.getNodeName())) {
+                monoRetryCaseTraceId = t.getTraceId();
+            }
+            if (!StringUtils.isEmpty(restApiCaseTraceId) && 10 == cache.get(restApiCaseTraceId).size()
+                    && !StringUtils.isEmpty(monoRetryCaseTraceId) && 31 == cache.get(monoRetryCaseTraceId).size()) {
                 // restApiCase下所有的trace都上报完毕
                 semaphore.release();
             }
         }));
 
         CoreCases cases = new CoreCases();
-        cases.configLoadCase(applicationContext);
         cases.monoRetryCase(applicationContext);
+        cases.configLoadCase(applicationContext);
         cases.openApiCase(applicationContext);
         cases.restApiCase(applicationContext);
         cases.monoRestApiCase(applicationContext);
@@ -70,19 +77,24 @@ public class SpringWebFlux272ApiTest {
 
 
         semaphore.acquire();
-        Map<String, TraceData> restApiCaseTrace = new HashMap<>();
-        cache.get(targetTraceId).forEach(traceData -> restApiCaseTrace.put(traceData.getSpanId(), traceData));
-        TestCase.assertEquals("restApiCase", restApiCaseTrace.get("0").getNodeName());
-        TestCase.assertEquals("doHttpRequest", restApiCaseTrace.get("0-0").getNodeName());
-        TestCase.assertEquals("doHttpRequest", restApiCaseTrace.get("0-1").getNodeName());
-        TestCase.assertEquals("doHttpRequest", restApiCaseTrace.get("0-2").getNodeName());
-        TestCase.assertEquals("/rest/get/{name}/{age}", restApiCaseTrace.get("0-0-0").getNodeName());
-        TestCase.assertEquals("/rest/get/{name}/{age}", restApiCaseTrace.get("0-1-0").getNodeName());
-        TestCase.assertEquals("/rest/get/{name}/{age}", restApiCaseTrace.get("0-2-0").getNodeName());
-        TestCase.assertEquals("getUser", restApiCaseTrace.get("0-0-0-0").getNodeName());
-        TestCase.assertEquals("getUser", restApiCaseTrace.get("0-1-0-0").getNodeName());
-        TestCase.assertEquals("getUser", restApiCaseTrace.get("0-2-0-0").getNodeName());
+        Map<String, TraceData> traceMap = new HashMap<>();
+        cache.get(restApiCaseTraceId).forEach(traceData -> traceMap.put(traceData.getSpanId(), traceData));
+        TestCase.assertEquals("restApiCase", traceMap.get("0").getNodeName());
+        TestCase.assertEquals("doHttpRequest", traceMap.get("0-0").getNodeName());
+        TestCase.assertEquals("doHttpRequest", traceMap.get("0-1").getNodeName());
+        TestCase.assertEquals("doHttpRequest", traceMap.get("0-2").getNodeName());
+        TestCase.assertEquals("/rest/get/{name}/{age}", traceMap.get("0-0-0").getNodeName());
+        TestCase.assertEquals("/rest/get/{name}/{age}", traceMap.get("0-1-0").getNodeName());
+        TestCase.assertEquals("/rest/get/{name}/{age}", traceMap.get("0-2-0").getNodeName());
+        TestCase.assertEquals("getUser", traceMap.get("0-0-0-0").getNodeName());
+        TestCase.assertEquals("getUser", traceMap.get("0-1-0-0").getNodeName());
+        TestCase.assertEquals("getUser", traceMap.get("0-2-0-0").getNodeName());
         TestTraceDataHandler.resetHandler();
+
+        traceMap.clear();
+        List<TraceData> dataList = cache.get(monoRetryCaseTraceId);
+        dataList.forEach(traceData -> traceMap.put(traceData.getSpanId(), traceData));
+        TestCase.assertEquals(31, traceMap.size());
     }
 }
 

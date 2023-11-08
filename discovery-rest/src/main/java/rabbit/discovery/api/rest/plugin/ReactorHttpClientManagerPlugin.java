@@ -11,7 +11,6 @@ import rabbit.flt.plugins.common.plugin.PerformancePlugin;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Method;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class ReactorHttpClientManagerPlugin extends PerformancePlugin {
 
@@ -23,20 +22,18 @@ public class ReactorHttpClientManagerPlugin extends PerformancePlugin {
             return args;
         }
         if ("doRequest".equals(method.getName())) {
-            // 开启了trace
             super.before(target, method, args);
-            MethodStackInfo stackInfo = TraceContext.getStackInfo(method);
+            // 开启了trace
             HttpRequest request = (HttpRequest) args[0];
+            // 添加链路追踪头
+            request.setHeader(Headers.TRACE_ID, TraceContext.getTraceId());
+            request.setHeader(Headers.SPAN_ID, TraceContext.getRootSpanId());
+            request.setHeader(Headers.SOURCE_APP, AbstractConfigFactory.getConfig().getApplicationCode());
+            MethodStackInfo stackInfo = TraceContext.getStackInfo(method);
             if (null != stackInfo) {
                 stackInfo.getTraceData().setNodeName("doHttpRequest");
                 request.addAttachment(attachmentName, stackInfo.getTraceData());
             }
-        } else if ("getHttpClient".equals(method.getName())) {
-            // 添加链路追踪头
-            HttpRequest request = (HttpRequest) args[0];
-            request.setHeader(Headers.TRACE_ID, TraceContext.getTraceId());
-            request.setHeader(Headers.SPAN_ID, getSpanId());
-            request.setHeader(Headers.SOURCE_APP, AbstractConfigFactory.getConfig().getApplicationCode());
         }
         return args;
     }
@@ -78,10 +75,4 @@ public class ReactorHttpClientManagerPlugin extends PerformancePlugin {
         // do nothing, 异步发送
     }
 
-    private String getSpanId() {
-        String rootSpanId = TraceContext.getRootSpanId();
-        AtomicLong counter = TraceContext.getSpanIdChildCounter(rootSpanId);
-        // 直接使用
-        return rootSpanId + "-" + counter.get();
-    }
 }

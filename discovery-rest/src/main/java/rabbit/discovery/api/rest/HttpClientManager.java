@@ -39,10 +39,9 @@ public abstract class HttpClientManager<T> {
      * 发送请求
      *
      * @param requestObj 请求包装对象
-     * @param request    http client request对象
      * @return
      */
-    protected abstract HttpResponse doRequest(HttpRequest requestObj, T request);
+    protected abstract HttpResponse doRequest(HttpRequest requestObj);
 
     /**
      * 设置请求body
@@ -54,14 +53,6 @@ public abstract class HttpClientManager<T> {
     protected abstract void setRequestBody(T request, String body, String contentType);
 
     /**
-     * 获取http client request对象
-     *
-     * @param request
-     * @return
-     */
-    protected abstract T getRequestObject(HttpRequest request);
-
-    /**
      * 执行http请求
      *
      * @param httpRequest
@@ -69,8 +60,7 @@ public abstract class HttpClientManager<T> {
      * @return
      */
     public final HttpResponse execute(HttpRequest httpRequest, int retried) {
-        T request = getRequestObject(httpRequest);
-        HttpResponse httpResponse = doRequest(httpRequest, request);
+        HttpResponse httpResponse = doRequest(httpRequest);
         if (httpRequest.isAsyncRequest()) {
             Mono<String> data = (Mono<String>) httpResponse.getData();
             Mono<String> map = data.map(b -> {

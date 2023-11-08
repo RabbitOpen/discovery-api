@@ -52,7 +52,8 @@ public class HttpClient4Manager extends HttpClientManager<HttpRequestBase> {
     }
 
     @Override
-    protected HttpResponse doRequest(HttpRequest requestObj, HttpRequestBase request) {
+    protected HttpResponse doRequest(HttpRequest requestObj) {
+        HttpRequestBase request = getRequestObject(requestObj);
         CloseableHttpResponse response = null;
         try {
             response = httpClient.execute(request);
@@ -85,7 +86,11 @@ public class HttpClient4Manager extends HttpClientManager<HttpRequestBase> {
         return ContentType.APPLICATION_JSON.withCharset("UTF-8");
     }
 
-    @Override
+    /**
+     * 获取请求对象
+     * @param request
+     * @return
+     */
     protected HttpRequestBase getRequestObject(HttpRequest request) {
         HttpRequestBase requestBase = getHttpRequestBase(request);
         addRequestBody(request, requestBase);

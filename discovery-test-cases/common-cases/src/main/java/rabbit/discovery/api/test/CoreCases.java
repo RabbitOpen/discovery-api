@@ -161,6 +161,7 @@ public class CoreCases {
      * @param context
      * @throws Exception
      */
+    @Traceable
     public void monoRetryCase(ApplicationContext context) throws Exception {
         Semaphore semaphore = new Semaphore(0);
         MonoRestApiSample apiSample = context.getBean(MonoRestApiSample.class);

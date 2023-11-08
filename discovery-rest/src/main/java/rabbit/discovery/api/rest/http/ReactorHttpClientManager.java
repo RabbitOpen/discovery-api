@@ -30,6 +30,7 @@ public class ReactorHttpClientManager extends HttpClientManager<HttpClient.Respo
                 .maxIdleTime(Duration.ofSeconds(600))
                 .maxLifeTime(Duration.ofSeconds(600))
                 .pendingAcquireTimeout(Duration.ofSeconds(10))
+                .pendingAcquireMaxCount(2000)
                 .evictInBackground(Duration.ofSeconds(120))
                 .build();
     }
@@ -43,7 +44,8 @@ public class ReactorHttpClientManager extends HttpClientManager<HttpClient.Respo
     }
 
     @Override
-    protected HttpResponse doRequest(HttpRequest requestObj, HttpClient.ResponseReceiver request) {
+    protected final HttpResponse doRequest(HttpRequest requestObj) {
+        HttpClient.ResponseReceiver request = getRequestObject(requestObj);
         HttpResponse<Object> response = new HttpResponse<>();
         Mono<String> monoResult = exchange(requestObj, request, response);
         if (requestObj.isAsyncRequest()) {
@@ -81,7 +83,11 @@ public class ReactorHttpClientManager extends HttpClientManager<HttpClient.Respo
         // ignore 发送请求时再设置
     }
 
-    @Override
+    /**
+     * 获取请求对象
+     * @param request
+     * @return
+     */
     protected HttpClient.ResponseReceiver getRequestObject(HttpRequest request) {
         HttpClient httpClient = getHttpClient(request);
         if (POST == request.getHttpMethod()) {

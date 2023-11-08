@@ -62,7 +62,8 @@ public class HttpClient3Manager extends HttpClientManager<HttpMethodBase> {
     }
 
     @Override
-    protected HttpResponse doRequest(HttpRequest requestObj, HttpMethodBase request) {
+    protected HttpResponse doRequest(HttpRequest requestObj) {
+        HttpMethodBase request = getRequestObject(requestObj);
         InputStream stream = null;
         try {
             ReadTimeout readTimeout = requestObj.getMethod().getAnnotation(ReadTimeout.class);
@@ -153,7 +154,11 @@ public class HttpClient3Manager extends HttpClientManager<HttpMethodBase> {
         }
     }
 
-    @Override
+    /**
+     * 获取请求对象
+     * @param request
+     * @return
+     */
     protected HttpMethodBase getRequestObject(HttpRequest request) {
         HttpMethodBase requestMethod = getHttpMethodBase(request);
         addRequestBody(request, requestMethod);
