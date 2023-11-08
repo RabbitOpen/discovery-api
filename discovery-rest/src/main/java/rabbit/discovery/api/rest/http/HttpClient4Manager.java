@@ -53,10 +53,9 @@ public class HttpClient4Manager extends HttpClientManager<HttpRequestBase> {
 
     @Override
     protected HttpResponse doRequest(HttpRequest requestObj) {
-        HttpRequestBase request = getRequestObject(requestObj);
         CloseableHttpResponse response = null;
         try {
-            response = httpClient.execute(request);
+            response = httpClient.execute(getRequestObject(requestObj));
             HashMap<String, String> headerMap = new HashMap<>();
             for (Header header : response.getAllHeaders()) {
                 headerMap.put(header.getName(), header.getValue());
