@@ -128,7 +128,7 @@ public abstract class HttpAuthenticationFilter extends SpringBeanSupplierHolder 
             }
             requestTime = Long.parseLong(requestTimeStr);
         } catch (Exception e) {
-            throw new DiscoveryException(errorMsg.concat("").concat(e.getMessage()));
+            throw new DiscoveryException(errorMsg.concat(e.getMessage()));
         }
         long replayWindow = getConfiguration().getReplayWindow() * 1000L;
         long actual = Math.abs(System.currentTimeMillis() - requestTime);
