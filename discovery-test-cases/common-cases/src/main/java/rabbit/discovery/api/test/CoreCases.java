@@ -19,7 +19,7 @@ import rabbit.discovery.api.test.controller.IncludeController;
 import rabbit.discovery.api.test.open.OpenApiSample;
 import rabbit.discovery.api.test.rest.AuthorizedApiSample;
 import rabbit.discovery.api.test.rest.RestApiSample;
-import rabbit.discovery.api.test.spi.ApiCacheMap;
+import rabbit.discovery.api.test.spi.ApiCache;
 import rabbit.discovery.api.test.spi.MySpringBootConfigLoader;
 import rabbit.discovery.api.test.spi.TestClassProxyListener;
 import rabbit.discovery.api.webflux.open.MonoOpenApiSample;
@@ -66,8 +66,8 @@ public class CoreCases {
      * 接口上报验证
      */
     public void reportServiceCase() {
-        TestCase.assertEquals(2, ApiCacheMap.getMap().size());
-        List<ApiDescription> exclude = ApiCacheMap.getMap().get(ExcludeController.class.getName());
+        TestCase.assertEquals(2, ApiCache.getMap().size());
+        List<ApiDescription> exclude = ApiCache.getMap().get(ExcludeController.class.getName());
         TestCase.assertEquals(2, exclude.size());
         TestCase.assertEquals(ExcludeController.class.getName().concat(".exclude"), exclude.get(0).getName());
         TestCase.assertEquals("/exclude/exclude1", exclude.get(0).getPath());
@@ -75,7 +75,7 @@ public class CoreCases {
         TestCase.assertEquals("/exclude/exclude2", exclude.get(1).getPath());
         TestCase.assertEquals(HttpMethod.GET, exclude.get(0).getMethod());
 
-        List<ApiDescription> include = ApiCacheMap.getMap().get(IncludeController.class.getName());
+        List<ApiDescription> include = ApiCache.getMap().get(IncludeController.class.getName());
         TestCase.assertEquals(6, include.size());
         include.forEach(a -> {
             if (a.getName().equals("exclude")) {

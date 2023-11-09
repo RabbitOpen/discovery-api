@@ -9,7 +9,7 @@ public class TestApiReportService implements ApiReportService {
 
     @Override
     public void doReport(String application, String className, List<ApiDescription> apiList) {
-        ApiCacheMap.getMap().put(className, apiList);
+        ApiCache.getMap().put(className, apiList);
     }
 
 }

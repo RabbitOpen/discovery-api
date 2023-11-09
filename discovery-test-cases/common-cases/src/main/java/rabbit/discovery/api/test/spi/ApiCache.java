@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ApiCacheMap {
+public class ApiCache {
 
     private static Map<String, List<ApiDescription>> map = new HashMap<>();
 
-    private ApiCacheMap() {}
+    private ApiCache() {}
 
     public static Map<String, List<ApiDescription>> getMap() {
         return map;

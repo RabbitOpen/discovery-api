@@ -54,7 +54,7 @@ public class ApiCollector implements BeanPostProcessor {
                 return;
             }
             readApiFromMethod(beanClz, method).forEach(api -> {
-                api.setPath(PathParser.removeRepeatedSeparator(api.getPath()));
+                api.setPath(PathParser.removeRepeatedSeparator(declaration.contextPath().concat(api.getPath())));
                 apiList.add(api);
             });
         });

@@ -29,4 +29,10 @@ public @interface Declaration {
      * @return
      */
     Policy policy() default INCLUDE;
+
+    /**
+     * context path
+     * @return
+     */
+    String contextPath() default "";
 }

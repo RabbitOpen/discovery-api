@@ -6,7 +6,7 @@ import rabbit.discovery.api.common.rpc.ApiReportService;
 import rabbit.discovery.api.common.rpc.ConfigService;
 import rabbit.discovery.api.test.service.ConfigServiceImpl;
 import rabbit.discovery.api.test.service.DiscoveryServiceImpl;
-import rabbit.discovery.api.test.spi.ApiCacheMap;
+import rabbit.discovery.api.test.spi.ApiCache;
 import rabbit.flt.common.Metrics;
 import rabbit.flt.rpc.common.ServerNode;
 import rabbit.flt.rpc.common.rpc.ProtocolService;
@@ -41,7 +41,7 @@ public class MySpringRunner extends SpringJUnit4ClassRunner {
                 })
                 .registerHandler(rabbit.discovery.api.common.rpc.ProtocolService.class, DiscoveryServiceImpl.getInstance())
                 .registerHandler(ConfigService.class, ConfigServiceImpl.getInstance())
-                .registerHandler(ApiReportService.class, (application, className, apiList) -> ApiCacheMap.getMap().put(className, apiList))
+                .registerHandler(ApiReportService.class, (application, className, apiList) -> ApiCache.getMap().put(className, apiList))
                 .maxFrameLength(16 * 1024 * 1024)
                 .maxIdleSeconds(30)
                 .maxPendingConnections(1000)
