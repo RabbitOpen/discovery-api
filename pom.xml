@@ -34,7 +34,7 @@
         <!--将所有jacoco定位到同样的父目录位置-->
         <sonar.jacoco.reportPaths>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPaths>
         <byte.buddy.version>1.11.0</byte.buddy.version>
-        <rabbit.flt.core.version>1.0.0-SNAPSHOT</rabbit.flt.core.version>
+        <rabbit.flt.version>1.0.0-SNAPSHOT</rabbit.flt.version>
     </properties>
 
     <dependencyManagement>
@@ -96,19 +96,19 @@
             <dependency>
                 <groupId>rabbit.flt</groupId>
                 <artifactId>flt-core</artifactId>
-                <version>${rabbit.flt.core.version}</version>
+                <version>${rabbit.flt.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>rabbit.flt</groupId>
                 <artifactId>flt-rpc-server</artifactId>
-                <version>${rabbit.flt.core.version}</version>
+                <version>${rabbit.flt.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>rabbit.flt</groupId>
                 <artifactId>flt-common</artifactId>
-                <version>${rabbit.flt.core.version}</version>
+                <version>${rabbit.flt.version}</version>
             </dependency>
 
             <dependency>
