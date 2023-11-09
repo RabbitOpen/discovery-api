@@ -107,14 +107,10 @@ public class ApiCollector implements BeanPostProcessor {
         if (apiList.isEmpty()) {
             return;
         }
-        try {
-            ApiReportService reportService = getApiReportService();
-            reportService.setReportServer(configuration.getRegistryAddress());
-            reportService.setSecurityKey(configuration.getPrivateKey());
-            reportService.doReport(configuration.getApplicationCode(), clzName, apiList);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        }
+        ApiReportService reportService = getApiReportService();
+        reportService.setReportServer(configuration.getRegistryAddress());
+        reportService.setSecurityKey(configuration.getPrivateKey());
+        reportService.doReport(configuration.getApplicationCode(), clzName, apiList);
     }
 
     private ApiReportService getApiReportService() {
