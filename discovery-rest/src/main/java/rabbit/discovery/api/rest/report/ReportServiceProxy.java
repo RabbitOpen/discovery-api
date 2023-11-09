@@ -27,12 +27,8 @@ class ReportServiceProxy implements ApiReportService {
             logger.error("report server 配置缺失，上报失败");
             return;
         }
-        ApiReportService realService = getRealReportService(application);
-        if (null == realService) {
-            return;
-        }
         try {
-            realService.doReport(application, className, apiList);
+            getRealReportService(application).doReport(application, className, apiList);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
