@@ -6,18 +6,22 @@ import rabbit.discovery.api.common.http.PostRequest;
 import rabbit.discovery.api.common.http.Request;
 import rabbit.discovery.api.common.http.anno.Headers;
 import rabbit.discovery.api.common.http.anno.*;
+import rabbit.discovery.api.common.utils.RsaUtils;
 import rabbit.flt.common.utils.StringUtils;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Proxy;
+import java.security.PrivateKey;
 import java.util.HashMap;
 import java.util.Map;
 
 public class RequestFactory implements InvocationHandler {
 
     private Configuration configuration;
+
+    private PrivateKey privateKey;
 
     private String name;
 
@@ -72,12 +76,13 @@ public class RequestFactory implements InvocationHandler {
 
     /**
      * 获取请求头
+     *
      * @param method
      * @param args
      * @return
      */
     private Map<String, String> getRequestHeaders(Method method, Object[] args) {
-        Map<String, String> headerMap = new HashMap<>();
+        Map<String, String> headerMap = ApiProtocolHelper.getSignatureMap(configuration.getApplicationCode(), privateKey);
         Header header = method.getAnnotation(Header.class);
         if (null != header) {
             headerMap.put(header.name(), header.value());
@@ -97,7 +102,7 @@ public class RequestFactory implements InvocationHandler {
                 continue;
             }
             HeaderMap map = p.getAnnotation(HeaderMap.class);
-            if (null != map  && null != args[i]) {
+            if (null != map && null != args[i]) {
                 headerMap.putAll((Map<? extends String, ? extends String>) args[i]);
             }
         }
@@ -137,6 +142,7 @@ public class RequestFactory implements InvocationHandler {
 
     private void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
+        this.privateKey = RsaUtils.loadPrivateKeyFromString(configuration.getPrivateKey());
     }
 
     private void setName(String name) {

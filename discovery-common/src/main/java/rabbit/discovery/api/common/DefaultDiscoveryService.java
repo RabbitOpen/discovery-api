@@ -16,12 +16,10 @@ import rabbit.discovery.api.common.spi.ConfigChangeListener;
 import rabbit.discovery.api.common.utils.JsonUtils;
 import rabbit.discovery.api.common.utils.PathParser;
 import rabbit.discovery.api.common.utils.PathPattern;
-import rabbit.discovery.api.common.utils.RsaUtils;
 import rabbit.flt.common.Metrics;
 import rabbit.flt.common.utils.GZipUtils;
 import rabbit.flt.common.utils.StringUtils;
 
-import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +42,6 @@ public class DefaultDiscoveryService implements DiscoveryService {
 
     private long authorizationVersion = -2L;
 
-    private PrivateKey privateKey;
-
     /**
      * 发生错误
      */
@@ -58,7 +54,6 @@ public class DefaultDiscoveryService implements DiscoveryService {
 
     @Override
     public void start() {
-        loadPrivateKey();
         protocolService = getProtocolService();
         initApplicationInstance();
         registerAndSynchronizeData();
@@ -116,7 +111,7 @@ public class DefaultDiscoveryService implements DiscoveryService {
      * 加载自己的授权
      */
     private void loadProviderPrivileges() {
-        PrivilegeData data = protocolService.getProviderPrivileges(configuration.getApplicationCode(), getSignatureHeader());
+        PrivilegeData data = protocolService.getProviderPrivileges(configuration.getApplicationCode());
         if (0 == data.getPlainDataLength()) {
             return;
         }
@@ -139,7 +134,7 @@ public class DefaultDiscoveryService implements DiscoveryService {
     private void updateRegistryAddress(Long registryVersion) {
         long currentVersion = ApplicationMetaCache.getApplicationMeta().getRegistryAddressVersion().longValue();
         if (currentVersion != registryVersion.byteValue()) {
-            configuration.setRegistryAddress(protocolService.getRegistryAddress(getSignatureHeader()));
+            configuration.setRegistryAddress(protocolService.getRegistryAddress());
         }
     }
 
@@ -151,7 +146,7 @@ public class DefaultDiscoveryService implements DiscoveryService {
     private ApplicationMeta loadLatestApplicationMeta() {
         RegisterResult result;
         if (!registered) {
-            result = protocolService.register(instance, getSignatureHeader());
+            result = protocolService.register(instance);
             if (result.isSuccess()) {
                 instance.setId(result.getId());
                 logger.info("应用[{}.{}]注册成功，实例id: {}", instance.getApplicationCode(), instance.getClusterName(), instance.getId());
@@ -159,21 +154,12 @@ public class DefaultDiscoveryService implements DiscoveryService {
                 return result.getApplicationMeta();
             }
         } else {
-            result = protocolService.keepAlive(instance, getSignatureHeader());
+            result = protocolService.keepAlive(instance);
             if (result.isSuccess()) {
                 return result.getApplicationMeta();
             }
         }
         throw new DiscoveryException(result.getMessage());
-    }
-
-    /**
-     * 生成请求签名头
-     *
-     * @return
-     */
-    private Map<String, String> getSignatureHeader() {
-        return ApiProtocolHelper.getSignatureMap(configuration.getApplicationCode(), privateKey);
     }
 
     private void initApplicationInstance() {
@@ -192,7 +178,4 @@ public class DefaultDiscoveryService implements DiscoveryService {
         this.configuration = configuration;
     }
 
-    private void loadPrivateKey() {
-        this.privateKey = RsaUtils.loadPrivateKeyFromString(configuration.getPrivateKey());
-    }
 }

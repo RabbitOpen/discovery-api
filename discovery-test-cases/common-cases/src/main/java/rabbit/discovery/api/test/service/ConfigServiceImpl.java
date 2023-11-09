@@ -9,7 +9,6 @@ import rabbit.flt.common.utils.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ConfigServiceImpl implements ConfigService {
 
@@ -30,7 +29,7 @@ public class ConfigServiceImpl implements ConfigService {
     private String companyAddress = "chengdu";
 
     @Override
-    public ConfigDetail loadConfig(String applicationCode, List<RemoteConfig> configFiles, Map<String, String> signatures) {
+    public ConfigDetail loadConfig(String applicationCode, List<RemoteConfig> configFiles) {
         if (CollectionUtils.isEmpty(configFiles)) {
             return new ConfigDetail(new ArrayList<>(), 1L);
         }

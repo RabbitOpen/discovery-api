@@ -7,7 +7,6 @@ import rabbit.discovery.api.common.enums.ConfigType;
 import rabbit.discovery.api.common.exception.ConfigException;
 import rabbit.discovery.api.common.rpc.ConfigService;
 import rabbit.discovery.api.common.spi.ConfigChangeListener;
-import rabbit.discovery.api.common.utils.RsaUtils;
 import rabbit.discovery.api.config.anno.FlexibleBean;
 import rabbit.discovery.api.config.anno.FlexibleValue;
 import rabbit.discovery.api.config.context.FlexibleValueMeta;
@@ -19,13 +18,11 @@ import rabbit.flt.common.utils.StringUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.security.PrivateKey;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import static rabbit.discovery.api.common.ApiProtocolHelper.getSignatureMap;
 import static rabbit.discovery.api.common.CommunicationMode.HTTP;
 import static rabbit.flt.common.utils.StringUtils.isEmpty;
 
@@ -47,8 +44,6 @@ public abstract class ConfigLoader extends Thread implements ConfigChangeListene
 
     // 配置加载服务
     protected ConfigService configService;
-
-    protected PrivateKey privateKey;
 
     /**
      * 配置详情
@@ -138,7 +133,7 @@ public abstract class ConfigLoader extends Thread implements ConfigChangeListene
      * @return
      */
     protected ConfigDetail loadConfigFromServer(String applicationCode, List<RemoteConfig> configFiles) {
-        return configService.loadConfig(applicationCode, configFiles, getSignatureMap(applicationCode, privateKey));
+        return configService.loadConfig(applicationCode, configFiles);
     }
 
     private Integer getPriority(RemoteConfig c) {
@@ -289,9 +284,7 @@ public abstract class ConfigLoader extends Thread implements ConfigChangeListene
             applicationCode = readProperty("discovery.application.code");
             configuration.setApplicationCode(applicationCode);
             String propertyName = "discovery.application.security.key";
-            String privateKeyString = readProperty(propertyName);
-            privateKey = RsaUtils.loadPrivateKeyFromString(privateKeyString);
-            configuration.setPrivateKey(privateKeyString);
+            configuration.setPrivateKey(readProperty(propertyName));
             configService = getConfigService(configuration);
         }
     }

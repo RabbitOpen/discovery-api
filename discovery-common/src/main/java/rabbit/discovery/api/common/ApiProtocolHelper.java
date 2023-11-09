@@ -52,6 +52,7 @@ public class ApiProtocolHelper {
     public static Map<String, String> getSignatureMap(String application, PrivateKey privateKey) {
         Map<String, String> map = new HashMap<>();
         String now = Long.toString(System.currentTimeMillis());
+        map.put(Headers.API_VERSION, Environment.getVersion());
         map.put(Headers.REQUEST_TIME, now);
         map.put(Headers.APPLICATION_CODE, application);
         map.put(Headers.REQUEST_TIME_SIGNATURE, HexUtils.toHex(RsaUtils.signWithPrivateKey(now, privateKey)));

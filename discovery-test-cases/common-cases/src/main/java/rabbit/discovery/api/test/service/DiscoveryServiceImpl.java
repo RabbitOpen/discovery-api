@@ -11,7 +11,6 @@ import rabbit.flt.common.utils.GZipUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static rabbit.discovery.api.common.utils.PathParser.urlDecode;
 
@@ -33,7 +32,7 @@ public class DiscoveryServiceImpl implements ProtocolService {
     }
 
     @Override
-    public RegisterResult register(ApplicationInstance instance, Map<String, String> signature) {
+    public RegisterResult register(ApplicationInstance instance) {
         logger.info("application[{}] instance[{}:{}] register success!", instance.getApplicationCode(),
                 instance.getHost(), instance.getPort());
         Provider provider = applicationMeta.getProvider();
@@ -47,14 +46,14 @@ public class DiscoveryServiceImpl implements ProtocolService {
     }
 
     @Override
-    public RegisterResult keepAlive(ApplicationInstance instance, Map<String, String> signature) {
+    public RegisterResult keepAlive(ApplicationInstance instance) {
         logger.info("application[{}] instance[{}:{}] keepAlive success!", instance.getApplicationCode(),
                 instance.getHost(), instance.getPort());
         return RegisterResult.success("1", applicationMeta);
     }
 
     @Override
-    public PublicKeyDesc getPublicKey(String applicationCode, Map<String, String> signature) {
+    public PublicKeyDesc getPublicKey(String applicationCode) {
         logger.info("load app[{}] public key success!", urlDecode(applicationCode));
         String publicKey = "305C300D06092A864886F70D0101010500034B003048024100C5B76A3974FEED9144066469D95D3A0297288F626A54A3624901552353DFBDA20FA4156CE11C6048FC3F9DB79101DB047933E031074719C10D552E05658D16290203010001";
         PublicKeyDesc publicKeyDesc = new PublicKeyDesc();
@@ -64,13 +63,13 @@ public class DiscoveryServiceImpl implements ProtocolService {
     }
 
     @Override
-    public String getRegistryAddress(Map<String, String> signature) {
+    public String getRegistryAddress() {
         logger.info("load registry address success!");
         return "localhost:".concat(Integer.toString(port));
     }
 
     @Override
-    public PrivilegeData getProviderPrivileges(String applicationCode, Map<String, String> signature) {
+    public PrivilegeData getProviderPrivileges(String applicationCode) {
         String appCode = urlDecode(applicationCode);
         logger.info("application[{}] load privilege data success!", appCode);
         PrivilegeData privilegeData = new PrivilegeData();

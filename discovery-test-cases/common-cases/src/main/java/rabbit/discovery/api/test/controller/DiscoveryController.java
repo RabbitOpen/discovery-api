@@ -7,8 +7,6 @@ import rabbit.discovery.api.common.protocol.PrivilegeData;
 import rabbit.discovery.api.common.protocol.RegisterResult;
 import rabbit.discovery.api.test.service.DiscoveryServiceImpl;
 
-import java.util.HashMap;
-
 /**
  * 注册服务
  */
@@ -26,7 +24,7 @@ public class DiscoveryController {
      */
     @PostMapping("/register")
     public RegisterResult register(@RequestBody ApplicationInstance instance) {
-        return discoveryService.register(instance, new HashMap<>());
+        return discoveryService.register(instance);
     }
 
     /**
@@ -37,7 +35,7 @@ public class DiscoveryController {
      */
     @PostMapping("/keepAlive")
     public RegisterResult keepAlive(@RequestBody ApplicationInstance instance) {
-        return discoveryService.keepAlive(instance, new HashMap<>());
+        return discoveryService.keepAlive(instance);
     }
 
     /**
@@ -48,7 +46,7 @@ public class DiscoveryController {
      */
     @GetMapping("/getPublicKey/{applicationCode:.+}")
     public PublicKeyDesc getPublicKey(@PathVariable("applicationCode") String applicationCode) {
-        return discoveryService.getPublicKey(applicationCode, new HashMap<>());
+        return discoveryService.getPublicKey(applicationCode);
     }
 
     /**
@@ -56,7 +54,7 @@ public class DiscoveryController {
      */
     @GetMapping("/getRegistryAddress")
     public String getRegistryAddress() {
-        return discoveryService.getRegistryAddress(new HashMap<>());
+        return discoveryService.getRegistryAddress();
     }
 
     /**
@@ -67,7 +65,7 @@ public class DiscoveryController {
      */
     @PostMapping("/authorizations/provider/{applicationCode:.+}")
     public PrivilegeData getProviderPrivileges(@PathVariable("applicationCode") String applicationCode) {
-        return discoveryService.getProviderPrivileges(applicationCode, new HashMap<>());
+        return discoveryService.getProviderPrivileges(applicationCode);
     }
 
     public void incrementConfigVersion() {

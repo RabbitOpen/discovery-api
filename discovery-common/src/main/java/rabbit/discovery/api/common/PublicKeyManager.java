@@ -4,15 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rabbit.discovery.api.common.exception.DiscoveryException;
 import rabbit.discovery.api.common.rpc.ProtocolService;
-import rabbit.discovery.api.common.utils.RsaUtils;
 
-import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
-
-import static rabbit.discovery.api.common.ApiProtocolHelper.getSignatureMap;
 
 public class PublicKeyManager {
 
@@ -22,8 +18,6 @@ public class PublicKeyManager {
 
     // 协议服务
     private ProtocolService protocolService;
-
-    private PrivateKey privateKey;
 
     private ReentrantLock lock = new ReentrantLock();
 
@@ -52,8 +46,7 @@ public class PublicKeyManager {
      */
     private Key loadKeyFromCache(String applicationCode) {
         return cache.computeIfAbsent(applicationCode, code -> {
-            Map<String, String> signatureMap = getSignatureMap(applicationCode, privateKey);
-            PublicKeyDesc publicKey = getProtocolService().getPublicKey(code, signatureMap);
+            PublicKeyDesc publicKey = getProtocolService().getPublicKey(code);
             if (null != publicKey) {
                 logger.info("public key[{}] loading success, version is {}", code, publicKey.getKeyVersion());
                 return new Key(publicKey.getPublicKey());
@@ -87,7 +80,12 @@ public class PublicKeyManager {
         try {
             lock.lock();
             if (null == protocolService) {
-                protocolService = RequestFactory.proxy(ProtocolService.class, configuration);
+                if (CommunicationMode.HTTP == configuration.getCommunicationMode()) {
+                    protocolService = RequestFactory.proxy(ProtocolService.class, configuration);
+                } else {
+                    RpcFactory.init(configuration);
+                    protocolService = RpcFactory.proxy(ProtocolService.class);
+                }
             }
             return protocolService;
         } finally {
@@ -98,7 +96,6 @@ public class PublicKeyManager {
     public static void setConfiguration(Configuration configuration) {
         if (null == keyManager.configuration) {
             keyManager.configuration = configuration;
-            keyManager.privateKey = RsaUtils.loadPrivateKeyFromString(configuration.getPrivateKey().trim());
         }
     }
 }

@@ -8,7 +8,6 @@ import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.test.service.ConfigServiceImpl;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -30,7 +29,7 @@ public class ConfigController {
     @PostMapping("/config/load/{applicationCode:.+}")
     public ConfigDetail loadConfig(@PathVariable("applicationCode") String applicationCode,
                                    @RequestBody(required = false) List<RemoteConfig> configFiles) {
-        return configService.loadConfig(applicationCode, configFiles, new HashMap<>());
+        return configService.loadConfig(applicationCode, configFiles);
     }
 
     /**
