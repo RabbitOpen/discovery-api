@@ -2,14 +2,12 @@ package rabbit.discovery.api.rest.report;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import rabbit.discovery.api.common.Configuration;
+import rabbit.discovery.api.common.RpcFactory;
 import rabbit.discovery.api.common.rpc.ApiDescription;
 import rabbit.discovery.api.common.rpc.ApiReportService;
 import rabbit.flt.common.utils.StringUtils;
-import rabbit.flt.rpc.client.FltRequestFactory;
-import rabbit.flt.rpc.client.pool.ConfigBuilder;
-import rabbit.flt.rpc.common.ServerNode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,15 +19,13 @@ class ReportServiceProxy implements ApiReportService {
 
     private String securityKey;
 
-    private String agentServers;
-
-    private FltRequestFactory requestFactory = new FltRequestFactory();
+    private String reportServer;
 
     @Override
     public void doReport(String application, String className, List<ApiDescription> apiList) {
         this.securityKey = securityKey.length() > 16 ? securityKey.substring(0, 16) : securityKey;
-        if (StringUtils.isEmpty(agentServers)) {
-            logger.error("agent server 配置缺失，上报失败");
+        if (StringUtils.isEmpty(reportServer)) {
+            logger.error("report server 配置缺失，上报失败");
             return;
         }
         ApiReportService realService = getRealReportService(application);
@@ -44,17 +40,12 @@ class ReportServiceProxy implements ApiReportService {
     }
 
     private ApiReportService getRealReportService(String application) {
-        List<ServerNode> nodes = new ArrayList<>();
-        for (String server : agentServers.split(",")) {
-            String[] split = server.trim().split(":");
-            nodes.add(new ServerNode(split[0].trim(), Integer.parseInt(split[1].trim())));
-        }
-        requestFactory.init(ConfigBuilder.builder()
-                .serverNodes(nodes)
-                .applicationCode(application)
-                .password(securityKey)
-                .build());
-        return requestFactory.proxy(ApiReportService.class);
+        Configuration configuration = new Configuration();
+        configuration.setRegistryAddress(reportServer);
+        configuration.setApplicationCode(application);
+        configuration.setPrivateKey(securityKey);
+        RpcFactory.init(configuration);
+        return RpcFactory.proxy(ApiReportService.class);
     }
 
     @Override
@@ -63,7 +54,8 @@ class ReportServiceProxy implements ApiReportService {
     }
 
     @Override
-    public void setAgentServer(String agentServer) {
-        this.agentServers = agentServer;
+    public void setReportServer(String reportServer) {
+        this.reportServer = reportServer;
     }
+
 }

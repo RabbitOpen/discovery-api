@@ -26,9 +26,10 @@ public interface ApiReportService {
 
     /**
      * 设置服务地址
-     * @param agentServer
+     * @param reportServer
      */
-    default void setAgentServer(String agentServer) {
+    default void setReportServer(String reportServer) {
         // 设置服务地址
     }
+
 }

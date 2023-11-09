@@ -7,7 +7,6 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.*;
 import rabbit.discovery.api.common.Configuration;
-import rabbit.discovery.api.common.TraceConfiguration;
 import rabbit.discovery.api.common.enums.HttpMethod;
 import rabbit.discovery.api.common.rpc.ApiDescription;
 import rabbit.discovery.api.common.rpc.ApiReportService;
@@ -30,9 +29,6 @@ public class ApiCollector implements BeanPostProcessor {
 
     @Autowired
     private Configuration configuration;
-
-    @Autowired
-    private TraceConfiguration traceConfiguration;
 
     private Set<Class<?>> beanClzSet = new HashSet<>();
 
@@ -113,8 +109,8 @@ public class ApiCollector implements BeanPostProcessor {
         }
         try {
             ApiReportService reportService = getApiReportService();
-            reportService.setAgentServer(traceConfiguration.getServers());
-            reportService.setSecurityKey(traceConfiguration.getSecurityKey());
+            reportService.setReportServer(configuration.getRegistryAddress());
+            reportService.setSecurityKey(configuration.getPrivateKey());
             reportService.doReport(configuration.getApplicationCode(), clzName, apiList);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
