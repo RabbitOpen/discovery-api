@@ -47,7 +47,7 @@ public class RpcFactory {
                 .bossThreadCount(1)
                 // 降低内置心跳频率，业务上不依赖该操作维持心跳
                 .keepAliveIntervalSeconds(1800)
-                .password(configuration.getPrivateKey())
+                .password(configuration.getPrivateKey().substring(0, 16))
                 .build());
     }
 
