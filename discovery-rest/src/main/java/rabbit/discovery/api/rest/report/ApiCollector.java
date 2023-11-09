@@ -1,7 +1,5 @@
 package rabbit.discovery.api.rest.report;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -24,8 +22,6 @@ import static rabbit.discovery.api.rest.Policy.INCLUDE;
  * 接口采集服务
  */
 public class ApiCollector implements BeanPostProcessor {
-
-    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private Configuration configuration;
