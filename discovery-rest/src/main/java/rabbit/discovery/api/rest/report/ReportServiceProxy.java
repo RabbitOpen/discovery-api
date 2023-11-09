@@ -23,7 +23,6 @@ class ReportServiceProxy implements ApiReportService {
 
     @Override
     public void doReport(String application, String className, List<ApiDescription> apiList) {
-        this.securityKey = securityKey.length() > 16 ? securityKey.substring(0, 16) : securityKey;
         if (StringUtils.isEmpty(reportServer)) {
             logger.error("report server 配置缺失，上报失败");
             return;
