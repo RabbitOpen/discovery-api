@@ -3,23 +3,17 @@ package rabbit.discovery.api.common;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rabbit.discovery.api.common.exception.DiscoveryException;
-import rabbit.discovery.api.common.rpc.ProtocolService;
+import rabbit.discovery.api.common.rpc.ProtocolServiceWrapper;
 
 import java.security.PublicKey;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class PublicKeyManager {
 
     private Logger logger = LoggerFactory.getLogger("publicKeyManager");
 
     private Configuration configuration;
-
-    // 协议服务
-    private ProtocolService protocolService;
-
-    private ReentrantLock lock = new ReentrantLock();
 
     private Map<String, Key> cache = new ConcurrentHashMap<>();
 
@@ -46,7 +40,7 @@ public class PublicKeyManager {
      */
     private Key loadKeyFromCache(String applicationCode) {
         return cache.computeIfAbsent(applicationCode, code -> {
-            PublicKeyDesc publicKey = getProtocolService().getPublicKey(code);
+            PublicKeyDesc publicKey = ProtocolServiceWrapper.getPublicKey(code);
             if (null != publicKey) {
                 logger.info("public key[{}] loading success, version is {}", code, publicKey.getKeyVersion());
                 return new Key(publicKey.getPublicKey());
@@ -71,31 +65,10 @@ public class PublicKeyManager {
         return getPublicKey(applicationCode);
     }
 
-    /**
-     * 获取协议服务
-     *
-     * @return
-     */
-    private ProtocolService getProtocolService() {
-        try {
-            lock.lock();
-            if (null == protocolService) {
-                if (CommunicationMode.HTTP == configuration.getCommunicationMode()) {
-                    protocolService = RequestFactory.proxy(ProtocolService.class, configuration);
-                } else {
-                    RpcFactory.init(configuration);
-                    protocolService = RpcFactory.proxy(ProtocolService.class);
-                }
-            }
-            return protocolService;
-        } finally {
-            lock.unlock();
-        }
-    }
-
     public static void setConfiguration(Configuration configuration) {
         if (null == keyManager.configuration) {
             keyManager.configuration = configuration;
+            ProtocolServiceWrapper.init(configuration);
         }
     }
 }

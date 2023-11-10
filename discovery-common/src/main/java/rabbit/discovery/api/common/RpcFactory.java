@@ -1,5 +1,7 @@
 package rabbit.discovery.api.common;
 
+import rabbit.discovery.api.common.rpc.HttpProtocolService;
+import rabbit.discovery.api.common.rpc.TcpProtocolService;
 import rabbit.flt.rpc.client.FltRequestFactory;
 import rabbit.flt.rpc.client.pool.ConfigBuilder;
 import rabbit.flt.rpc.common.ServerNode;
@@ -18,19 +20,11 @@ public class RpcFactory {
     private RpcFactory() {
     }
 
-    /**
-     * 初始化
-     *
-     * @param configuration
-     */
-    public static synchronized void init(Configuration configuration) {
-        if (null == inst.configuration) {
-            inst.configuration = configuration;
-            inst.doInitialization();
+    private synchronized void doInitialization(Configuration configuration) {
+        if (null != this.configuration) {
+            return;
         }
-    }
-
-    private void doInitialization() {
+        this.configuration = configuration;
         String servers = configuration.getRegistryAddress();
         List<ServerNode> nodes = new ArrayList<>();
         for (String s : servers.split(",")) {
@@ -43,6 +37,11 @@ public class RpcFactory {
                 .connectionsPerServer(1)
                 .acquireClientTimeoutSeconds(10)
                 .applicationCode(configuration.getApplicationCode())
+                .requestInterceptor(request -> {
+                    if (HttpProtocolService.class == request.getRequest().getInterfaceClz()) {
+                        request.getRequest().setHandlerInterfaceName(TcpProtocolService.class.getName());
+                    }
+                })
                 .workerThreadCount(8)
                 .bossThreadCount(1)
                 // 降低内置心跳频率，业务上不依赖该操作维持心跳
@@ -55,10 +54,14 @@ public class RpcFactory {
      * 代理接口
      *
      * @param clz
+     * @param configuration
      * @param <T>
      * @return
      */
-    public static <T> T proxy(Class<T> clz) {
+    public static <T> T proxy(Class<T> clz, Configuration configuration) {
+        if (null == inst.configuration) {
+            inst.doInitialization(configuration);
+        }
         return inst.requestFactory.proxy(clz);
     }
 }

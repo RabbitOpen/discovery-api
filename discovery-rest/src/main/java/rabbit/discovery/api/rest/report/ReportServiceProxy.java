@@ -39,8 +39,7 @@ class ReportServiceProxy implements ApiReportService {
         configuration.setRegistryAddress(reportServer);
         configuration.setApplicationCode(application);
         configuration.setPrivateKey(securityKey);
-        RpcFactory.init(configuration);
-        return RpcFactory.proxy(ApiReportService.class);
+        return RpcFactory.proxy(ApiReportService.class, configuration);
     }
 
     @Override

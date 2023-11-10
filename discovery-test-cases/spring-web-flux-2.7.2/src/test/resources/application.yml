@@ -18,10 +18,10 @@ discovery:
       servers: "localhost:12345,127.0.0.1:12345"
   #通信模式，默认tcp
   communication:
-    mode: HTTP
+    mode: TCP
   # 注册中心
   registry:
-    address: "localhost:1802, 127.0.0.1:1802"
+    address: "localhost:1899, 127.0.0.1:1899"
   config:
     max: 8
     handler: rabbit.discovery.api.test.PropertyLogHandler

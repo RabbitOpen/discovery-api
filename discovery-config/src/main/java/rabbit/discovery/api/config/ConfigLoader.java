@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import rabbit.discovery.api.common.*;
 import rabbit.discovery.api.common.enums.ConfigType;
 import rabbit.discovery.api.common.exception.ConfigException;
-import rabbit.discovery.api.common.rpc.ConfigService;
+import rabbit.discovery.api.common.rpc.ProtocolServiceWrapper;
 import rabbit.discovery.api.common.spi.ConfigChangeListener;
 import rabbit.discovery.api.config.anno.FlexibleBean;
 import rabbit.discovery.api.config.anno.FlexibleValue;
@@ -23,7 +23,6 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import static rabbit.discovery.api.common.CommunicationMode.HTTP;
 import static rabbit.flt.common.utils.StringUtils.isEmpty;
 
 /**
@@ -41,9 +40,6 @@ public abstract class ConfigLoader extends Thread implements ConfigChangeListene
     protected String registryAddress;
 
     protected String applicationCode;
-
-    // 配置加载服务
-    protected ConfigService configService;
 
     /**
      * 配置详情
@@ -133,7 +129,7 @@ public abstract class ConfigLoader extends Thread implements ConfigChangeListene
      * @return
      */
     protected ConfigDetail loadConfigFromServer(String applicationCode, List<RemoteConfig> configFiles) {
-        return configService.loadConfig(applicationCode, configFiles);
+        return ProtocolServiceWrapper.loadConfig(applicationCode, configFiles);
     }
 
     private Integer getPriority(RemoteConfig c) {
@@ -275,7 +271,7 @@ public abstract class ConfigLoader extends Thread implements ConfigChangeListene
     }
 
     public void init() {
-        if (null == configService) {
+        if (null == registryAddress) {
             readConfigs();
             registryAddress = readProperty("discovery.registry.address");
             Configuration configuration = new Configuration();
@@ -285,16 +281,7 @@ public abstract class ConfigLoader extends Thread implements ConfigChangeListene
             configuration.setApplicationCode(applicationCode);
             String propertyName = "discovery.application.security.key";
             configuration.setPrivateKey(readProperty(propertyName));
-            configService = getConfigService(configuration);
-        }
-    }
-
-    private ConfigService getConfigService(Configuration configuration) {
-        if (HTTP == configuration.getCommunicationMode()) {
-            return RequestFactory.proxy(ConfigService.class, configuration);
-        } else {
-            RpcFactory.init(configuration);
-            return RpcFactory.proxy(ConfigService.class);
+            ProtocolServiceWrapper.init(configuration);
         }
     }
 

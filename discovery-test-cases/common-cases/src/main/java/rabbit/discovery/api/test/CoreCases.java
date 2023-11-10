@@ -12,7 +12,6 @@ import rabbit.discovery.api.rest.http.HttpResponse;
 import rabbit.discovery.api.test.bean.People;
 import rabbit.discovery.api.test.bean.RetryData;
 import rabbit.discovery.api.test.bean.User;
-import rabbit.discovery.api.test.controller.ConfigController;
 import rabbit.discovery.api.test.controller.DiscoveryController;
 import rabbit.discovery.api.test.controller.ExcludeController;
 import rabbit.discovery.api.test.controller.IncludeController;
@@ -48,7 +47,7 @@ public class CoreCases {
     public void configLoadCase(ApplicationContext context) throws Exception {
         People people = context.getBean(People.class);
         TestCase.assertEquals(10, people.getGlobalAge());
-        ConfigController controller = context.getBean(ConfigController.class);
+        DiscoveryController controller = context.getBean(DiscoveryController.class);
         TestCase.assertEquals(controller.getAge(), people.getAge());
         TestCase.assertEquals(controller.getName(), people.getName());
         TestCase.assertEquals(controller.getGender(), people.getGender());
@@ -259,6 +258,7 @@ public class CoreCases {
         TestCase.assertTrue(classList.contains("org.springframework.web.server.adapter.WebHttpHandlerBuilder"));
         // 包含web flux trace增强
         TestCase.assertTrue(classList.contains("org.springframework.web.server.adapter.HttpWebHandlerAdapter"));
+        TestCase.assertTrue(classList.contains("reactor.core.publisher.Mono"));
     }
 
     /**

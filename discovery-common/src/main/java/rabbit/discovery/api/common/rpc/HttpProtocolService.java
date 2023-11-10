@@ -1,15 +1,19 @@
 package rabbit.discovery.api.common.rpc;
 
+import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.PublicKeyDesc;
+import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.http.anno.*;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
 import rabbit.discovery.api.common.protocol.PrivilegeData;
 import rabbit.discovery.api.common.protocol.RegisterResult;
 
+import java.util.List;
+
 /**
  * 与服务侧通信的服务
  */
-public interface ProtocolService {
+public interface HttpProtocolService {
 
     /**
      * 注册自己
@@ -54,4 +58,15 @@ public interface ProtocolService {
     @Header(name = "Content-type", value = "application/json")
     @Post("/discovery/authorizations/provider/{applicationCode}")
     PrivilegeData getProviderPrivileges(@RequestPathVariable("applicationCode") String applicationCode);
+
+    /**
+     * 加载应用的配置
+     * @param applicationCode  应用编码
+     * @param configFiles      想加载的配置
+     * @return
+     */
+    @Header(name = "Content-type", value = "application/json")
+    @Post("/discovery/load/{applicationCode}")
+    ConfigDetail loadConfig(@RequestPathVariable("applicationCode") String applicationCode,
+                            @Body List<RemoteConfig> configFiles);
 }

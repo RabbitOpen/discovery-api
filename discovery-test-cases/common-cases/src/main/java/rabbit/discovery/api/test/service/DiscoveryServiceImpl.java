@@ -2,11 +2,16 @@ package rabbit.discovery.api.test.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.Privilege;
 import rabbit.discovery.api.common.PublicKeyDesc;
+import rabbit.discovery.api.common.RemoteConfig;
+import rabbit.discovery.api.common.enums.ConfigType;
 import rabbit.discovery.api.common.protocol.*;
-import rabbit.discovery.api.common.rpc.ProtocolService;
+import rabbit.discovery.api.common.rpc.HttpProtocolService;
 import rabbit.discovery.api.common.utils.JsonUtils;
+import rabbit.discovery.api.common.utils.PathParser;
+import rabbit.flt.common.utils.CollectionUtils;
 import rabbit.flt.common.utils.GZipUtils;
 
 import java.util.ArrayList;
@@ -14,7 +19,7 @@ import java.util.List;
 
 import static rabbit.discovery.api.common.utils.PathParser.urlDecode;
 
-public class DiscoveryServiceImpl implements ProtocolService {
+public class DiscoveryServiceImpl implements HttpProtocolService {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -83,6 +88,83 @@ public class DiscoveryServiceImpl implements ProtocolService {
         privilegeData.setCompressedPrivileges(GZipUtils.compress(bytes));
         privilegeData.setPlainDataLength(bytes.length);
         return privilegeData;
+    }
+
+    private long configVersion = 0L;
+
+    private int age = 10;
+
+    private String name = "zhang3";
+
+    private String gender = "male";
+
+    private String companyName = "alibaba";
+
+    private String companyAddress = "chengdu";
+
+    @Override
+    public ConfigDetail loadConfig(String applicationCode, List<RemoteConfig> configFiles) {
+        if (CollectionUtils.isEmpty(configFiles)) {
+            return new ConfigDetail(new ArrayList<>(), 1L);
+        }
+        List<RemoteConfig> configs = new ArrayList<>();
+        RemoteConfig yml = new RemoteConfig();
+        yml.setNamespace(configFiles.get(0).getNamespace());
+        yml.setPriority(-2);
+        yml.setType(ConfigType.YAML);
+        yml.setName(configFiles.get(0).getName());
+        yml.setApplicationCode(PathParser.urlDecode(applicationCode));
+        yml.setContent("people: \n" +
+                "  age: " + age + "\n" +
+                "  gender: " + getGender() + "\n" +
+                "  company:\n" +
+                "    address: " + getCompanyAddress() + "\n" +
+                "    name: " + getCompanyName() + "\n" +
+                "  name: " + getName() + "\n"
+        );
+        configs.add(yml);
+        if (configFiles.size() > 1) {
+            RemoteConfig property = new RemoteConfig();
+            property.setNamespace(configFiles.get(1).getNamespace());
+            property.setPriority(-3);
+            property.setType(ConfigType.PROPERTIES);
+            property.setName(configFiles.get(1).getName());
+            property.setApplicationCode(PathParser.urlDecode(applicationCode));
+            property.setContent("global.age=" + getAge());
+            configs.add(property);
+        }
+        return new ConfigDetail(configs, configVersion);
+    }
+
+    /**
+     * 设置并刷新配置版本
+     * @param age
+     * @param companyName
+     */
+    public void update(int age, String companyName) {
+        this.age = age;
+        this.companyName = companyName;
+        this.configVersion++;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public String getCompanyAddress() {
+        return companyAddress;
     }
 
     public void incrementConfigVersion() {

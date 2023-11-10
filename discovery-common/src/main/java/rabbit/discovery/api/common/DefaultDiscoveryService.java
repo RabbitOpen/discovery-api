@@ -3,7 +3,6 @@ package rabbit.discovery.api.common;
 import com.fasterxml.jackson.databind.JavaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import rabbit.discovery.api.common.exception.DiscoveryException;
 import rabbit.discovery.api.common.global.ApplicationMetaCache;
 import rabbit.discovery.api.common.global.AuthorizationDetail;
@@ -11,7 +10,7 @@ import rabbit.discovery.api.common.protocol.ApplicationInstance;
 import rabbit.discovery.api.common.protocol.ApplicationMeta;
 import rabbit.discovery.api.common.protocol.PrivilegeData;
 import rabbit.discovery.api.common.protocol.RegisterResult;
-import rabbit.discovery.api.common.rpc.ProtocolService;
+import rabbit.discovery.api.common.rpc.ProtocolServiceWrapper;
 import rabbit.discovery.api.common.spi.ConfigChangeListener;
 import rabbit.discovery.api.common.utils.JsonUtils;
 import rabbit.discovery.api.common.utils.PathParser;
@@ -34,8 +33,6 @@ public class DefaultDiscoveryService implements DiscoveryService {
 
     private Logger logger = LoggerFactory.getLogger("discoveryService");
 
-    private ProtocolService protocolService;
-
     private Configuration configuration;
 
     private ApplicationInstance instance;
@@ -54,7 +51,6 @@ public class DefaultDiscoveryService implements DiscoveryService {
 
     @Override
     public void start() {
-        protocolService = getProtocolService();
         initApplicationInstance();
         registerAndSynchronizeData();
         Thread thread = new Thread(() -> {
@@ -69,15 +65,6 @@ public class DefaultDiscoveryService implements DiscoveryService {
         });
         thread.setDaemon(false);
         thread.start();
-    }
-
-    private ProtocolService getProtocolService() {
-        if (CommunicationMode.HTTP == configuration.getCommunicationMode()) {
-            return RequestFactory.proxy(ProtocolService.class, configuration);
-        } else{
-            RpcFactory.init(configuration);
-            return RpcFactory.proxy(ProtocolService.class);
-        }
     }
 
     /**
@@ -97,7 +84,7 @@ public class DefaultDiscoveryService implements DiscoveryService {
                 errorFound = false;
                 logger.info("communication is recovered!");
             }
-            BeanUtils.copyProperties(meta, ApplicationMetaCache.getApplicationMeta());
+            ApplicationMetaCache.setApplicationMeta(meta);
         } catch (DiscoveryException e) {
             errorFound = true;
             logger.warn(e.getMessage());
@@ -111,7 +98,7 @@ public class DefaultDiscoveryService implements DiscoveryService {
      * 加载自己的授权
      */
     private void loadProviderPrivileges() {
-        PrivilegeData data = protocolService.getProviderPrivileges(configuration.getApplicationCode());
+        PrivilegeData data = ProtocolServiceWrapper.getProviderPrivileges(configuration.getApplicationCode());
         if (0 == data.getPlainDataLength()) {
             return;
         }
@@ -134,7 +121,7 @@ public class DefaultDiscoveryService implements DiscoveryService {
     private void updateRegistryAddress(Long registryVersion) {
         long currentVersion = ApplicationMetaCache.getApplicationMeta().getRegistryAddressVersion().longValue();
         if (currentVersion != registryVersion.byteValue()) {
-            configuration.setRegistryAddress(protocolService.getRegistryAddress());
+            configuration.setRegistryAddress(ProtocolServiceWrapper.getRegistryAddress());
         }
     }
 
@@ -146,7 +133,7 @@ public class DefaultDiscoveryService implements DiscoveryService {
     private ApplicationMeta loadLatestApplicationMeta() {
         RegisterResult result;
         if (!registered) {
-            result = protocolService.register(instance);
+            result = ProtocolServiceWrapper.register(instance);
             if (result.isSuccess()) {
                 instance.setId(result.getId());
                 logger.info("应用[{}.{}]注册成功，实例id: {}", instance.getApplicationCode(), instance.getClusterName(), instance.getId());
@@ -154,7 +141,7 @@ public class DefaultDiscoveryService implements DiscoveryService {
                 return result.getApplicationMeta();
             }
         } else {
-            result = protocolService.keepAlive(instance);
+            result = ProtocolServiceWrapper.keepAlive(instance);
             if (result.isSuccess()) {
                 return result.getApplicationMeta();
             }
@@ -176,6 +163,7 @@ public class DefaultDiscoveryService implements DiscoveryService {
     @Override
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
+        ProtocolServiceWrapper.init(configuration);
     }
 
 }
