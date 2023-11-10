@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import rabbit.discovery.api.common.Configuration;
 import rabbit.discovery.api.common.enums.HttpMethod;
 import rabbit.discovery.api.common.rpc.ApiDescription;
-import rabbit.discovery.api.common.rpc.ApiReportService;
 import rabbit.discovery.api.common.utils.PathParser;
 import rabbit.discovery.api.rest.anno.Declaration;
 import rabbit.discovery.api.rest.reader.*;
@@ -103,18 +102,8 @@ public class ApiCollector implements BeanPostProcessor {
         if (apiList.isEmpty()) {
             return;
         }
-        ApiReportService reportService = getApiReportService();
-        reportService.setReportServer(configuration.getRegistryAddress());
-        reportService.setSecurityKey(configuration.getPrivateKey());
-        reportService.doReport(configuration.getApplicationCode(), clzName, apiList);
-    }
-
-    private ApiReportService getApiReportService() {
-        Iterator<ApiReportService> iterator = ServiceLoader.load(ApiReportService.class).iterator();
-        if (iterator.hasNext()) {
-            return iterator.next();
-        }
-        return new ReportServiceProxy();
+        ApiReportService.setConfiguration(configuration);
+        ApiReportService.doReport(clzName, apiList);
     }
 
     /**

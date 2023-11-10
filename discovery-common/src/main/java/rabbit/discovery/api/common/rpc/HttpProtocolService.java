@@ -17,6 +17,7 @@ public interface HttpProtocolService {
 
     /**
      * 注册自己
+     *
      * @param instance
      * @return
      */
@@ -26,6 +27,7 @@ public interface HttpProtocolService {
 
     /**
      * 维持心跳
+     *
      * @param instance
      * @return
      */
@@ -35,6 +37,7 @@ public interface HttpProtocolService {
 
     /**
      * 获取应用公钥
+     *
      * @param applicationCode
      * @return
      */
@@ -44,6 +47,7 @@ public interface HttpProtocolService {
 
     /**
      * 获取注册中心地址
+     *
      * @return
      */
     @Header(name = "Content-type", value = "application/json")
@@ -52,6 +56,7 @@ public interface HttpProtocolService {
 
     /**
      * 获取自己授权出去的权限
+     *
      * @param applicationCode
      * @return
      */
@@ -61,12 +66,22 @@ public interface HttpProtocolService {
 
     /**
      * 加载应用的配置
-     * @param applicationCode  应用编码
-     * @param configFiles      想加载的配置
+     *
+     * @param applicationCode 应用编码
+     * @param configFiles     想加载的配置
      * @return
      */
     @Header(name = "Content-type", value = "application/json")
     @Post("/discovery/load/{applicationCode}")
     ConfigDetail loadConfig(@RequestPathVariable("applicationCode") String applicationCode,
                             @Body List<RemoteConfig> configFiles);
+
+    /**
+     * 上报接口
+     * @param applicationCode 应用
+     * @param apiData         接口数据
+     */
+    @Header(name = "Content-type", value = "application/json")
+    @Post("/discovery/api/report/{applicationCode}")
+    void doReport(@RequestPathVariable("applicationCode") String applicationCode, @Body ApiData apiData);
 }

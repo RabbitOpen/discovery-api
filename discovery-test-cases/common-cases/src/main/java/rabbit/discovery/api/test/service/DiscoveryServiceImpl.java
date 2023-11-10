@@ -8,9 +8,11 @@ import rabbit.discovery.api.common.PublicKeyDesc;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.enums.ConfigType;
 import rabbit.discovery.api.common.protocol.*;
+import rabbit.discovery.api.common.rpc.ApiData;
 import rabbit.discovery.api.common.rpc.HttpProtocolService;
 import rabbit.discovery.api.common.utils.JsonUtils;
 import rabbit.discovery.api.common.utils.PathParser;
+import rabbit.discovery.api.test.spi.ApiCache;
 import rabbit.flt.common.utils.CollectionUtils;
 import rabbit.flt.common.utils.GZipUtils;
 
@@ -134,6 +136,11 @@ public class DiscoveryServiceImpl implements HttpProtocolService {
             configs.add(property);
         }
         return new ConfigDetail(configs, configVersion);
+    }
+
+    @Override
+    public void doReport(String applicationCode, ApiData apiData) {
+        ApiCache.getMap().put(apiData.getClassName(), apiData.getApiList());
     }
 
     /**

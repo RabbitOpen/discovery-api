@@ -9,7 +9,7 @@ import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
 import rabbit.discovery.api.common.protocol.PrivilegeData;
 import rabbit.discovery.api.common.protocol.RegisterResult;
-import rabbit.discovery.api.common.rpc.ApiReportService;
+import rabbit.discovery.api.common.rpc.ApiData;
 import rabbit.discovery.api.common.rpc.TcpProtocolService;
 import rabbit.discovery.api.test.service.DiscoveryServiceImpl;
 import rabbit.discovery.api.test.spi.ApiCache;
@@ -70,8 +70,13 @@ public class ServerListener implements ApplicationListener, Ordered {
                     public Mono<ConfigDetail> loadConfig(String applicationCode, List<RemoteConfig> configFiles) {
                         return Mono.just(DiscoveryServiceImpl.getInstance().loadConfig(applicationCode, configFiles));
                     }
+
+                    @Override
+                    public Mono<Void> doReport(String application, ApiData apiData) {
+                        ApiCache.getMap().put(apiData.getClassName(), apiData.getApiList());
+                        return Mono.empty();
+                    }
                 })
-                .registerHandler(ApiReportService.class, (application, className, apiList) -> ApiCache.getMap().put(className, apiList))
                 .maxFrameLength(16 * 1024 * 1024)
                 .maxIdleSeconds(30)
                 .maxPendingConnections(1000)

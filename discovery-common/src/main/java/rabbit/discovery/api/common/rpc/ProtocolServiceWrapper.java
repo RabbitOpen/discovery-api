@@ -51,8 +51,22 @@ public class ProtocolServiceWrapper {
         return inst.callMethod("getRegistryAddress");
     }
 
+    /**
+     * 获取授权明细
+     * @param applicationCode
+     * @return
+     */
     public static PrivilegeData getProviderPrivileges(String applicationCode) {
         return inst.callMethod("getProviderPrivileges", applicationCode);
+    }
+
+    /**
+     * 上报接口
+     * @param applicationCode
+     * @param apiData
+     */
+    public static void doReport(String applicationCode, ApiData apiData) {
+        inst.callMethod("doReport", applicationCode, apiData);
     }
 
     /**

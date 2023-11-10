@@ -66,4 +66,12 @@ public interface TcpProtocolService {
      */
     Mono<ConfigDetail> loadConfig(String applicationCode,
                                   @Body List<RemoteConfig> configFiles);
+
+    /**
+     * 上报接口
+     * @param applicationCode
+     * @param apiData
+     * @return
+     */
+    Mono<Void> doReport(String applicationCode, ApiData apiData);
 }

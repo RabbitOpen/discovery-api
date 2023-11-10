@@ -4,9 +4,13 @@ import org.springframework.web.bind.annotation.*;
 import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.PublicKeyDesc;
 import rabbit.discovery.api.common.RemoteConfig;
+import rabbit.discovery.api.common.http.anno.Body;
+import rabbit.discovery.api.common.http.anno.Post;
+import rabbit.discovery.api.common.http.anno.RequestPathVariable;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
 import rabbit.discovery.api.common.protocol.PrivilegeData;
 import rabbit.discovery.api.common.protocol.RegisterResult;
+import rabbit.discovery.api.common.rpc.ApiData;
 import rabbit.discovery.api.test.service.DiscoveryServiceImpl;
 
 import java.util.List;
@@ -84,6 +88,17 @@ public class DiscoveryController {
     @PostMapping("/authorizations/provider/{applicationCode:.+}")
     public PrivilegeData getProviderPrivileges(@PathVariable("applicationCode") String applicationCode) {
         return discoveryService.getProviderPrivileges(applicationCode);
+    }
+
+    /**
+     * 接口上报
+     * @param applicationCode
+     * @param apiData
+     */
+    @Post("/discovery/api/report/{applicationCode:.+}")
+    public void doReport(@RequestPathVariable("applicationCode") String applicationCode,
+                         @Body ApiData apiData) {
+        discoveryService.doReport(applicationCode, apiData);
     }
 
     public void incrementConfigVersion() {
