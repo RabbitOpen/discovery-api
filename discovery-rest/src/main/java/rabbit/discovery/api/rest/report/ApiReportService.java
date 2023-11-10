@@ -45,7 +45,9 @@ class ApiReportService {
     }
 
     public static void setConfiguration(Configuration configuration) {
-        inst.configuration = configuration;
-        ProtocolServiceWrapper.init(configuration);
+        if (null == inst.configuration) {
+            inst.configuration = configuration;
+            ProtocolServiceWrapper.init(configuration);
+        }
     }
 }
