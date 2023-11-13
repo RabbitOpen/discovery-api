@@ -4,7 +4,6 @@ import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.http.anno.Body;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
-import rabbit.discovery.api.common.protocol.PrivilegeData;
 import rabbit.discovery.api.common.protocol.RegisterResult;
 import reactor.core.publisher.Mono;
 

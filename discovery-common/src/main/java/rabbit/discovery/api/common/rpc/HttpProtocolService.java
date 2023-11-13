@@ -1,10 +1,10 @@
 package rabbit.discovery.api.common.rpc;
 
 import rabbit.discovery.api.common.ConfigDetail;
+import rabbit.discovery.api.common.Privilege;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.http.anno.*;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
-import rabbit.discovery.api.common.protocol.PrivilegeData;
 import rabbit.discovery.api.common.protocol.RegisterResult;
 
 import java.util.List;
@@ -61,7 +61,7 @@ public interface HttpProtocolService {
      */
     @Header(name = "Content-type", value = "application/json")
     @Post("/discovery/authorizations/provider/{applicationCode}")
-    PrivilegeData getProviderPrivileges(@RequestPathVariable("applicationCode") String applicationCode);
+    List<Privilege> getProviderPrivileges(@RequestPathVariable("applicationCode") String applicationCode);
 
     /**
      * 加载应用的配置

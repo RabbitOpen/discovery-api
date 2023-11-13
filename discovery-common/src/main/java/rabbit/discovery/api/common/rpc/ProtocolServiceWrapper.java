@@ -3,7 +3,6 @@ package rabbit.discovery.api.common.rpc;
 import rabbit.discovery.api.common.*;
 import rabbit.discovery.api.common.exception.DiscoveryException;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
-import rabbit.discovery.api.common.protocol.PrivilegeData;
 import rabbit.discovery.api.common.protocol.RegisterResult;
 
 import java.lang.reflect.Method;
@@ -56,7 +55,7 @@ public class ProtocolServiceWrapper {
      * @param applicationCode
      * @return
      */
-    public static PrivilegeData getProviderPrivileges(String applicationCode) {
+    public static List<Privilege> getProviderPrivileges(String applicationCode) {
         return inst.callMethod("getProviderPrivileges", applicationCode);
     }
 

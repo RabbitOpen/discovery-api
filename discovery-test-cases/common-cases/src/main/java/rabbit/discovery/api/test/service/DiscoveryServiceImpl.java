@@ -6,14 +6,15 @@ import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.Privilege;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.enums.ConfigType;
-import rabbit.discovery.api.common.protocol.*;
+import rabbit.discovery.api.common.protocol.ApplicationInstance;
+import rabbit.discovery.api.common.protocol.ApplicationMeta;
+import rabbit.discovery.api.common.protocol.ClusterInstanceMeta;
+import rabbit.discovery.api.common.protocol.RegisterResult;
 import rabbit.discovery.api.common.rpc.ApiData;
 import rabbit.discovery.api.common.rpc.HttpProtocolService;
-import rabbit.discovery.api.common.utils.JsonUtils;
 import rabbit.discovery.api.common.utils.PathParser;
 import rabbit.discovery.api.test.spi.ApiCache;
 import rabbit.flt.common.utils.CollectionUtils;
-import rabbit.flt.common.utils.GZipUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,20 +72,16 @@ public class DiscoveryServiceImpl implements HttpProtocolService {
     }
 
     @Override
-    public PrivilegeData getProviderPrivileges(String applicationCode) {
+    public List<Privilege> getProviderPrivileges(String applicationCode) {
         String appCode = urlDecode(applicationCode);
         logger.info("application[{}] load privilege data success!", appCode);
-        PrivilegeData privilegeData = new PrivilegeData();
         List<Privilege> list = new ArrayList<>();
         Privilege data = new Privilege();
         data.setProvider(appCode);
         data.setConsumer(appCode);
         data.setPath("/black/authorized");
         list.add(data);
-        byte[] bytes = JsonUtils.writeObject(list).getBytes();
-        privilegeData.setCompressedPrivileges(GZipUtils.compress(bytes));
-        privilegeData.setPlainDataLength(bytes.length);
-        return privilegeData;
+        return list;
     }
 
     private long configVersion = 0L;

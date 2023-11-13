@@ -2,9 +2,9 @@ package rabbit.discovery.api.test.controller;
 
 import org.springframework.web.bind.annotation.*;
 import rabbit.discovery.api.common.ConfigDetail;
+import rabbit.discovery.api.common.Privilege;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
-import rabbit.discovery.api.common.protocol.PrivilegeData;
 import rabbit.discovery.api.common.protocol.RegisterResult;
 import rabbit.discovery.api.common.rpc.ApiData;
 import rabbit.discovery.api.test.service.DiscoveryServiceImpl;
@@ -82,7 +82,7 @@ public class DiscoveryController {
      * @return
      */
     @PostMapping("/authorizations/provider/{applicationCode:.+}")
-    public PrivilegeData getProviderPrivileges(@PathVariable("applicationCode") String applicationCode) {
+    public List<Privilege> getProviderPrivileges(@PathVariable("applicationCode") String applicationCode) {
         return discoveryService.getProviderPrivileges(applicationCode);
     }
 

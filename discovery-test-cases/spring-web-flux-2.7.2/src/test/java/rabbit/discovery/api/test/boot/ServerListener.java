@@ -6,7 +6,6 @@ import org.springframework.core.Ordered;
 import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
-import rabbit.discovery.api.common.protocol.PrivilegeData;
 import rabbit.discovery.api.common.protocol.RegisterResult;
 import rabbit.discovery.api.common.rpc.ApiData;
 import rabbit.discovery.api.common.rpc.TcpProtocolService;

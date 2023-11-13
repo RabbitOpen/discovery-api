@@ -1,6 +1,5 @@
 package rabbit.discovery.api.common;
 
-import com.fasterxml.jackson.databind.JavaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rabbit.discovery.api.common.exception.DiscoveryException;
@@ -8,15 +7,13 @@ import rabbit.discovery.api.common.global.ApplicationMetaCache;
 import rabbit.discovery.api.common.global.AuthorizationDetail;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
 import rabbit.discovery.api.common.protocol.ApplicationMeta;
-import rabbit.discovery.api.common.protocol.PrivilegeData;
 import rabbit.discovery.api.common.protocol.RegisterResult;
 import rabbit.discovery.api.common.rpc.ProtocolServiceWrapper;
 import rabbit.discovery.api.common.spi.ConfigChangeListener;
-import rabbit.discovery.api.common.utils.JsonUtils;
 import rabbit.discovery.api.common.utils.PathParser;
 import rabbit.discovery.api.common.utils.PathPattern;
 import rabbit.flt.common.Metrics;
-import rabbit.flt.common.utils.GZipUtils;
+import rabbit.flt.common.utils.CollectionUtils;
 import rabbit.flt.common.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -98,15 +95,12 @@ public class DefaultDiscoveryService implements DiscoveryService {
      * 加载自己的授权
      */
     private void loadProviderPrivileges() {
-        PrivilegeData data = ProtocolServiceWrapper.getProviderPrivileges(configuration.getApplicationCode());
-        if (0 == data.getPlainDataLength()) {
+        List<Privilege> list = ProtocolServiceWrapper.getProviderPrivileges(configuration.getApplicationCode());
+        if (CollectionUtils.isEmpty(list)) {
             return;
         }
-        byte[] bytes = GZipUtils.decompress(data.getCompressedPrivileges(), data.getPlainDataLength());
-        JavaType javaType = JsonUtils.constructListType(ArrayList.class, Privilege.class);
-        List<Privilege> privileges = JsonUtils.readValue(new String(bytes), javaType);
         Map<String, List<PathPattern>> privilegeMap = new ConcurrentHashMap<>();
-        for (Privilege p : privileges) {
+        for (Privilege p : list) {
             privilegeMap.computeIfAbsent(p.getConsumer(), c -> new ArrayList<>())
                     .add(PathParser.parsePattern(p.getPath()));
         }
