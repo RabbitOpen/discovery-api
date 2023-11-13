@@ -114,8 +114,9 @@ public class DefaultDiscoveryService implements DiscoveryService {
 
     private void updateRegistryAddress(Long registryVersion) {
         long currentVersion = ApplicationMetaCache.getApplicationMeta().getRegistryAddressVersion().longValue();
-        if (currentVersion != registryVersion.byteValue()) {
+        if (currentVersion != registryVersion.longValue()) {
             configuration.setRegistryAddress(ProtocolServiceWrapper.getRegistryAddress());
+            logger.info("registry address is updated! current address is {}", configuration.getRegistryAddress());
         }
     }
 
