@@ -1,5 +1,7 @@
 package rabbit.discovery.api.common;
 
+import rabbit.discovery.api.common.enums.HttpMethod;
+
 public class Privilege {
 
     /**
@@ -16,6 +18,11 @@ public class Privilege {
      * 路径
      */
     private String path;
+
+    /**
+     * 方法类型
+     */
+    private HttpMethod method;
 
     public String getConsumer() {
         return consumer;
@@ -39,5 +46,13 @@ public class Privilege {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public HttpMethod getMethod() {
+        return method;
+    }
+
+    public void setMethod(HttpMethod method) {
+        this.method = method;
     }
 }
