@@ -35,6 +35,7 @@ public class RpcFactory {
                 .rpcRequestTimeoutSeconds(10)
                 .serverNodes(nodes)
                 .connectionsPerServer(1)
+                .maxRetryTime(0)
                 .acquireClientTimeoutSeconds(10)
                 .applicationCode(configuration.getApplicationCode())
                 .requestInterceptor(request -> {
