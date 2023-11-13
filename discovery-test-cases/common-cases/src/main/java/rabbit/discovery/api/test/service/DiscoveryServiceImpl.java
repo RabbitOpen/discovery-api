@@ -42,8 +42,7 @@ public class DiscoveryServiceImpl implements HttpProtocolService {
     public RegisterResult register(ApplicationInstance instance) {
         logger.info("application[{}] instance[{}:{}] register success!", instance.getApplicationCode(),
                 instance.getHost(), instance.getPort());
-        Provider provider = applicationMeta.getProvider();
-        provider.getInstanceGroupMetas().computeIfAbsent("restApiSampleServer", k -> {
+        applicationMeta.getInstanceGroupMetas().computeIfAbsent("restApiSampleServer", k -> {
             ClusterInstanceMeta meta = new ClusterInstanceMeta();
             meta.addClusterLoadBalance("default", "http://localhost:1802");
             meta.addClusterLoadBalance("local", "http://127.0.0.1:1802");

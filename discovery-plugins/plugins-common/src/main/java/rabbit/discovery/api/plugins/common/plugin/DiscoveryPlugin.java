@@ -5,7 +5,7 @@ import rabbit.discovery.api.common.ServerNode;
 import rabbit.discovery.api.common.SpringBeanSupplierHolder;
 import rabbit.discovery.api.common.exception.DiscoveryException;
 import rabbit.discovery.api.common.global.ApplicationMetaCache;
-import rabbit.discovery.api.common.protocol.Provider;
+import rabbit.discovery.api.common.protocol.ApplicationMeta;
 import rabbit.discovery.api.plugins.common.Plugin;
 
 public abstract class DiscoveryPlugin extends SpringBeanSupplierHolder implements Plugin {
@@ -29,7 +29,7 @@ public abstract class DiscoveryPlugin extends SpringBeanSupplierHolder implement
     protected ServerNode getProviderNode(String providerAppCode) {
         Configuration configuration = getConfiguration();
         String cluster = configuration.getApplicationCluster(providerAppCode);
-        Provider provider = ApplicationMetaCache.getApplicationMeta().getProvider();
-        return provider.getProviderServerNode(providerAppCode, cluster);
+        ApplicationMeta meta = ApplicationMetaCache.getApplicationMeta();
+        return meta.getProviderServerNode(providerAppCode, cluster);
     }
 }
