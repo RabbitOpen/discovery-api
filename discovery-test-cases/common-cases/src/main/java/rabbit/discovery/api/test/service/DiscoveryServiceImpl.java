@@ -49,14 +49,14 @@ public class DiscoveryServiceImpl implements HttpProtocolService {
             meta.addClusterLoadBalance("local", "http://127.0.0.1:1802");
             return meta;
         });
-        return RegisterResult.success("1", applicationMeta);
+        return RegisterResult.success(applicationMeta);
     }
 
     @Override
     public RegisterResult keepAlive(ApplicationInstance instance) {
         logger.info("application[{}] instance[{}:{}] keepAlive success!", instance.getApplicationCode(),
                 instance.getHost(), instance.getPort());
-        return RegisterResult.success("1", applicationMeta);
+        return RegisterResult.success(applicationMeta);
     }
 
     @Override
@@ -145,6 +145,7 @@ public class DiscoveryServiceImpl implements HttpProtocolService {
 
     /**
      * 设置并刷新配置版本
+     *
      * @param age
      * @param companyName
      */

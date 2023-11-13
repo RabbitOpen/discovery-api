@@ -25,11 +25,6 @@ public class ApplicationInstance {
      */
     private String applicationCode;
 
-    /**
-     * 实例id
-     */
-    private String id;
-
     public ApplicationInstance(String applicationCode) {
         this();
         this.applicationCode = applicationCode;
@@ -70,11 +65,4 @@ public class ApplicationInstance {
         this.applicationCode = applicationCode;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 }

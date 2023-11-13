@@ -135,8 +135,7 @@ public class DefaultDiscoveryService implements DiscoveryService {
         if (!registered) {
             result = ProtocolServiceWrapper.register(instance);
             if (result.isSuccess()) {
-                instance.setId(result.getId());
-                logger.info("应用[{}.{}]注册成功，实例id: {}", instance.getApplicationCode(), instance.getClusterName(), instance.getId());
+                logger.info("应用[{}.{}]注册成功", instance.getApplicationCode(), instance.getClusterName());
                 registered = true;
                 return result.getApplicationMeta();
             }
