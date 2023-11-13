@@ -40,11 +40,6 @@ public class ApplicationMeta {
     private Set<String> whiteConsumers = new HashSet<>();
 
     /**
-     * 服务方
-     */
-    private Set<String> providers = new HashSet<>();
-
-    /**
      * provider的集群实例信息， key是应用编码
      */
     private Map<String, ClusterInstanceMeta> instanceGroupMetas = new ConcurrentHashMap<>();
@@ -128,13 +123,5 @@ public class ApplicationMeta {
 
     public void setInstanceGroupMetas(Map<String, ClusterInstanceMeta> instanceGroupMetas) {
         this.instanceGroupMetas = instanceGroupMetas;
-    }
-
-    public Set<String> getProviders() {
-        return providers;
-    }
-
-    public void setProviders(Set<String> providers) {
-        this.providers = providers;
     }
 }
