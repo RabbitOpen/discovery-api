@@ -42,7 +42,7 @@ public class PublicKeyManager {
         return cache.computeIfAbsent(applicationCode, code -> {
             String publicKey = ProtocolServiceWrapper.getPublicKey(code);
             if (null != publicKey) {
-                logger.info("public key[{}] loading success ", code);
+                logger.info("public key[{}] is loaded", code);
                 return new Key(publicKey);
             } else {
                 throw new DiscoveryException("获取应用[".concat(code).concat("]公钥信息失败"));
