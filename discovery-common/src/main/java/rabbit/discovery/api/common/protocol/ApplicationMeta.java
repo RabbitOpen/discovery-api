@@ -42,7 +42,7 @@ public class ApplicationMeta {
     /**
      * provider的集群实例信息， key是应用编码
      */
-    private Map<String, ClusterInstanceMeta> instanceGroupMetas = new ConcurrentHashMap<>();
+    private Map<String, ClusterInstanceMeta> clusterMetas = new ConcurrentHashMap<>();
 
     /**
      * counter
@@ -100,7 +100,7 @@ public class ApplicationMeta {
      * @return
      */
     public ServerNode getProviderServerNode(String applicationCode, String clusterName) {
-        ClusterInstanceMeta clusterMeta = getInstanceGroupMetas().get(applicationCode);
+        ClusterInstanceMeta clusterMeta = getClusterMetas().get(applicationCode);
         if (null == clusterMeta) {
             throw new DiscoveryException("获取应用[".concat(applicationCode).concat("]信息失败"));
         }
@@ -117,11 +117,11 @@ public class ApplicationMeta {
         }
     }
 
-    public Map<String, ClusterInstanceMeta> getInstanceGroupMetas() {
-        return instanceGroupMetas;
+    public Map<String, ClusterInstanceMeta> getClusterMetas() {
+        return clusterMetas;
     }
 
-    public void setInstanceGroupMetas(Map<String, ClusterInstanceMeta> instanceGroupMetas) {
-        this.instanceGroupMetas = instanceGroupMetas;
+    public void setClusterMetas(Map<String, ClusterInstanceMeta> clusterMetas) {
+        this.clusterMetas = clusterMetas;
     }
 }
