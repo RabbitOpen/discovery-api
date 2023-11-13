@@ -1,6 +1,7 @@
 package rabbit.discovery.api.common.rpc;
 
 import rabbit.discovery.api.common.ConfigDetail;
+import rabbit.discovery.api.common.Privilege;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.http.anno.Body;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
@@ -53,7 +54,7 @@ public interface TcpProtocolService {
      * @return
      */
 
-    Mono<PrivilegeData> getProviderPrivileges(String applicationCode);
+    Mono<List<Privilege>> getProviderPrivileges(String applicationCode);
 
     /**
      * 加载应用的配置

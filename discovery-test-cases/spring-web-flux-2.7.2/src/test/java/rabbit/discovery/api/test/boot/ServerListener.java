@@ -4,6 +4,7 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.Ordered;
 import rabbit.discovery.api.common.ConfigDetail;
+import rabbit.discovery.api.common.Privilege;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
 import rabbit.discovery.api.common.protocol.RegisterResult;
@@ -60,7 +61,7 @@ public class ServerListener implements ApplicationListener, Ordered {
                     }
 
                     @Override
-                    public Mono<PrivilegeData> getProviderPrivileges(String applicationCode) {
+                    public Mono<List<Privilege>> getProviderPrivileges(String applicationCode) {
                         return Mono.just(DiscoveryServiceImpl.getInstance().getProviderPrivileges(applicationCode));
                     }
 
