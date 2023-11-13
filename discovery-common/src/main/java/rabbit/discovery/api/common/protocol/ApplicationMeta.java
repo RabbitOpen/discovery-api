@@ -129,4 +129,12 @@ public class ApplicationMeta {
     public void setInstanceGroupMetas(Map<String, ClusterInstanceMeta> instanceGroupMetas) {
         this.instanceGroupMetas = instanceGroupMetas;
     }
+
+    public Set<String> getProviders() {
+        return providers;
+    }
+
+    public void setProviders(Set<String> providers) {
+        this.providers = providers;
+    }
 }
