@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.Privilege;
-import rabbit.discovery.api.common.PublicKeyDesc;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.enums.ConfigType;
 import rabbit.discovery.api.common.protocol.*;
@@ -59,13 +58,10 @@ public class DiscoveryServiceImpl implements HttpProtocolService {
     }
 
     @Override
-    public PublicKeyDesc getPublicKey(String applicationCode) {
+    public String getPublicKey(String applicationCode) {
         logger.info("load app[{}] public key success!", urlDecode(applicationCode));
         String publicKey = "305C300D06092A864886F70D0101010500034B003048024100C5B76A3974FEED9144066469D95D3A0297288F626A54A3624901552353DFBDA20FA4156CE11C6048FC3F9DB79101DB047933E031074719C10D552E05658D16290203010001";
-        PublicKeyDesc publicKeyDesc = new PublicKeyDesc();
-        publicKeyDesc.setPublicKey(publicKey);
-        publicKeyDesc.setKeyVersion(1L);
-        return publicKeyDesc;
+        return publicKey;
     }
 
     @Override

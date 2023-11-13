@@ -1,7 +1,6 @@
 package rabbit.discovery.api.common.rpc;
 
 import rabbit.discovery.api.common.ConfigDetail;
-import rabbit.discovery.api.common.PublicKeyDesc;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.http.anno.Body;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
@@ -38,7 +37,7 @@ public interface TcpProtocolService {
      * @param applicationCode
      * @return
      */
-    Mono<PublicKeyDesc> getPublicKey(String applicationCode);
+    Mono<String> getPublicKey(String applicationCode);
 
     /**
      * 获取注册中心地址

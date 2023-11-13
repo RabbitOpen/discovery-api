@@ -2,7 +2,6 @@ package rabbit.discovery.api.test.controller;
 
 import org.springframework.web.bind.annotation.*;
 import rabbit.discovery.api.common.ConfigDetail;
-import rabbit.discovery.api.common.PublicKeyDesc;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
 import rabbit.discovery.api.common.protocol.PrivilegeData;
@@ -64,7 +63,7 @@ public class DiscoveryController {
      * @return
      */
     @GetMapping("/getPublicKey/{applicationCode:.+}")
-    public PublicKeyDesc getPublicKey(@PathVariable("applicationCode") String applicationCode) {
+    public String getPublicKey(@PathVariable("applicationCode") String applicationCode) {
         return discoveryService.getPublicKey(applicationCode);
     }
 

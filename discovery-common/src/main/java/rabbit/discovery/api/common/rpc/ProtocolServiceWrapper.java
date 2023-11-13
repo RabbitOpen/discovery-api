@@ -39,7 +39,7 @@ public class ProtocolServiceWrapper {
         return inst.callMethod("keepAlive", instance);
     }
 
-    public static PublicKeyDesc getPublicKey(String applicationCode) {
+    public static String getPublicKey(String applicationCode) {
         return inst.callMethod("getPublicKey", applicationCode);
     }
 

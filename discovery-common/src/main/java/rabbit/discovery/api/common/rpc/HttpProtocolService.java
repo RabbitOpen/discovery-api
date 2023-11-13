@@ -1,7 +1,6 @@
 package rabbit.discovery.api.common.rpc;
 
 import rabbit.discovery.api.common.ConfigDetail;
-import rabbit.discovery.api.common.PublicKeyDesc;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.http.anno.*;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
@@ -43,7 +42,7 @@ public interface HttpProtocolService {
      */
     @Header(name = "Content-type", value = "application/json")
     @Get("/discovery/getPublicKey/{applicationCode}")
-    PublicKeyDesc getPublicKey(@RequestPathVariable("applicationCode") String applicationCode);
+    String getPublicKey(@RequestPathVariable("applicationCode") String applicationCode);
 
     /**
      * 获取注册中心地址

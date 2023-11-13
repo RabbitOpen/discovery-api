@@ -40,10 +40,10 @@ public class PublicKeyManager {
      */
     private Key loadKeyFromCache(String applicationCode) {
         return cache.computeIfAbsent(applicationCode, code -> {
-            PublicKeyDesc publicKey = ProtocolServiceWrapper.getPublicKey(code);
+            String publicKey = ProtocolServiceWrapper.getPublicKey(code);
             if (null != publicKey) {
-                logger.info("public key[{}] loading success, version is {}", code, publicKey.getKeyVersion());
-                return new Key(publicKey.getPublicKey());
+                logger.info("public key[{}] loading success ", code);
+                return new Key(publicKey);
             } else {
                 throw new DiscoveryException("获取应用[".concat(code).concat("]公钥信息失败"));
             }
