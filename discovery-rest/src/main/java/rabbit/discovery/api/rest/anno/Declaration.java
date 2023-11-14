@@ -7,7 +7,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static rabbit.discovery.api.rest.Policy.INCLUDE;
+import static rabbit.discovery.api.rest.Policy.EXCLUDE;
 
 /**
  * api 声明
@@ -28,7 +28,7 @@ public @interface Declaration {
      *
      * @return
      */
-    Policy policy() default INCLUDE;
+    Policy policy() default EXCLUDE;
 
     /**
      * context path
