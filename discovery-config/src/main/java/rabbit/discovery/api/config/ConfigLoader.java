@@ -2,7 +2,10 @@ package rabbit.discovery.api.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rabbit.discovery.api.common.*;
+import rabbit.discovery.api.common.CommunicationMode;
+import rabbit.discovery.api.common.Configuration;
+import rabbit.discovery.api.common.Framework;
+import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.enums.ConfigType;
 import rabbit.discovery.api.common.exception.ConfigException;
 import rabbit.discovery.api.common.rpc.ProtocolServiceWrapper;
@@ -40,11 +43,6 @@ public abstract class ConfigLoader extends Thread implements ConfigChangeListene
     protected String registryAddress;
 
     protected String applicationCode;
-
-    /**
-     * 配置详情
-     */
-    protected ConfigDetail currentConfig;
 
     /**
      * 本地配置的描述
@@ -108,18 +106,17 @@ public abstract class ConfigLoader extends Thread implements ConfigChangeListene
      *
      * @return
      */
-    public synchronized ConfigDetail loadRemoteConfig() {
+    public synchronized List<RemoteConfig> loadRemoteConfig() {
         if (configFiles.isEmpty()) {
-            currentConfig = new ConfigDetail();
+            return new ArrayList<>();
         } else {
-            currentConfig = loadConfigFromServer(applicationCode, configFiles);
-            List<RemoteConfig> configs = currentConfig.getConfigs();
+            List<RemoteConfig> configs = loadConfigFromServer(applicationCode, configFiles);
             if (!CollectionUtils.isEmpty(configs)) {
                 configs.forEach(c -> c.setPriority(getPriority(c)));
                 configs.sort(Comparator.comparing(RemoteConfig::getPriority));
             }
+            return configs;
         }
-        return currentConfig;
     }
 
     /**
@@ -128,7 +125,7 @@ public abstract class ConfigLoader extends Thread implements ConfigChangeListene
      * @param configFiles
      * @return
      */
-    protected ConfigDetail loadConfigFromServer(String applicationCode, List<RemoteConfig> configFiles) {
+    protected List<RemoteConfig> loadConfigFromServer(String applicationCode, List<RemoteConfig> configFiles) {
         return ProtocolServiceWrapper.loadConfig(applicationCode, configFiles);
     }
 
@@ -143,20 +140,21 @@ public abstract class ConfigLoader extends Thread implements ConfigChangeListene
 
     @Override
     public void run() {
+        long currentVersion = -1L;
         while (true) {
             try {
                 Long version = task.poll(1, TimeUnit.SECONDS);
                 if (null == version) {
                     continue;
                 }
-                if (null == currentConfig || null == currentConfig.getVersion() ||
-                        currentConfig.getVersion() < version) {
+                if (currentVersion < version) {
+                    currentVersion = version;
                     task.clear();
-                    logger.info("begin loading configuration[{}]", version);
-                    loadRemoteConfig();
-                    logger.info("loading configuration[{}] success", version);
-                    if (!CollectionUtils.isEmpty(currentConfig.getConfigs())) {
-                        this.updatePropertySources(currentConfig.getConfigs());
+                    logger.info("begin loading configuration[{}]", currentVersion);
+                    List<RemoteConfig> configs = loadRemoteConfig();
+                    logger.info("loading configuration[{}] success", currentVersion);
+                    if (!CollectionUtils.isEmpty(configs)) {
+                        this.updatePropertySources(configs);
                     }
                 }
             } catch (Exception e) {

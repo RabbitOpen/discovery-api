@@ -1,6 +1,5 @@
 package rabbit.discovery.api.test.spi;
 
-import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.config.loader.SpringMvcConfigLoader;
 import rabbit.discovery.api.test.controller.DiscoveryController;
@@ -27,7 +26,7 @@ public class MySpringMvcConfigLoader extends SpringMvcConfigLoader {
      * @return
      */
     @Override
-    protected final ConfigDetail loadConfigFromServer(String applicationCode, List<RemoteConfig> configFiles) {
+    protected final List<RemoteConfig> loadConfigFromServer(String applicationCode, List<RemoteConfig> configFiles) {
         if (null == callback) {
             // 服务还没启动好，加载不了远程配置
             return new DiscoveryController().loadConfig(applicationCode, configFiles);

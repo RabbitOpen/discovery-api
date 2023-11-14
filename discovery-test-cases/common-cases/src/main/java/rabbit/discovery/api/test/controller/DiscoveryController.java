@@ -1,7 +1,6 @@
 package rabbit.discovery.api.test.controller;
 
 import org.springframework.web.bind.annotation.*;
-import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.Privilege;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
@@ -29,7 +28,7 @@ public class DiscoveryController {
      */
     // !!! 注入applicationCode格式，防止（spring4下）被截断
     @PostMapping("/load/{applicationCode:.+}")
-    public ConfigDetail loadConfig(@PathVariable("applicationCode") String applicationCode,
+    public List<RemoteConfig> loadConfig(@PathVariable("applicationCode") String applicationCode,
                                    @RequestBody(required = false) List<RemoteConfig> configFiles) {
         return discoveryService.loadConfig(applicationCode, configFiles);
     }

@@ -3,7 +3,6 @@ package rabbit.discovery.api.test.boot;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.Ordered;
-import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.Privilege;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
@@ -66,7 +65,7 @@ public class ServerListener implements ApplicationListener, Ordered {
                     }
 
                     @Override
-                    public Mono<ConfigDetail> loadConfig(String applicationCode, List<RemoteConfig> configFiles) {
+                    public Mono<List<RemoteConfig>> loadConfig(String applicationCode, List<RemoteConfig> configFiles) {
                         return Mono.just(DiscoveryServiceImpl.getInstance().loadConfig(applicationCode, configFiles));
                     }
 

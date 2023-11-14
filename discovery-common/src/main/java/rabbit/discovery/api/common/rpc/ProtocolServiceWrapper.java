@@ -42,7 +42,7 @@ public class ProtocolServiceWrapper {
         return inst.callMethod("getPublicKey", applicationCode);
     }
 
-    public static ConfigDetail loadConfig(String applicationCode, List<RemoteConfig> configFiles) {
+    public static List<RemoteConfig> loadConfig(String applicationCode, List<RemoteConfig> configFiles) {
         return inst.callMethod("loadConfig", applicationCode, configFiles);
     }
 

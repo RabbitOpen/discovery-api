@@ -1,6 +1,5 @@
 package rabbit.discovery.api.common.rpc;
 
-import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.Privilege;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.http.anno.Body;
@@ -63,7 +62,7 @@ public interface TcpProtocolService {
      * @param configFiles     想加载的配置
      * @return
      */
-    Mono<ConfigDetail> loadConfig(String applicationCode,
+    Mono<List<RemoteConfig>> loadConfig(String applicationCode,
                                   @Body List<RemoteConfig> configFiles);
 
     /**

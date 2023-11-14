@@ -2,7 +2,6 @@ package rabbit.discovery.api.test.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.Privilege;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.enums.ConfigType;
@@ -97,9 +96,9 @@ public class DiscoveryServiceImpl implements HttpProtocolService {
     private String companyAddress = "chengdu";
 
     @Override
-    public ConfigDetail loadConfig(String applicationCode, List<RemoteConfig> configFiles) {
+    public List<RemoteConfig> loadConfig(String applicationCode, List<RemoteConfig> configFiles) {
         if (CollectionUtils.isEmpty(configFiles)) {
-            return new ConfigDetail(new ArrayList<>(), 1L);
+            return new ArrayList<>();
         }
         List<RemoteConfig> configs = new ArrayList<>();
         RemoteConfig yml = new RemoteConfig();
@@ -127,7 +126,7 @@ public class DiscoveryServiceImpl implements HttpProtocolService {
             property.setContent("global.age=" + getAge());
             configs.add(property);
         }
-        return new ConfigDetail(configs, configVersion);
+        return configs;
     }
 
     @Override

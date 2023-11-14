@@ -1,6 +1,5 @@
 package rabbit.discovery.api.common.rpc;
 
-import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.Privilege;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.http.anno.*;
@@ -72,7 +71,7 @@ public interface HttpProtocolService {
      */
     @Header(name = "Content-type", value = "application/json")
     @Post("/discovery/load/{applicationCode}")
-    ConfigDetail loadConfig(@RequestPathVariable("applicationCode") String applicationCode,
+    List<RemoteConfig> loadConfig(@RequestPathVariable("applicationCode") String applicationCode,
                             @Body List<RemoteConfig> configFiles);
 
     /**

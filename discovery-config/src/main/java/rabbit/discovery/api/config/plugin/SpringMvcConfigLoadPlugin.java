@@ -1,12 +1,13 @@
 package rabbit.discovery.api.config.plugin;
 
-import rabbit.discovery.api.common.ConfigDetail;
 import rabbit.discovery.api.common.Framework;
+import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.config.loader.ConfigLoaderUtil;
 import rabbit.discovery.api.config.loader.SpringMvcConfigLoader;
 import rabbit.discovery.api.plugins.common.plugin.DiscoveryPlugin;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Properties;
 
 class SpringMvcConfigLoadPlugin extends DiscoveryPlugin {
@@ -17,8 +18,8 @@ class SpringMvcConfigLoadPlugin extends DiscoveryPlugin {
             SpringMvcConfigLoader configLoader = (SpringMvcConfigLoader) ConfigLoaderUtil.getConfigLoader();
             configLoader.setLocalProperties((Properties) args[0]);
             configLoader.init();
-            ConfigDetail configDetail = configLoader.loadRemoteConfig();
-            configLoader.addPropertySources(configDetail.getConfigs());
+            List<RemoteConfig> configs = configLoader.loadRemoteConfig();
+            configLoader.addPropertySources(configs);
             configLoader.start();
         }
         return result;
