@@ -148,11 +148,11 @@ public abstract class ConfigLoader extends Thread implements ConfigChangeListene
                     continue;
                 }
                 if (currentVersion < version) {
-                    currentVersion = version;
                     task.clear();
-                    logger.info("begin loading configuration[{}]", currentVersion);
+                    logger.info("begin loading configuration[{}]", version);
                     List<RemoteConfig> configs = loadRemoteConfig();
-                    logger.info("loading configuration[{}] success", currentVersion);
+                    logger.info("loading configuration[{}] success", version);
+                    currentVersion = version;
                     if (!CollectionUtils.isEmpty(configs)) {
                         this.updatePropertySources(configs);
                     }
