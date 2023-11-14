@@ -2,4 +2,4 @@
 mvn clean install sonar:sonar
 
 #部署时 需要shading
-mvn clean install -Pdeploy
+mvn clean install -Pdeploy -Dmaven.test.skip=true
