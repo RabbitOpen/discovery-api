@@ -72,6 +72,7 @@ public abstract class HttpClientManager<T> {
                 if (httpRequest.getMaxRetryTimes() == retried) {
                     return Mono.error(e);
                 }
+                logger.warn("retry {} for request[{}]", retried + 1, httpRequest.getUri());
                 // 异步重试
                 return (Mono<String>) execute(httpRequest, retried + 1).getData();
             });
@@ -82,6 +83,7 @@ public abstract class HttpClientManager<T> {
                 if (httpRequest.getMaxRetryTimes() == retried) {
                     throw new RestApiException(StringUtils.toString(body));
                 }
+                logger.warn("retry {} for request[{}]", retried + 1, httpRequest.getUri());
                 // 同步重试
                 return execute(httpRequest, retried + 1);
             }
