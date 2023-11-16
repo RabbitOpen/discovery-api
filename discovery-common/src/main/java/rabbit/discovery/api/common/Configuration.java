@@ -118,7 +118,7 @@ public class Configuration {
     /**
      * 最大连接数
      */
-    @Value("${discovery.application.http.max-connection:50}")
+    @Value("${discovery.application.http.max-connection:200}")
     private int maxConnection;
 
     /**
