@@ -156,8 +156,7 @@
                                     <!--需要一起打包的类-->
                                     <include>net.bytebuddy:byte-buddy:jar:</include>
                                     <include>net.bytebuddy:byte-buddy-agent:jar:</include>
-                                    <!--discovery-rest已经包含了-->
-                                    <!--<include>com.fasterxml.jackson.core:*:jar:</include>-->
+                                    <!--不能repackage jackson，不然客户自定义的@JsonTypeInfo注解可能无效-->
                                 </includes>
                             </artifactSet>
 

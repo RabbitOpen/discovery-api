@@ -130,7 +130,6 @@
                                     <include>rabbit.discovery.api:*:jar:</include>
                                     <!--需要一起打包的类-->
                                     <include>rabbit.flt:flt-common:jar:</include>
-                                    <include>com.fasterxml.jackson.core:*:jar:</include>
                                 </includes>
                             </artifactSet>
                             <createDependencyReducedPom>true</createDependencyReducedPom>
@@ -158,17 +157,10 @@
                                     <include>rabbit.discovery.api:*:jar:</include>
                                     <!--需要一起打包的类-->
                                     <include>rabbit.flt:flt-common:jar:</include>
-                                    <include>com.fasterxml.jackson.core:*:jar:</include>
                                 </includes>
                             </artifactSet>
 
                             <!-- relocation -->
-                            <relocations>
-                                <relocation>
-                                    <pattern>com.fasterxml.jackson</pattern>
-                                    <shadedPattern>rabbit.discovery.api.jackson</shadedPattern>
-                                </relocation>
-                            </relocations>
                             <createDependencyReducedPom>true</createDependencyReducedPom>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
