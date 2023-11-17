@@ -11,6 +11,8 @@ import java.lang.reflect.Type;
  */
 public class MonoHelper {
 
+    private static final MonoHelper inst = new MonoHelper();
+
     private MonoHelper() {
     }
 
@@ -27,18 +29,16 @@ public class MonoHelper {
                                                    ParameterizedType resultType, HttpRequestExecutor executor) {
         Mono<String> asyncResult = (Mono<String>) response.getData();
         Type rawType = resultType.getActualTypeArguments()[0];
-        return asyncResult.flatMap(body -> {
-            if (void.class == rawType || Void.class == rawType) {
-                return Mono.empty();
-            }
-            Object data = executor.readResponseByType(request, response, rawType, body);
-            return null == data ? Mono.empty() : Mono.just(data);
-        }).switchIfEmpty(Mono.defer(() -> {
-            if (void.class == rawType || Void.class == rawType) {
-                return Mono.empty();
-            }
-            Object data = executor.readResponseByType(request, response, rawType, null);
-            return null == data ? Mono.empty() : Mono.just(data);
-        }));
+        return asyncResult.flatMap(body -> inst.getObjectMono(request, response, executor, rawType, body))
+                .switchIfEmpty(Mono.defer(() -> inst.getObjectMono(request, response, executor, rawType, null)));
+    }
+
+    private Mono<Object> getObjectMono(HttpRequest request, HttpResponse response,
+                                              HttpRequestExecutor executor, Type rawType, String body) {
+        if (void.class == rawType || Void.class == rawType) {
+            return Mono.empty();
+        }
+        Object data = executor.readResponseByType(request, response, rawType, body);
+        return null == data ? Mono.empty() : Mono.just(data);
     }
 }
