@@ -22,6 +22,9 @@ public class JsonTransformer implements HttpTransformer {
 
     @Override
     public <T> T transformResponse(Method method, Type resultType, Map<String, String> responseHeaders, String responseBody) {
+        if (void.class == resultType || Void.class == resultType) {
+            return null;
+        }
         return JsonUtils.readValue(responseBody, resultType);
     }
 }

@@ -158,6 +158,12 @@ public class CoreCases {
     public void simpleDataTest(ApplicationContext context) {
         RestApiSample apiSample = context.getBean(RestApiSample.class);
         TestCase.assertEquals("hello", apiSample.hello().getData());
+        apiSample.callVoid();
+        HttpResponse<Void> response = apiSample.callVoidWithHeaders();
+        TestCase.assertTrue(response.getHeaders().containsKey(Headers.API_VERSION.toLowerCase()));
+        TestCase.assertTrue(response.getHeaders().containsKey(Headers.APPLICATION_CODE.toLowerCase()));
+        TestCase.assertTrue(response.getHeaders().containsKey(Headers.REQUEST_TIME.toLowerCase()));
+        TestCase.assertTrue(response.getHeaders().containsKey(Headers.REQUEST_TIME_SIGNATURE.toLowerCase()));
     }
 
     /**
@@ -237,6 +243,14 @@ public class CoreCases {
 
         // 基础数据类型返回验证
         TestCase.assertEquals("hello", apiSample.hello().block());
+        apiSample.callMonoVoid().block();
+        apiSample.callVoid();
+        HttpResponse<Void> block = apiSample.callMonoVoidWithHeaders().block();
+        TestCase.assertTrue(block.getHeaders().containsKey(Headers.API_VERSION.toLowerCase()));
+        TestCase.assertTrue(block.getHeaders().containsKey(Headers.APPLICATION_CODE.toLowerCase()));
+        TestCase.assertTrue(block.getHeaders().containsKey(Headers.REQUEST_TIME.toLowerCase()));
+        TestCase.assertTrue(block.getHeaders().containsKey(Headers.REQUEST_TIME_SIGNATURE.toLowerCase()));
+
     }
 
     /**

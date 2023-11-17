@@ -22,13 +22,7 @@ public class RestApiController {
     public User getUser(@PathVariable("name") String name, @PathVariable("age") int age,
                         @RequestBody(required = false) User requestUser,
                         ServerHttpRequest request, ServerHttpResponse response) {
-        HttpHeaders names = request.getHeaders();
-        names.forEach((n, v) -> {
-            if ("Content-length".equalsIgnoreCase(n)) {
-                return;
-            }
-            response.getHeaders().set(n.toLowerCase(), v.get(0));
-        });
+        addResponseHeader(request, response);
         if (null == requestUser) {
             return new User(name, age);
         } else {
@@ -38,9 +32,19 @@ public class RestApiController {
         }
     }
 
+    private void addResponseHeader(ServerHttpRequest request, ServerHttpResponse response) {
+        HttpHeaders names = request.getHeaders();
+        names.forEach((n, v) -> {
+            if ("Content-length".equalsIgnoreCase(n)) {
+                return;
+            }
+            response.getHeaders().set(n.toLowerCase(), v.get(0));
+        });
+    }
+
     @PostMapping("/retry/{time}")
     public RetryData retry(@PathVariable("time") int time, ServerHttpResponse response) {
-        map.computeIfAbsent(time, k->new AtomicInteger(0)).incrementAndGet();
+        map.computeIfAbsent(time, k -> new AtomicInteger(0)).incrementAndGet();
         if (time < 10) {
             response.setRawStatusCode(500);
         }
@@ -51,5 +55,10 @@ public class RestApiController {
     @GetMapping("/hello")
     public Mono<String> hello() {
         return Mono.create(s -> s.success("hello"));
+    }
+
+    @GetMapping("/void")
+    public void callVoid(ServerHttpRequest request, ServerHttpResponse response) {
+        addResponseHeader(request, response);
     }
 }

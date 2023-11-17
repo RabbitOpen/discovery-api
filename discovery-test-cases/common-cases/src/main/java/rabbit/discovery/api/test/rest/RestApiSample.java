@@ -54,4 +54,17 @@ public interface RestApiSample {
 
     @GetMapping("/hello")
     HttpResponse<String> hello();
+
+
+    /**
+     * void http
+     */
+    @GetMapping("/void")
+    void callVoid();
+
+    /**
+     * void http
+     */
+    @GetMapping("/void")
+    HttpResponse<Void> callVoidWithHeaders();
 }

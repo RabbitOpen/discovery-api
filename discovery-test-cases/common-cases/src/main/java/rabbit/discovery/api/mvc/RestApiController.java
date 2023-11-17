@@ -21,6 +21,17 @@ public class RestApiController {
     public User getUser(@PathVariable("name") String name, @PathVariable("age") int age,
                            @RequestBody(required = false) User requestUser,
                            HttpServletRequest request, HttpServletResponse response) {
+        addResponseHeader(request, response);
+        if (null == requestUser) {
+            return new User(name, age);
+        } else {
+            requestUser.setName(name);
+            requestUser.setAge(age);
+            return requestUser;
+        }
+    }
+
+    private void addResponseHeader(HttpServletRequest request, HttpServletResponse response) {
         Enumeration<String> names = request.getHeaderNames();
         while (names.hasMoreElements()) {
             String n = names.nextElement();
@@ -28,13 +39,6 @@ public class RestApiController {
                 continue;
             }
             response.setHeader(n.toLowerCase(), request.getHeader(n));
-        }
-        if (null == requestUser) {
-            return new User(name, age);
-        } else {
-            requestUser.setName(name);
-            requestUser.setAge(age);
-            return requestUser;
         }
     }
 
@@ -51,5 +55,10 @@ public class RestApiController {
     @GetMapping("/hello")
     public String hello() {
         return "hello";
+    }
+
+    @GetMapping("/void")
+    public void callVoid(HttpServletRequest request, HttpServletResponse response) {
+        addResponseHeader(request, response);
     }
 }

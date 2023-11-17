@@ -75,7 +75,8 @@ public class ReactorHttpClientManager extends HttpClientManager<HttpClient.Respo
             response.setStatusCode(resp.status().code());
             resp.responseHeaders().forEach(entry -> response.setHeader(entry.getKey(), entry.getValue()));
             return content.asByteArray();
-        }).map(bytes -> new String(unzipIfZipped(response.getHeaders(), bytes)));
+        }).switchIfEmpty(Mono.defer(() -> Mono.just(new byte[0])))
+                .map(bytes -> new String(unzipIfZipped(response.getHeaders(), bytes)));
     }
 
     @Override
@@ -85,6 +86,7 @@ public class ReactorHttpClientManager extends HttpClientManager<HttpClient.Respo
 
     /**
      * 获取请求对象
+     *
      * @param request
      * @return
      */
@@ -121,6 +123,7 @@ public class ReactorHttpClientManager extends HttpClientManager<HttpClient.Respo
 
     /**
      * 设置http请求头
+     *
      * @param request
      * @param httpHeaders
      */

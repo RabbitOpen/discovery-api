@@ -39,4 +39,22 @@ public interface MonoRestApiSample {
 
     @GetMapping("/hello")
     Mono<String> hello();
+
+    /**
+     * void http
+     */
+    @GetMapping("/void")
+    void callVoid();
+
+    /**
+     * void http
+     */
+    @GetMapping("/void")
+    Mono<Void> callMonoVoid();
+
+    /**
+     * void http
+     */
+    @GetMapping("/void")
+    Mono<HttpResponse<Void>> callMonoVoidWithHeaders();
 }

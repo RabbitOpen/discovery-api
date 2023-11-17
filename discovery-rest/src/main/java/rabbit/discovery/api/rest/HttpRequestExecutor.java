@@ -160,7 +160,13 @@ public abstract class HttpRequestExecutor {
         if (request.isAsyncRequest()) {
             Mono<String> asyncResult = (Mono<String>) response.getData();
             Type rawType = ((ParameterizedType) resultType).getActualTypeArguments()[0];
-            return (T) asyncResult.map(body -> readResponseByType(request, response, rawType, body));
+            return (T) asyncResult.map(body -> {
+                Object data = readResponseByType(request, response, rawType, body);
+                if (null == data) {
+                    return Mono.empty();
+                }
+                return data;
+            });
         } else {
             return (T) readResponseByType(request, response, resultType, StringUtils.toString(response.getData()));
         }
