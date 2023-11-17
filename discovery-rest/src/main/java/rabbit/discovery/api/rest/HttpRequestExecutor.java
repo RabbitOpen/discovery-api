@@ -179,7 +179,7 @@ public abstract class HttpRequestExecutor {
         if (request.careResponseHeader()) {
             Type actualType = ((ParameterizedType) resultType).getActualTypeArguments()[0];
             if (defaultTypeConverter.containsKey(actualType)) {
-                Object data = defaultTypeConverter.get(actualType).apply(StringUtils.toString(response.getData()));
+                Object data = defaultTypeConverter.get(actualType).apply(StringUtils.toString(body));
                 return new HttpResponse(data, response.getHeaders());
             }
             Object result = transformer.transformResponse(request.getMethod(), actualType, response.getHeaders(), body);
