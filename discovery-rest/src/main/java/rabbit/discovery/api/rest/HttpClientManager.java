@@ -62,26 +62,7 @@ public abstract class HttpClientManager<T> {
     public final HttpResponse execute(HttpRequest httpRequest, int retried) {
         HttpResponse httpResponse = doRequest(httpRequest);
         if (httpRequest.isAsyncRequest()) {
-            Mono<String> data = (Mono<String>) httpResponse.getData();
-            Mono<String> map = data.switchIfEmpty(Mono.defer(() -> {
-                if (200 != httpResponse.getStatusCode()) {
-                    throw new RestApiException("");
-                }
-                return Mono.empty();
-            })).map(b -> {
-                if (200 != httpResponse.getStatusCode()) {
-                    throw new RestApiException(b);
-                }
-                return b;
-            }).onErrorResume(e -> {
-                if (httpRequest.getMaxRetryTimes() == retried) {
-                    return Mono.error(e);
-                }
-                logger.warn("retry {} for request[{}]", retried + 1, httpRequest.getUri());
-                // 异步重试
-                return (Mono<String>) execute(httpRequest, retried + 1).getData();
-            });
-            httpResponse.setData(map);
+            httpResponse.setData(executeAsyncRequest(httpRequest, retried, httpResponse));
         } else {
             Object body = httpResponse.getData();
             if (200 != httpResponse.getStatusCode()) {
@@ -94,6 +75,34 @@ public abstract class HttpClientManager<T> {
             }
         }
         return httpResponse;
+    }
+
+    /**
+     * 执行异步请求
+     * @param httpRequest
+     * @param retried
+     * @param httpResponse
+     * @return
+     */
+    private Mono<String> executeAsyncRequest(HttpRequest httpRequest, int retried, HttpResponse httpResponse) {
+        return ((Mono<String>) httpResponse.getData()).switchIfEmpty(Mono.defer(() -> {
+            if (200 != httpResponse.getStatusCode()) {
+                throw new RestApiException("");
+            }
+            return Mono.empty();
+        })).map(b -> {
+            if (200 != httpResponse.getStatusCode()) {
+                throw new RestApiException(b);
+            }
+            return b;
+        }).onErrorResume(e -> {
+            if (httpRequest.getMaxRetryTimes() == retried) {
+                return Mono.error(e);
+            }
+            logger.warn("retry {} for request[{}]", retried + 1, httpRequest.getUri());
+            // 异步重试
+            return (Mono<String>) execute(httpRequest, retried + 1).getData();
+        });
     }
 
     /**
