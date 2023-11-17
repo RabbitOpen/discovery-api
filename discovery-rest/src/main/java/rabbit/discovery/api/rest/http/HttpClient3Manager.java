@@ -8,6 +8,7 @@ import rabbit.discovery.api.common.exception.RestApiException;
 import rabbit.discovery.api.rest.HttpClientManager;
 import rabbit.discovery.api.rest.anno.ReadTimeout;
 import rabbit.flt.common.utils.ResourceUtils;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -75,7 +76,13 @@ public class HttpClient3Manager extends HttpClientManager<HttpMethodBase> {
             Map<String, String> headerMap = getResponseHeaderMap(request);
             stream = request.getResponseBodyAsStream();
             byte[] bytes = readContent(stream, getResponseContentLength(request));
-            return new HttpResponse(new String(unzipIfZipped(headerMap, bytes)), headerMap, statusCode);
+            Object responseBody;
+            if (requestObj.isAsyncRequest()) {
+                responseBody = null == bytes ? Mono.empty() : Mono.just(new String(unzipIfZipped(headerMap, bytes)));
+            } else {
+                responseBody = null == bytes ? null : new String(unzipIfZipped(headerMap, bytes));
+            }
+            return new HttpResponse(responseBody, headerMap, statusCode);
         } catch (Exception e) {
             throw new RestApiException(e);
         } finally {
@@ -85,6 +92,7 @@ public class HttpClient3Manager extends HttpClientManager<HttpMethodBase> {
 
     /**
      * 获取响应体长度
+     *
      * @param request
      * @return
      */
@@ -99,6 +107,7 @@ public class HttpClient3Manager extends HttpClientManager<HttpMethodBase> {
 
     /**
      * 获取response header
+     *
      * @param request
      * @return
      */
@@ -156,6 +165,7 @@ public class HttpClient3Manager extends HttpClientManager<HttpMethodBase> {
 
     /**
      * 获取请求对象
+     *
      * @param request
      * @return
      */

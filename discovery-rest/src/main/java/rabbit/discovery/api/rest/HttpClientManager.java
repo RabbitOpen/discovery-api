@@ -63,7 +63,12 @@ public abstract class HttpClientManager<T> {
         HttpResponse httpResponse = doRequest(httpRequest);
         if (httpRequest.isAsyncRequest()) {
             Mono<String> data = (Mono<String>) httpResponse.getData();
-            Mono<String> map = data.map(b -> {
+            Mono<String> map = data.switchIfEmpty(Mono.defer(() -> {
+                if (200 != httpResponse.getStatusCode()) {
+                    throw new RestApiException("");
+                }
+                return Mono.empty();
+            })).map(b -> {
                 if (200 != httpResponse.getStatusCode()) {
                     throw new RestApiException(b);
                 }

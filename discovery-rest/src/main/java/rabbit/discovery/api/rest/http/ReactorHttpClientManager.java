@@ -53,7 +53,10 @@ public class ReactorHttpClientManager extends HttpClientManager<HttpClient.Respo
         } else {
             try {
                 Semaphore semaphore = new Semaphore(0);
-                monoResult.subscribe(body -> {
+                monoResult.switchIfEmpty(Mono.defer(() -> {
+                    semaphore.release();
+                    return Mono.empty();
+                })).subscribe(body -> {
                     response.setData(body);
                     semaphore.release();
                 });
@@ -75,8 +78,7 @@ public class ReactorHttpClientManager extends HttpClientManager<HttpClient.Respo
             response.setStatusCode(resp.status().code());
             resp.responseHeaders().forEach(entry -> response.setHeader(entry.getKey(), entry.getValue()));
             return content.asByteArray();
-        }).switchIfEmpty(Mono.defer(() -> Mono.just(new byte[0])))
-                .map(bytes -> new String(unzipIfZipped(response.getHeaders(), bytes)));
+        }).map(bytes -> new String(unzipIfZipped(response.getHeaders(), bytes)));
     }
 
     @Override

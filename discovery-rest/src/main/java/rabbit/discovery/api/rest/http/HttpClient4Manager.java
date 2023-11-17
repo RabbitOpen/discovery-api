@@ -14,6 +14,7 @@ import rabbit.discovery.api.common.exception.RestApiException;
 import rabbit.discovery.api.rest.HttpClientManager;
 import rabbit.discovery.api.rest.anno.ReadTimeout;
 import rabbit.flt.common.utils.ResourceUtils;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 
@@ -61,7 +62,12 @@ public class HttpClient4Manager extends HttpClientManager<HttpRequestBase> {
                 headerMap.put(header.getName(), header.getValue());
             }
             byte[] bytes = EntityUtils.toByteArray(response.getEntity());
-            String responseBody = new String(unzipIfZipped(headerMap, bytes));
+            Object responseBody;
+            if (requestObj.isAsyncRequest()) {
+                responseBody = null == bytes ? Mono.empty() : Mono.just(new String(unzipIfZipped(headerMap, bytes)));
+            } else {
+                responseBody = null == bytes ? null : new String(unzipIfZipped(headerMap, bytes));
+            }
             return new HttpResponse(responseBody, headerMap, response.getStatusLine().getStatusCode());
         } catch (Exception e) {
             throw new RestApiException(e);
@@ -87,6 +93,7 @@ public class HttpClient4Manager extends HttpClientManager<HttpRequestBase> {
 
     /**
      * 获取请求对象
+     *
      * @param request
      * @return
      */

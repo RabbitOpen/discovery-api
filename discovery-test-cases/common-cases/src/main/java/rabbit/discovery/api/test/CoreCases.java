@@ -160,6 +160,7 @@ public class CoreCases {
         TestCase.assertEquals("hello", apiSample.hello().getData());
         apiSample.callVoid();
         HttpResponse<Void> response = apiSample.callVoidWithHeaders();
+        TestCase.assertNull(response.getData());
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.API_VERSION.toLowerCase()));
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.APPLICATION_CODE.toLowerCase()));
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.REQUEST_TIME.toLowerCase()));
@@ -243,9 +244,10 @@ public class CoreCases {
 
         // 基础数据类型返回验证
         TestCase.assertEquals("hello", apiSample.hello().block());
-        apiSample.callMonoVoid().block();
+        TestCase.assertNull(apiSample.callMonoVoid().block());
         apiSample.callVoid();
         HttpResponse<Void> block = apiSample.callMonoVoidWithHeaders().block();
+        TestCase.assertNull(block.getData());
         TestCase.assertTrue(block.getHeaders().containsKey(Headers.API_VERSION.toLowerCase()));
         TestCase.assertTrue(block.getHeaders().containsKey(Headers.APPLICATION_CODE.toLowerCase()));
         TestCase.assertTrue(block.getHeaders().containsKey(Headers.REQUEST_TIME.toLowerCase()));
