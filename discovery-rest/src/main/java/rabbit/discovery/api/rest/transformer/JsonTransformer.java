@@ -14,6 +14,9 @@ public class JsonTransformer implements HttpTransformer {
 
     @Override
     public String transformRequest(Method method, Object requestBody) {
+        if (requestBody instanceof String) {
+            return (String) requestBody;
+        }
         return JsonUtils.writeObject(requestBody);
     }
 

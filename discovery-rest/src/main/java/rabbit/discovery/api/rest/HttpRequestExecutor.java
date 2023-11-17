@@ -185,6 +185,9 @@ public abstract class HttpRequestExecutor {
             Object result = transformer.transformResponse(request.getMethod(), actualType, response.getHeaders(), body);
             return new HttpResponse(result, response.getHeaders());
         } else {
+            if (defaultTypeConverter.containsKey(resultType)) {
+                return defaultTypeConverter.get(resultType).apply(StringUtils.toString(body));
+            }
             return transformer.transformResponse(request.getMethod(), resultType, response.getHeaders(), body);
         }
     }
