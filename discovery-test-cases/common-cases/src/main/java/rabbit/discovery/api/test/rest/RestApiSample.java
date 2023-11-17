@@ -53,5 +53,5 @@ public interface RestApiSample {
                        @TargetServer ServerNode serverNode);
 
     @GetMapping("/hello")
-    String hello();
+    HttpResponse<String> hello();
 }

@@ -157,7 +157,7 @@ public class CoreCases {
 
     public void simpleDataTest(ApplicationContext context) {
         RestApiSample apiSample = context.getBean(RestApiSample.class);
-        TestCase.assertEquals("hello", apiSample.hello());
+        TestCase.assertEquals("hello", apiSample.hello().getData());
     }
 
     /**
