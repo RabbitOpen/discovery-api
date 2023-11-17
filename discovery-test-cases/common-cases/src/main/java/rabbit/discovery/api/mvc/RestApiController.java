@@ -3,7 +3,6 @@ package rabbit.discovery.api.mvc;
 import org.springframework.web.bind.annotation.*;
 import rabbit.discovery.api.test.bean.RetryData;
 import rabbit.discovery.api.test.bean.User;
-import reactor.core.publisher.Mono;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,7 +49,7 @@ public class RestApiController {
     }
 
     @GetMapping("/hello")
-    public Mono<String> hello() {
-        return Mono.create(s -> s.success("hello"));
+    public String hello() {
+        return "hello";
     }
 }
