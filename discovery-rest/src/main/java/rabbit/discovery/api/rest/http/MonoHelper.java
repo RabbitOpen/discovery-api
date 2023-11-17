@@ -16,6 +16,7 @@ public class MonoHelper {
 
     /**
      * 处理异步结果
+     *
      * @param request
      * @param response
      * @param resultType
@@ -23,19 +24,21 @@ public class MonoHelper {
      * @return
      */
     public static Mono<Object> handleAsyncResponse(HttpRequest request, HttpResponse response,
-                                             ParameterizedType resultType, HttpRequestExecutor executor) {
+                                                   ParameterizedType resultType, HttpRequestExecutor executor) {
         Mono<String> asyncResult = (Mono<String>) response.getData();
         Type rawType = resultType.getActualTypeArguments()[0];
         return asyncResult.flatMap(body -> {
             if (void.class == rawType || Void.class == rawType) {
                 return Mono.empty();
             }
-            return Mono.just(executor.readResponseByType(request, response, rawType, body));
+            Object data = executor.readResponseByType(request, response, rawType, body);
+            return null == data ? Mono.empty() : Mono.just(data);
         }).switchIfEmpty(Mono.defer(() -> {
             if (void.class == rawType || Void.class == rawType) {
                 return Mono.empty();
             }
-            return Mono.just(executor.readResponseByType(request, response, rawType, null));
+            Object data = executor.readResponseByType(request, response, rawType, null);
+            return null == data ? Mono.empty() : Mono.just(data);
         }));
     }
 }
