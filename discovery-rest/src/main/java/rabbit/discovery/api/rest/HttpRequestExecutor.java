@@ -11,7 +11,6 @@ import rabbit.discovery.api.rest.http.HttpResponse;
 import rabbit.discovery.api.rest.http.SimpleLoadBalancer;
 import rabbit.discovery.api.rest.transformer.JsonTransformer;
 import rabbit.flt.common.utils.StringUtils;
-import reactor.core.publisher.Mono;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -21,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import static rabbit.discovery.api.rest.http.MonoHelper.handleAsyncResponse;
 import static rabbit.flt.common.utils.ReflectUtils.*;
 
 public abstract class HttpRequestExecutor {
@@ -132,10 +132,9 @@ public abstract class HttpRequestExecutor {
      * 执行请求
      *
      * @param request
-     * @param <T>
      * @return
      */
-    public final <T> T execute(HttpRequest request) {
+    public final Object execute(HttpRequest request) {
         // 第一次调用时完成解析
         ServerNode targetServer = getTargetServer(request);
         request.setUri(getServerAddress(targetServer) + request.getUri());
@@ -149,30 +148,17 @@ public abstract class HttpRequestExecutor {
      *
      * @param request
      * @param response
-     * @param <T>
      * @return
      */
-    private <T> T handleResponse(HttpRequest request, HttpResponse response) {
+    private Object handleResponse(HttpRequest request, HttpResponse response) {
         Type resultType = request.getResultType();
         if (defaultTypeConverter.containsKey(resultType)) {
-            return (T) defaultTypeConverter.get(resultType).apply(StringUtils.toString(response.getData()));
+            return defaultTypeConverter.get(resultType).apply(StringUtils.toString(response.getData()));
         }
         if (request.isAsyncRequest()) {
-            Mono<String> asyncResult = (Mono<String>) response.getData();
-            Type rawType = ((ParameterizedType) resultType).getActualTypeArguments()[0];
-            return (T) asyncResult.flatMap(body -> {
-                if (void.class == rawType || Void.class == rawType) {
-                    return Mono.empty();
-                }
-                return Mono.just(readResponseByType(request, response, rawType, body));
-            }).switchIfEmpty(Mono.defer(() -> {
-                if (void.class == rawType || Void.class == rawType) {
-                    return Mono.empty();
-                }
-                return Mono.just(readResponseByType(request, response, rawType, null));
-            }));
+            return handleAsyncResponse(request, response, (ParameterizedType) resultType, this);
         } else {
-            return (T) readResponseByType(request, response, resultType, StringUtils.toString(response.getData()));
+            return readResponseByType(request, response, resultType, StringUtils.toString(response.getData()));
         }
     }
 
@@ -185,7 +171,7 @@ public abstract class HttpRequestExecutor {
      * @param body
      * @return
      */
-    private Object readResponseByType(HttpRequest request, HttpResponse response, Type resultType, String body) {
+    public Object readResponseByType(HttpRequest request, HttpResponse response, Type resultType, String body) {
         if (request.careResponseHeader()) {
             Type actualType = ((ParameterizedType) resultType).getActualTypeArguments()[0];
             if (defaultTypeConverter.containsKey(actualType)) {

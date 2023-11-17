@@ -151,7 +151,7 @@ public abstract class HttpClientManager<T> {
      * @param data
      * @return
      */
-    protected final byte[] unzipIfZipped(Map<String, String> headers, byte[] data) {
+    public final byte[] unzipIfZipped(Map<String, String> headers, byte[] data) {
         if (isZipped(headers)) {
             return GZipUtils.decompressIgnoreOriginalLength(data, getStepSize(headers));
         } else {

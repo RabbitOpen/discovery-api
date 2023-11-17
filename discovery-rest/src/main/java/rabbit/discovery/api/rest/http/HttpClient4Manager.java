@@ -62,19 +62,21 @@ public class HttpClient4Manager extends HttpClientManager<HttpRequestBase> {
                 headerMap.put(header.getName(), header.getValue());
             }
             byte[] bytes = EntityUtils.toByteArray(response.getEntity());
-            Object responseBody;
+            Object body;
             if (requestObj.isAsyncRequest()) {
-                responseBody = null == bytes ? Mono.empty() : Mono.just(new String(unzipIfZipped(headerMap, bytes)));
+                body = null == bytes ? Mono.empty() : Mono.just(new String(unzipIfZipped(headerMap, bytes)));
             } else {
-                responseBody = null == bytes ? null : new String(unzipIfZipped(headerMap, bytes));
+                body = null == bytes ? null : new String(unzipIfZipped(headerMap, bytes));
             }
-            return new HttpResponse(responseBody, headerMap, response.getStatusLine().getStatusCode());
+            return new HttpResponse(body, headerMap, response.getStatusLine().getStatusCode());
         } catch (Exception e) {
             throw new RestApiException(e);
         } finally {
             ResourceUtils.close(response);
         }
     }
+
+
 
     @Override
     protected void setRequestBody(HttpRequestBase request, String body, String contentType) {
