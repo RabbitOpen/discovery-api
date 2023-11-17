@@ -36,6 +36,7 @@ public class SpringBoot2ApiTest {
         CoreCases cases = new CoreCases();
         cases.openApiCase(applicationContext);
         cases.restApiCase(applicationContext);
+        cases.simpleDataTest(applicationContext);
         cases.retryCase(applicationContext);
     }
 }

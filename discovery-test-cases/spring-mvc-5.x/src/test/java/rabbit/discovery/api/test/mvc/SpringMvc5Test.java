@@ -43,6 +43,7 @@ public class SpringMvc5Test {
                 cases.configLoadCase(ctx);
                 cases.openApiCase(ctx);
                 cases.restApiCase(ctx);
+                cases.simpleDataTest(ctx);
                 cases.reportServiceCase();
                 cases.authorizationUrlCase(ctx);
                 cases.springMvcTraceEnhanced();

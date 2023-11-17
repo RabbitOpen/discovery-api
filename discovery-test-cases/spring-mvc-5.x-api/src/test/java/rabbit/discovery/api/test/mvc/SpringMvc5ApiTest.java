@@ -32,6 +32,7 @@ public class SpringMvc5ApiTest {
             CoreCases cases = new CoreCases();
             cases.openApiCase(ctx);
             cases.restApiCase(ctx);
+            cases.simpleDataTest(ctx);
         });
     }
 

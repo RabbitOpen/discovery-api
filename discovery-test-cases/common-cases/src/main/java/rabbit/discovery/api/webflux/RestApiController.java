@@ -6,6 +6,7 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.bind.annotation.*;
 import rabbit.discovery.api.test.bean.RetryData;
 import rabbit.discovery.api.test.bean.User;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,5 +46,10 @@ public class RestApiController {
         }
         // 返回重试的次数
         return new RetryData((map.get(time).get()));
+    }
+
+    @GetMapping("/hello")
+    public Mono<String> hello() {
+        return Mono.create(s -> s.success("hello"));
     }
 }

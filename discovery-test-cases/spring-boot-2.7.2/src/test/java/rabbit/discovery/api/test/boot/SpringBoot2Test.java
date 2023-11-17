@@ -32,6 +32,7 @@ public class SpringBoot2Test {
         cases.configLoadCase(applicationContext);
         cases.openApiCase(applicationContext);
         cases.restApiCase(applicationContext);
+        cases.simpleDataTest(applicationContext);
         cases.reportServiceCase();
         cases.authorizationUrlCase(applicationContext);
         cases.springMvcTraceEnhanced();

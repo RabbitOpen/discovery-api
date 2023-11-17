@@ -35,6 +35,7 @@ public class SpringBoot1Test {
         cases.configLoadCase(applicationContext);
         cases.openApiCase(applicationContext);
         cases.restApiCase(applicationContext);
+        cases.simpleDataTest(applicationContext);
         cases.retryCase(applicationContext);
         cases.reportServiceCase();
         cases.authorizationUrlCase(applicationContext);

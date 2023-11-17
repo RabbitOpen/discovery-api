@@ -153,7 +153,11 @@ public class CoreCases {
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.APPLICATION_CODE.toLowerCase()));
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.REQUEST_TIME.toLowerCase()));
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.REQUEST_TIME_SIGNATURE.toLowerCase()));
+    }
 
+    public void simpleDataTest(ApplicationContext context) {
+        RestApiSample apiSample = context.getBean(RestApiSample.class);
+        TestCase.assertEquals("hello", apiSample.hello());
     }
 
     /**
@@ -230,6 +234,9 @@ public class CoreCases {
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.APPLICATION_CODE.toLowerCase()));
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.REQUEST_TIME.toLowerCase()));
         TestCase.assertTrue(response.getHeaders().containsKey(Headers.REQUEST_TIME_SIGNATURE.toLowerCase()));
+
+        // 基础数据类型返回验证
+        TestCase.assertEquals("hello", apiSample.hello().block());
     }
 
     /**
