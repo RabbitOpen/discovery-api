@@ -10,6 +10,7 @@ import rabbit.discovery.api.common.Environment;
 import rabbit.discovery.api.common.ServerNode;
 import rabbit.discovery.api.common.enums.Schema;
 import rabbit.discovery.api.common.utils.HexUtils;
+import rabbit.discovery.api.common.utils.JsonUtils;
 import rabbit.discovery.api.common.utils.RsaUtils;
 import rabbit.flt.common.utils.GZipUtils;
 import rabbit.flt.common.utils.StringUtils;
@@ -17,6 +18,7 @@ import rabbit.flt.common.utils.StringUtils;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.*;
 
 @RunWith(JUnit4.class)
 public class UtilTest {
@@ -78,5 +80,22 @@ public class UtilTest {
         String version = Environment.getVersion();
         TestCase.assertTrue(!StringUtils.isEmpty(version));
         TestCase.assertFalse(version.contains("${"));
+    }
+
+    @Test
+    public void jsonTest() {
+        Map<String, String> map = JsonUtils.readValue("{\"a\": \"b\"}", JsonUtils.constructMap(HashMap.class, String.class, String.class));
+        TestCase.assertTrue(map.getClass() == HashMap.class);
+        TestCase.assertTrue(map.get("a").equals("b"));
+
+        Set<String> set = JsonUtils.readValue("[\"a\",\"b\"]", JsonUtils.constructListType(HashSet.class, String.class));
+        TestCase.assertTrue(set.getClass() == HashSet.class);
+        TestCase.assertTrue(set.size() == 2);
+
+        List<String> list = JsonUtils.readValue("[\"a\",\"b\"]", JsonUtils.constructListType(ArrayList.class, String.class));
+        TestCase.assertTrue(list.getClass() == ArrayList.class);
+        TestCase.assertTrue(list.size() == 2);
+        TestCase.assertTrue("a".equals(list.get(0)));
+        TestCase.assertTrue("b".equals(list.get(1)));
     }
 }

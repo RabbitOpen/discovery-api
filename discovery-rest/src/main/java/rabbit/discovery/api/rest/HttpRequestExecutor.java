@@ -1,5 +1,7 @@
 package rabbit.discovery.api.rest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import rabbit.discovery.api.common.Configuration;
 import rabbit.discovery.api.common.ServerNode;
@@ -20,10 +22,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import static rabbit.discovery.api.common.enums.HttpMethod.GET;
 import static rabbit.discovery.api.rest.http.MonoHelper.handleAsyncResponse;
 import static rabbit.flt.common.utils.ReflectUtils.*;
 
 public abstract class HttpRequestExecutor {
+
+    protected Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * 请求转换器
@@ -135,6 +140,9 @@ public abstract class HttpRequestExecutor {
      * @return
      */
     public final Object execute(HttpRequest request) {
+        if (GET == request.getHttpMethod() && null != request.getBody()) {
+            logger.warn("request body will be ignored when request method is GET");
+        }
         // 第一次调用时完成解析
         ServerNode targetServer = getTargetServer(request);
         request.setUri(getServerAddress(targetServer) + request.getUri());

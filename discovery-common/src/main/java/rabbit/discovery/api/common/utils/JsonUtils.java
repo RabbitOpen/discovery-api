@@ -10,6 +10,7 @@ import rabbit.discovery.api.common.exception.DiscoveryException;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.Map;
 
 public class JsonUtils {
 
@@ -50,6 +51,10 @@ public class JsonUtils {
 
     public static JavaType constructListType(Class<? extends Collection> collectionClz, Class<?> elementType) {
         return inst.getMapper().getTypeFactory().constructCollectionType(collectionClz, elementType);
+    }
+
+    public static <T extends Map> JavaType constructMap(Class<T> mapType, Class<?> keyType, Class<?> valueType) {
+        return inst.getMapper().getTypeFactory().constructMapType(mapType, keyType, valueType);
     }
 
     private ObjectMapper getMapper() {
