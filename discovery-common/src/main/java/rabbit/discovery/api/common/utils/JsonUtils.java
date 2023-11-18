@@ -53,7 +53,7 @@ public class JsonUtils {
         return inst.getMapper().getTypeFactory().constructCollectionType(collectionClz, elementType);
     }
 
-    public static <T extends Map> JavaType constructMap(Class<T> mapType, Class<?> keyType, Class<?> valueType) {
+    public static <T extends Map> JavaType constructMapType(Class<T> mapType, Class<?> keyType, Class<?> valueType) {
         return inst.getMapper().getTypeFactory().constructMapType(mapType, keyType, valueType);
     }
 

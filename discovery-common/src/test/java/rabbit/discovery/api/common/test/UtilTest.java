@@ -84,7 +84,7 @@ public class UtilTest {
 
     @Test
     public void jsonTest() {
-        Map<String, String> map = JsonUtils.readValue("{\"a\": \"b\"}", JsonUtils.constructMap(HashMap.class, String.class, String.class));
+        Map<String, String> map = JsonUtils.readValue("{\"a\": \"b\"}", JsonUtils.constructMapType(HashMap.class, String.class, String.class));
         TestCase.assertTrue(map.getClass() == HashMap.class);
         TestCase.assertTrue(map.get("a").equals("b"));
 
