@@ -29,12 +29,12 @@ public class MonoHelper {
                                                    ParameterizedType resultType, HttpRequestExecutor executor) {
         Mono<String> asyncResult = (Mono<String>) response.getData();
         Type rawType = resultType.getActualTypeArguments()[0];
-        return asyncResult.flatMap(body -> inst.getObjectMono(request, response, executor, rawType, body))
-                .switchIfEmpty(Mono.defer(() -> inst.getObjectMono(request, response, executor, rawType, null)));
+        return asyncResult.flatMap(body -> inst.getMonoObject(request, response, executor, rawType, body))
+                .switchIfEmpty(Mono.defer(() -> inst.getMonoObject(request, response, executor, rawType, null)));
     }
 
-    private Mono<Object> getObjectMono(HttpRequest request, HttpResponse response,
-                                              HttpRequestExecutor executor, Type rawType, String body) {
+    private Mono<Object> getMonoObject(HttpRequest request, HttpResponse response,
+                                       HttpRequestExecutor executor, Type rawType, String body) {
         if (void.class == rawType || Void.class == rawType) {
             return Mono.empty();
         }
