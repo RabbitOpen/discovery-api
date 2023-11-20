@@ -32,7 +32,7 @@ public class DiscoveryServiceImpl implements HttpProtocolService {
 
     private DiscoveryServiceImpl() {
         applicationMeta = new ApplicationMeta();
-        applicationMeta.setAuthVersion(1L);
+        applicationMeta.setPrivilegeVersion(1L);
         applicationMeta.setRegistryAddressVersion(1L);
         applicationMeta.setPrivilegeVersion(1L);
     }

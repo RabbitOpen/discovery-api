@@ -72,10 +72,10 @@ public class DefaultDiscoveryService implements DiscoveryService {
             ApplicationMeta meta = this.loadLatestApplicationMeta();
             updateRegistryAddress(meta.getRegistryAddressVersion());
             updateConfig(meta.getConfigVersion());
-            if (authorizationVersion != meta.getAuthVersion()) {
+            if (authorizationVersion != meta.getPrivilegeVersion()) {
                 loadProviderPrivileges();
                 logger.info("application authorization data is updated!");
-                authorizationVersion = meta.getAuthVersion();
+                authorizationVersion = meta.getPrivilegeVersion();
             }
             if (errorFound) {
                 errorFound = false;

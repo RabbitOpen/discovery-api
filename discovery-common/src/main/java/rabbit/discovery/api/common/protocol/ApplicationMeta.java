@@ -15,14 +15,9 @@ import java.util.concurrent.atomic.AtomicLong;
 public class ApplicationMeta {
 
     /**
-     * 权限版本
-     */
-    private Long privilegeVersion = 0L;
-
-    /**
      * 授权版本，授权关系变更一次 +1
      */
-    private Long authVersion = 0L;
+    private Long privilegeVersion = 0L;
 
     /**
      * 注册中心地址版本
@@ -63,14 +58,6 @@ public class ApplicationMeta {
 
     public void setPrivilegeVersion(Long privilegeVersion) {
         this.privilegeVersion = privilegeVersion;
-    }
-
-    public Long getAuthVersion() {
-        return authVersion;
-    }
-
-    public void setAuthVersion(Long authVersion) {
-        this.authVersion = authVersion;
     }
 
     public Long getRegistryAddressVersion() {
