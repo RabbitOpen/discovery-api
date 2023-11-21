@@ -74,8 +74,15 @@ public class ReactorHttpClientManager extends HttpClientManager<HttpClient.Respo
         HttpClient.ResponseReceiver<?> receiver = responseReceiver;
         if (GET != request.getHttpMethod() && null != request.getBody()) {
             String body = getTransformer().transformRequest(request.getMethod(), request.getBody());
-            receiver = ((HttpClient.RequestSender) responseReceiver).send(ByteBufFlux.fromString(Mono.just(body),
-                    Charset.forName("UTF8"), ByteBufAllocator.DEFAULT));
+            Charset charset = Charset.forName("UTF-8");
+            String contentType = request.getContentType();
+            String keyWord = "charset=";
+            if (contentType.toLowerCase().contains(keyWord)) {
+                String charsetName = contentType.substring(contentType.indexOf(keyWord) + keyWord.length());
+                charset = Charset.forName(charsetName);
+            }
+            ByteBufFlux bufFlux = ByteBufFlux.fromString(Mono.just(body), charset, ByteBufAllocator.DEFAULT);
+            receiver = ((HttpClient.RequestSender) responseReceiver).send(bufFlux);
         }
         return receiver.responseSingle((resp, content) -> {
             response.setStatusCode(resp.status().code());
