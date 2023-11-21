@@ -161,7 +161,7 @@ public abstract class HttpRequestExecutor {
     private Object handleResponse(HttpRequest request, HttpResponse response) {
         Type resultType = request.getResultType();
         if (defaultTypeConverter.containsKey(resultType)) {
-            return defaultTypeConverter.get(resultType).apply(StringUtils.toString(response.getData()));
+            return doDefaultConvert(resultType, response.getData());
         }
         if (request.isAsyncRequest()) {
             return handleAsyncResponse(request, response, (ParameterizedType) resultType, this);
@@ -183,17 +183,23 @@ public abstract class HttpRequestExecutor {
         if (request.careResponseHeader()) {
             Type actualType = ((ParameterizedType) resultType).getActualTypeArguments()[0];
             if (defaultTypeConverter.containsKey(actualType)) {
-                Object data = defaultTypeConverter.get(actualType).apply(StringUtils.toString(body));
-                return new HttpResponse(data, response.getHeaders());
+                return new HttpResponse(doDefaultConvert(actualType, body), response.getHeaders());
             }
             Object result = transformer.transformResponse(request.getMethod(), actualType, response.getHeaders(), body);
             return new HttpResponse(result, response.getHeaders());
         } else {
             if (defaultTypeConverter.containsKey(resultType)) {
-                return defaultTypeConverter.get(resultType).apply(StringUtils.toString(body));
+                return doDefaultConvert(resultType, body);
             }
             return transformer.transformResponse(request.getMethod(), resultType, response.getHeaders(), body);
         }
+    }
+
+    private Object doDefaultConvert(Type actualType, Object data) {
+        if (null == data) {
+            return null;
+        }
+        return defaultTypeConverter.get(actualType).apply(StringUtils.toString(data));
     }
 
     private RequestInterceptor getRequestInterceptor() {
