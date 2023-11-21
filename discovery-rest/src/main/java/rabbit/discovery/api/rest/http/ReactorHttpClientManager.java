@@ -1,5 +1,6 @@
 package rabbit.discovery.api.rest.http;
 
+import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaders;
@@ -11,6 +12,7 @@ import reactor.netty.ByteBufFlux;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 
+import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.concurrent.Semaphore;
 
@@ -72,7 +74,8 @@ public class ReactorHttpClientManager extends HttpClientManager<HttpClient.Respo
         HttpClient.ResponseReceiver<?> receiver = responseReceiver;
         if (GET != request.getHttpMethod() && null != request.getBody()) {
             String body = getTransformer().transformRequest(request.getMethod(), request.getBody());
-            receiver = ((HttpClient.RequestSender) responseReceiver).send(ByteBufFlux.fromString(Mono.just(body)));
+            receiver = ((HttpClient.RequestSender) responseReceiver).send(ByteBufFlux.fromString(Mono.just(body),
+                    Charset.forName("UTF8"), ByteBufAllocator.DEFAULT));
         }
         return receiver.responseSingle((resp, content) -> {
             response.setStatusCode(resp.status().code());
