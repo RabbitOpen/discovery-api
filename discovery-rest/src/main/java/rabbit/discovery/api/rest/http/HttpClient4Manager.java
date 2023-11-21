@@ -64,9 +64,9 @@ public class HttpClient4Manager extends HttpClientManager<HttpRequestBase> {
             byte[] bytes = EntityUtils.toByteArray(response.getEntity());
             Object body;
             if (requestObj.isAsyncRequest()) {
-                body = null == bytes ? Mono.empty() : Mono.just(new String(unzipIfZipped(headerMap, bytes)));
+                body = null == bytes ? Mono.empty() : Mono.just(byte2String(unzipIfZipped(headerMap, bytes)));
             } else {
-                body = null == bytes ? null : new String(unzipIfZipped(headerMap, bytes));
+                body = null == bytes ? null : byte2String(unzipIfZipped(headerMap, bytes));
             }
             return new HttpResponse(body, headerMap, response.getStatusLine().getStatusCode());
         } catch (Exception e) {
@@ -75,8 +75,6 @@ public class HttpClient4Manager extends HttpClientManager<HttpRequestBase> {
             ResourceUtils.close(response);
         }
     }
-
-
 
     @Override
     protected void setRequestBody(HttpRequestBase request, String body, String contentType) {

@@ -12,6 +12,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
+import static java.nio.charset.Charset.forName;
+
 /**
  * http client manager
  *
@@ -191,5 +193,9 @@ public abstract class HttpClientManager<T> {
             }
         }
         return false;
+    }
+
+    protected String byte2String(byte[] bytes) {
+        return new String(bytes, forName("UTF-8"));
     }
 }

@@ -78,9 +78,9 @@ public class HttpClient3Manager extends HttpClientManager<HttpMethodBase> {
             byte[] bytes = readContent(stream, getResponseContentLength(request));
             Object responseBody;
             if (requestObj.isAsyncRequest()) {
-                responseBody = null == bytes ? Mono.empty() : Mono.just(new String(unzipIfZipped(headerMap, bytes)));
+                responseBody = null == bytes ? Mono.empty() : Mono.just(byte2String(unzipIfZipped(headerMap, bytes)));
             } else {
-                responseBody = null == bytes ? null : new String(unzipIfZipped(headerMap, bytes));
+                responseBody = null == bytes ? null : byte2String(unzipIfZipped(headerMap, bytes));
             }
             return new HttpResponse(responseBody, headerMap, statusCode);
         } catch (Exception e) {
