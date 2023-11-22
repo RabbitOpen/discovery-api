@@ -91,12 +91,12 @@ public class ApplicationMeta {
         if (null == listMap || !listMap.containsKey(clusterName)) {
             throw new DiscoveryException("获取应用[".concat(applicationCode).concat("]信息失败"));
         }
-        List<ApplicationInstance> clusterInstances = listMap.get(clusterName);
-        if (CollectionUtils.isEmpty(clusterInstances)) {
+        List<ApplicationInstance> instanceList = listMap.get(clusterName);
+        if (CollectionUtils.isEmpty(instanceList)) {
             throw new LoadBalanceException(applicationCode, clusterName);
         }
-        int index = (int) (getCount(applicationCode) % clusterInstances.size());
-        ApplicationInstance instance = clusterInstances.get(index);
+        int index = (int) (getCount(applicationCode) % instanceList.size());
+        ApplicationInstance instance = instanceList.get(index);
         return new ServerNode(instance.getHost(), instance.getPort());
     }
 
