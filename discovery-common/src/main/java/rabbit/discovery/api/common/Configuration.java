@@ -124,8 +124,8 @@ public class Configuration {
     /**
      * 最大挂起请求数
      */
-    @Value("${discovery.application.http.max-pending-request:2000}")
-    private int maxPendingRequest;
+    @Value("${discovery.application.http.max-pending-requests:2000}")
+    private int maxPendingRequests;
 
     /**
      * 每个服务方的最大连接数，异步框架下无效
@@ -383,11 +383,11 @@ public class Configuration {
         this.communicationMode = communicationMode;
     }
 
-    public int getMaxPendingRequest() {
-        return maxPendingRequest;
+    public int getMaxPendingRequests() {
+        return maxPendingRequests;
     }
 
-    public void setMaxPendingRequest(int maxPendingRequest) {
-        this.maxPendingRequest = maxPendingRequest;
+    public void setMaxPendingRequests(int maxPendingRequests) {
+        this.maxPendingRequests = maxPendingRequests;
     }
 }

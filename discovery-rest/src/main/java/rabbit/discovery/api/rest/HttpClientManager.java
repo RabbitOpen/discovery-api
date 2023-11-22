@@ -140,9 +140,9 @@ public abstract class HttpClientManager<T> {
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
         this.initConnectionManager();
-        logger.info("httpClientManager[{}] is created, maxConnection: {}, maxConnectionPerHost: {}, connectionTimeout: {}, readTimeout: {} ",
+        logger.info("httpClientManager[{}] is created, maxConnection: {}, maxConnectionPerHost: {}, connectionTimeout: {}, readTimeout: {}, maxPendingRequests: {} ",
                 getClass().getSimpleName(), configuration.getMaxConnection(), configuration.getMaxConnectionPerHost(),
-                configuration.getConnectionTimeout(), configuration.getReadTimeout());
+                configuration.getConnectionTimeout(), configuration.getReadTimeout(), configuration.getMaxPendingRequests());
     }
 
     /**
