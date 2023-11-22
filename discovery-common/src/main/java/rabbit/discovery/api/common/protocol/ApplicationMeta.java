@@ -37,7 +37,7 @@ public class ApplicationMeta {
     /**
      * provider的集群实例信息， 一级key是应用编码, 二级key是集群名（编码）
      */
-    private Map<String, Map<String, List<ServerNode>>> clusterServerNode = new ConcurrentHashMap<>();
+    private Map<String, Map<String, List<ServerNode>>> clusterServerNodes = new ConcurrentHashMap<>();
 
     /**
      * counter
@@ -87,7 +87,7 @@ public class ApplicationMeta {
      * @return
      */
     public ServerNode getProviderServerNode(String applicationCode, String clusterName) {
-        Map<String, List<ServerNode>> listMap = getClusterServerNode().get(applicationCode);
+        Map<String, List<ServerNode>> listMap = getClusterServerNodes().get(applicationCode);
         if (null == listMap || !listMap.containsKey(clusterName)) {
             throw new DiscoveryException("获取应用[".concat(applicationCode).concat("]信息失败"));
         }
@@ -98,11 +98,11 @@ public class ApplicationMeta {
         return serverNodes.get((int) (getCount(applicationCode) % serverNodes.size()));
     }
 
-    public Map<String, Map<String, List<ServerNode>>> getClusterServerNode() {
-        return clusterServerNode;
+    public Map<String, Map<String, List<ServerNode>>> getClusterServerNodes() {
+        return clusterServerNodes;
     }
 
-    public void setClusterServerNode(Map<String, Map<String, List<ServerNode>>> clusterServerNode) {
-        this.clusterServerNode = clusterServerNode;
+    public void setClusterServerNodes(Map<String, Map<String, List<ServerNode>>> clusterServerNodes) {
+        this.clusterServerNodes = clusterServerNodes;
     }
 }

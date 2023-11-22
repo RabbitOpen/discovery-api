@@ -51,7 +51,7 @@ public class DiscoveryServiceImpl implements HttpProtocolService {
                 .add(new ServerNode("http://127.0.0.1:1802"));
         Map<String, Map<String, List<ServerNode>>> map = new ConcurrentHashMap<>();
         map.put("restApiSampleServer", clusterInstances);
-        applicationMeta.setClusterServerNode(map);
+        applicationMeta.setClusterServerNodes(map);
         return RegisterResult.success(applicationMeta);
     }
 
