@@ -77,12 +77,16 @@ public final class HttpRequest {
     private Map<String, Object> attachments = new HashMap<>();
 
     public HttpRequest(String targetApplication, ClientFactory clientFactory) {
+        this();
         this.targetApplication = targetApplication;
         this.clientFactory = clientFactory;
     }
 
     public HttpRequest(ClientFactory clientFactory) {
-        this.clientFactory = clientFactory;
+        this(null, clientFactory);
+    }
+
+    public HttpRequest() {
     }
 
     /**
