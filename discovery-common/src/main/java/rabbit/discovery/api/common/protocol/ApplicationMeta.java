@@ -35,9 +35,9 @@ public class ApplicationMeta {
     private Set<String> whiteConsumers = new HashSet<>();
 
     /**
-     * provider的集群实例信息， key是应用编码
+     * provider的集群实例信息， 一级key是应用编码, 二级key是集群名（编码）
      */
-    private Map<String, ClusterInstanceMeta> clusterMetas = new ConcurrentHashMap<>();
+    private Map<String, Map<String, List<ApplicationInstance>>> clusterInstances = new ConcurrentHashMap<>();
 
     /**
      * counter
@@ -87,28 +87,24 @@ public class ApplicationMeta {
      * @return
      */
     public ServerNode getProviderServerNode(String applicationCode, String clusterName) {
-        ClusterInstanceMeta clusterMeta = getClusterMetas().get(applicationCode);
-        if (null == clusterMeta) {
+        Map<String, List<ApplicationInstance>> listMap = getClusterInstances().get(applicationCode);
+        if (null == listMap || !listMap.containsKey(clusterName)) {
             throw new DiscoveryException("获取应用[".concat(applicationCode).concat("]信息失败"));
         }
-        if (clusterMeta.getClusterLoadBalanceHost().containsKey(clusterName)) {
-            return new ServerNode(clusterMeta.getClusterLoadBalanceHost().get(clusterName));
-        } else {
-            List<ApplicationInstance> clusterInstances = clusterMeta.getClusterInstMap().get(clusterName);
-            if (CollectionUtils.isEmpty(clusterInstances)) {
-                throw new LoadBalanceException(applicationCode, clusterName);
-            }
-            int index = (int) (getCount(applicationCode) % clusterInstances.size());
-            ApplicationInstance instance = clusterInstances.get(index);
-            return new ServerNode(instance.getHost(), instance.getPort());
+        List<ApplicationInstance> clusterInstances = listMap.get(clusterName);
+        if (CollectionUtils.isEmpty(clusterInstances)) {
+            throw new LoadBalanceException(applicationCode, clusterName);
         }
+        int index = (int) (getCount(applicationCode) % clusterInstances.size());
+        ApplicationInstance instance = clusterInstances.get(index);
+        return new ServerNode(instance.getHost(), instance.getPort());
     }
 
-    public Map<String, ClusterInstanceMeta> getClusterMetas() {
-        return clusterMetas;
+    public Map<String, Map<String, List<ApplicationInstance>>> getClusterInstances() {
+        return clusterInstances;
     }
 
-    public void setClusterMetas(Map<String, ClusterInstanceMeta> clusterMetas) {
-        this.clusterMetas = clusterMetas;
+    public void setClusterInstances(Map<String, Map<String, List<ApplicationInstance>>> clusterInstances) {
+        this.clusterInstances = clusterInstances;
     }
 }

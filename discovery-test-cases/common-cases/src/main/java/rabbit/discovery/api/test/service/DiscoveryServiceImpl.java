@@ -7,7 +7,6 @@ import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.enums.ConfigType;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
 import rabbit.discovery.api.common.protocol.ApplicationMeta;
-import rabbit.discovery.api.common.protocol.ClusterInstanceMeta;
 import rabbit.discovery.api.common.protocol.RegisterResult;
 import rabbit.discovery.api.common.rpc.ApiData;
 import rabbit.discovery.api.common.rpc.HttpProtocolService;
@@ -16,7 +15,10 @@ import rabbit.discovery.api.test.spi.ApiCache;
 import rabbit.flt.common.utils.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static rabbit.discovery.api.common.utils.PathParser.urlDecode;
 
@@ -41,12 +43,20 @@ public class DiscoveryServiceImpl implements HttpProtocolService {
     public RegisterResult register(ApplicationInstance instance) {
         logger.info("application[{}] instance[{}:{}] register success!", instance.getApplicationCode(),
                 instance.getHost(), instance.getPort());
-        applicationMeta.getClusterMetas().computeIfAbsent("restApiSampleServer", k -> {
-            ClusterInstanceMeta meta = new ClusterInstanceMeta();
-            meta.addClusterLoadBalance("default", "http://localhost:1802");
-            meta.addClusterLoadBalance("local", "http://127.0.0.1:1802");
-            return meta;
-        });
+        Map<String, List<ApplicationInstance>> clusterInstances = new HashMap<>();
+        ApplicationInstance inst1 = new ApplicationInstance();
+        inst1.setClusterName("default");
+        inst1.setHost("localhost");
+        inst1.setPort(1802);
+        clusterInstances.computeIfAbsent("default", n -> new ArrayList<>()).add(inst1);
+        ApplicationInstance inst2 = new ApplicationInstance();
+        inst2.setClusterName("local");
+        inst2.setHost("127.0.0.1");
+        inst2.setPort(1802);
+        clusterInstances.computeIfAbsent("local", n -> new ArrayList<>()).add(inst2);
+        Map<String, Map<String, List<ApplicationInstance>>> map = new ConcurrentHashMap<>();
+        map.put("restApiSampleServer", clusterInstances);
+        applicationMeta.setClusterInstances(map);
         return RegisterResult.success(applicationMeta);
     }
 

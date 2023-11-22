@@ -21,6 +21,16 @@ public class ServerNode {
 
     private static final String HTTPS_KEY_WORD = "https://";
 
+    /**
+     * constructor
+     * @param address 合法的http地址信息
+     *          http://www.baidu.com
+     *          https://www.baidu.com:998
+     *          https://www.baidu.com:998/abc
+     *          https://www.baidu.com:998/abc?name=z
+     *          www.baidu.com
+     *          www.baidu.com:12801
+     */
     public ServerNode(String address) {
         setSchema(address);
         resolve(address);

@@ -99,6 +99,19 @@ public class UtilTest {
         TestCase.assertEquals("www.baidu.com", node.getHost());
         TestCase.assertEquals("http://www.baidu.com", node.address());
         TestCase.assertEquals("/abc", node.getPath());
+
+        node = new ServerNode("www.baidu.com/abc");
+        TestCase.assertEquals(Schema.HTTP, node.getSchema());
+        TestCase.assertEquals(80, node.getPort());
+        TestCase.assertEquals("www.baidu.com", node.getHost());
+        TestCase.assertEquals("http://www.baidu.com", node.address());
+        TestCase.assertEquals("/abc", node.getPath());
+
+        node = new ServerNode("192.168.0.10:9898");
+        TestCase.assertEquals(Schema.HTTP, node.getSchema());
+        TestCase.assertEquals(9898, node.getPort());
+        TestCase.assertEquals("192.168.0.10", node.getHost());
+        TestCase.assertEquals("http://192.168.0.10:9898", node.address());
     }
 
     @Test

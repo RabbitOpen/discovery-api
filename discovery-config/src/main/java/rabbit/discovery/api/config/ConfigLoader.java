@@ -114,13 +114,16 @@ public abstract class ConfigLoader extends Thread implements ConfigChangeListene
             if (!CollectionUtils.isEmpty(configs)) {
                 configs.forEach(c -> c.setPriority(getPriority(c)));
                 configs.sort(Comparator.comparing(RemoteConfig::getPriority));
+                return configs;
+            } else {
+                return new ArrayList<>();
             }
-            return configs;
         }
     }
 
     /**
      * 读取远程配置
+     *
      * @param applicationCode
      * @param configFiles
      * @return
