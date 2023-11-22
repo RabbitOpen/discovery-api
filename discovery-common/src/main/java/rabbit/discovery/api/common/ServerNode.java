@@ -32,8 +32,12 @@ public class ServerNode {
      *          www.baidu.com:12801
      */
     public ServerNode(String address) {
-        setSchema(address);
-        resolve(address);
+        this();
+        this.setSchema(address);
+        this.resolve(address);
+    }
+
+    public ServerNode() {
     }
 
     public ServerNode(String host, int port) {
