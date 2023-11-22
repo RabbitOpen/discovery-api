@@ -32,7 +32,7 @@ public class ReactorHttpClientManager extends HttpClientManager<HttpClient.Respo
                 .maxIdleTime(Duration.ofSeconds(600))
                 .maxLifeTime(Duration.ofSeconds(600))
                 .pendingAcquireTimeout(Duration.ofSeconds(10))
-                .pendingAcquireMaxCount(2000)
+                .pendingAcquireMaxCount(getConfiguration().getMaxPendingRequest())
                 .evictInBackground(Duration.ofSeconds(120))
                 .build();
     }

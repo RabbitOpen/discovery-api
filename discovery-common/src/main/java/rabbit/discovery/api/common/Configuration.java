@@ -122,6 +122,12 @@ public class Configuration {
     private int maxConnection;
 
     /**
+     * 最大挂起请求数
+     */
+    @Value("${discovery.application.http.max-pending-request:2000}")
+    private int maxPendingRequest;
+
+    /**
      * 每个服务方的最大连接数，异步框架下无效
      */
     @Value("${discovery.application.http.max-connection-per-host:20}")
@@ -375,5 +381,13 @@ public class Configuration {
 
     public void setCommunicationMode(CommunicationMode communicationMode) {
         this.communicationMode = communicationMode;
+    }
+
+    public int getMaxPendingRequest() {
+        return maxPendingRequest;
+    }
+
+    public void setMaxPendingRequest(int maxPendingRequest) {
+        this.maxPendingRequest = maxPendingRequest;
     }
 }
