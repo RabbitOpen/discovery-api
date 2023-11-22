@@ -37,7 +37,7 @@ public class ApplicationMeta {
     /**
      * provider的集群实例信息， 一级key是应用编码, 二级key是集群名（编码）
      */
-    private Map<String, Map<String, List<ApplicationInstance>>> clusterInstances = new ConcurrentHashMap<>();
+    private Map<String, Map<String, List<ServerNode>>> clusterServerNode = new ConcurrentHashMap<>();
 
     /**
      * counter
@@ -87,24 +87,22 @@ public class ApplicationMeta {
      * @return
      */
     public ServerNode getProviderServerNode(String applicationCode, String clusterName) {
-        Map<String, List<ApplicationInstance>> listMap = getClusterInstances().get(applicationCode);
+        Map<String, List<ServerNode>> listMap = getClusterServerNode().get(applicationCode);
         if (null == listMap || !listMap.containsKey(clusterName)) {
             throw new DiscoveryException("获取应用[".concat(applicationCode).concat("]信息失败"));
         }
-        List<ApplicationInstance> instanceList = listMap.get(clusterName);
-        if (CollectionUtils.isEmpty(instanceList)) {
+        List<ServerNode> serverNodes = listMap.get(clusterName);
+        if (CollectionUtils.isEmpty(serverNodes)) {
             throw new LoadBalanceException(applicationCode, clusterName);
         }
-        int index = (int) (getCount(applicationCode) % instanceList.size());
-        ApplicationInstance instance = instanceList.get(index);
-        return new ServerNode(instance.getHost(), instance.getPort());
+        return serverNodes.get((int) (getCount(applicationCode) % serverNodes.size()));
     }
 
-    public Map<String, Map<String, List<ApplicationInstance>>> getClusterInstances() {
-        return clusterInstances;
+    public Map<String, Map<String, List<ServerNode>>> getClusterServerNode() {
+        return clusterServerNode;
     }
 
-    public void setClusterInstances(Map<String, Map<String, List<ApplicationInstance>>> clusterInstances) {
-        this.clusterInstances = clusterInstances;
+    public void setClusterServerNode(Map<String, Map<String, List<ServerNode>>> clusterServerNode) {
+        this.clusterServerNode = clusterServerNode;
     }
 }

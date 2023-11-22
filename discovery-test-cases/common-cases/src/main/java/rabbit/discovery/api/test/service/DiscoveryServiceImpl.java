@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rabbit.discovery.api.common.Privilege;
 import rabbit.discovery.api.common.RemoteConfig;
+import rabbit.discovery.api.common.ServerNode;
 import rabbit.discovery.api.common.enums.ConfigType;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
 import rabbit.discovery.api.common.protocol.ApplicationMeta;
@@ -43,20 +44,14 @@ public class DiscoveryServiceImpl implements HttpProtocolService {
     public RegisterResult register(ApplicationInstance instance) {
         logger.info("application[{}] instance[{}:{}] register success!", instance.getApplicationCode(),
                 instance.getHost(), instance.getPort());
-        Map<String, List<ApplicationInstance>> clusterInstances = new HashMap<>();
-        ApplicationInstance inst1 = new ApplicationInstance();
-        inst1.setClusterName("default");
-        inst1.setHost("localhost");
-        inst1.setPort(1802);
-        clusterInstances.computeIfAbsent("default", n -> new ArrayList<>()).add(inst1);
-        ApplicationInstance inst2 = new ApplicationInstance();
-        inst2.setClusterName("local");
-        inst2.setHost("127.0.0.1");
-        inst2.setPort(1802);
-        clusterInstances.computeIfAbsent("local", n -> new ArrayList<>()).add(inst2);
-        Map<String, Map<String, List<ApplicationInstance>>> map = new ConcurrentHashMap<>();
+        Map<String, List<ServerNode>> clusterInstances = new HashMap<>();
+        clusterInstances.computeIfAbsent("default", n -> new ArrayList<>())
+                .add(new ServerNode("http://localhost:1802"));
+        clusterInstances.computeIfAbsent("local", n -> new ArrayList<>())
+                .add(new ServerNode("http://127.0.0.1:1802"));
+        Map<String, Map<String, List<ServerNode>>> map = new ConcurrentHashMap<>();
         map.put("restApiSampleServer", clusterInstances);
-        applicationMeta.setClusterInstances(map);
+        applicationMeta.setClusterServerNode(map);
         return RegisterResult.success(applicationMeta);
     }
 
