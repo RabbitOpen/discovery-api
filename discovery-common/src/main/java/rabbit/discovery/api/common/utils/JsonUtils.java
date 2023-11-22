@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import rabbit.discovery.api.common.exception.DiscoveryException;
 
 import java.lang.reflect.Type;
@@ -27,7 +28,7 @@ public class JsonUtils {
 
     public static <T> T readValue(String json, Type type) {
         try {
-            return inst.getMapper().readValue(json, inst.getMapper().getTypeFactory().constructType(type));
+            return inst.getMapper().readValue(json, getTypeFactory().constructType(type));
         } catch (JsonProcessingException e) {
             throw new DiscoveryException(e);
         }
@@ -50,11 +51,15 @@ public class JsonUtils {
     }
 
     public static JavaType constructListType(Class<? extends Collection> collectionClz, Class<?> elementType) {
-        return inst.getMapper().getTypeFactory().constructCollectionType(collectionClz, elementType);
+        return getTypeFactory().constructCollectionType(collectionClz, elementType);
+    }
+
+    public static TypeFactory getTypeFactory() {
+        return inst.getMapper().getTypeFactory();
     }
 
     public static <T extends Map> JavaType constructMapType(Class<T> mapType, Class<?> keyType, Class<?> valueType) {
-        return inst.getMapper().getTypeFactory().constructMapType(mapType, keyType, valueType);
+        return getTypeFactory().constructMapType(mapType, keyType, valueType);
     }
 
     private ObjectMapper getMapper() {
