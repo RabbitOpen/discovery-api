@@ -73,6 +73,32 @@ public class UtilTest {
         TestCase.assertEquals("192.168.0.1", node.getHost());
         TestCase.assertEquals("/abc", node.getPath());
         TestCase.assertEquals("https://192.168.0.1:10101/abc", node.address().concat(node.getPath()));
+        TestCase.assertEquals("/abc", node.getPath());
+
+        node = new ServerNode("www.baidu.com:90");
+        TestCase.assertEquals(Schema.HTTP, node.getSchema());
+        TestCase.assertEquals(90, node.getPort());
+        TestCase.assertEquals("www.baidu.com", node.getHost());
+        TestCase.assertEquals("http://www.baidu.com:90", node.address());
+
+        node = new ServerNode("https://www.baidu.com");
+        TestCase.assertEquals(Schema.HTTPS, node.getSchema());
+        TestCase.assertEquals(443, node.getPort());
+        TestCase.assertEquals("www.baidu.com", node.getHost());
+        TestCase.assertEquals("https://www.baidu.com", node.address());
+
+        node = new ServerNode("www.baidu.com");
+        TestCase.assertEquals(Schema.HTTP, node.getSchema());
+        TestCase.assertEquals(80, node.getPort());
+        TestCase.assertEquals("www.baidu.com", node.getHost());
+        TestCase.assertEquals("http://www.baidu.com", node.address());
+
+        node = new ServerNode("www.baidu.com//abc");
+        TestCase.assertEquals(Schema.HTTP, node.getSchema());
+        TestCase.assertEquals(80, node.getPort());
+        TestCase.assertEquals("www.baidu.com", node.getHost());
+        TestCase.assertEquals("http://www.baidu.com", node.address());
+        TestCase.assertEquals("/abc", node.getPath());
     }
 
     @Test

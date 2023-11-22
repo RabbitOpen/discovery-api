@@ -1,15 +1,11 @@
 package rabbit.discovery.api.common;
 
 import rabbit.discovery.api.common.enums.Schema;
-import rabbit.discovery.api.common.exception.DiscoveryException;
 import rabbit.discovery.api.common.utils.PathParser;
 import rabbit.flt.common.utils.StringUtils;
 
-import java.net.URI;
-
 import static rabbit.discovery.api.common.enums.Schema.HTTP;
 import static rabbit.discovery.api.common.enums.Schema.HTTPS;
-import static rabbit.flt.common.utils.StringUtils.isEmpty;
 
 public class ServerNode {
 
@@ -21,16 +17,13 @@ public class ServerNode {
 
     private String path;
 
+    private static final String HTTP_KEY_WORD = "http://";
+
+    private static final String HTTPS_KEY_WORD = "https://";
+
     public ServerNode(String address) {
-        try {
-            URI uri = new URI(address);
-            setSchema(uri);
-            setHost(uri);
-            setPort(uri);
-            setPath(uri.getPath());
-        } catch (Exception e) {
-            throw new DiscoveryException(e);
-        }
+        setSchema(address);
+        resolve(address);
     }
 
     public ServerNode(String host, int port) {
@@ -44,44 +37,22 @@ public class ServerNode {
     }
 
     public String address() {
+        boolean ignore = (80 == port && HTTP == schema) || (443 == port && HTTPS == schema);
         return new StringBuilder(schema.name().toLowerCase()).append("://").append(host)
-                .append(":").append(port).toString();
+                .append(ignore ? "" : ":".concat(Integer.toString(port)))
+                .toString();
     }
 
     public Schema getSchema() {
         return schema;
     }
 
-    private void setSchema(URI uri) {
-        if (null == uri.getScheme()) {
-            this.schema = HTTP;
-        } else {
-            this.schema = Schema.valueOf(uri.getScheme().toUpperCase());
-        }
-    }
-
     public String getHost() {
         return host;
     }
 
-    private void setHost(URI uri) {
-        if (isEmpty(uri.getHost())) {
-            this.host = uri.getPath();
-        } else {
-            this.host = uri.getHost();
-        }
-    }
-
     public int getPort() {
         return port;
-    }
-
-    private void setPort(URI uri) {
-        if (-1 != uri.getPort()) {
-            this.port = uri.getPort();
-        } else {
-            this.port = this.schema == HTTPS ? 443 : 80;
-        }
     }
 
     public boolean isHttps() {
@@ -92,12 +63,56 @@ public class ServerNode {
         return path;
     }
 
-    public void setPath(String path) {
+    private void setPath(String path) {
         if (!StringUtils.isEmpty(path)) {
             this.path = PathParser.removeRepeatedSeparator(path);
+            if (this.path.contains("?")) {
+                this.path = this.path.substring(0, path.indexOf('?') - 1);
+            }
             if ("/".equals(this.path)) {
                 this.path = "";
             }
         }
     }
+
+    private void setSchema(String address) {
+        if (address.startsWith(HTTPS_KEY_WORD)) {
+            this.schema = HTTPS;
+        } else {
+            this.schema = HTTP;
+        }
+    }
+
+    private void resolve(String address) {
+        String uri = cutProtocol(address);
+        if (uri.contains("/")) {
+            int index = uri.indexOf('/');
+            setPath(uri.substring(index));
+            uri = uri.substring(0, index);
+        }
+        if (uri.contains(":")) {
+            host = uri.split(":")[0];
+            port = Integer.parseInt(uri.split(":")[1]);
+        } else {
+            host = uri;
+            port = isHttps() ? 443 : 80;
+        }
+    }
+
+    /**
+     * 去掉协议
+     *
+     * @param address
+     * @return
+     */
+    private String cutProtocol(String address) {
+        if (address.startsWith(HTTP_KEY_WORD)) {
+            return address.substring(HTTP_KEY_WORD.length());
+        }
+        if (address.startsWith(HTTPS_KEY_WORD)) {
+            return address.substring(HTTPS_KEY_WORD.length());
+        }
+        return address;
+    }
+
 }
