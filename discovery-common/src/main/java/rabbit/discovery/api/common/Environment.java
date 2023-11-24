@@ -17,7 +17,7 @@ public class Environment {
         if (!isEmpty(inst.version)) {
             return inst.version;
         }
-        inst.version = VersionUtils.getVersion("discovery.properties", "version");
+        inst.version = VersionUtils.getProperty("discovery.properties", "version");
         return inst.version;
     }
 }
