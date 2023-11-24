@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * 请求
  */
-public final class HttpRequest {
+public class HttpRequest {
 
     private String uri;
 
