@@ -50,25 +50,23 @@ public class SpringBoot2ApiTest {
             Configuration c = JsonUtils.readValue(json, Configuration.class);
             c.setRegistryAddress("");
             c.doValidation();
-            throw new RuntimeException("");
+            throw new DiscoveryException("");
         } catch (DiscoveryException e) {
             TestCase.assertTrue(e.getMessage().contains("注册中心地址信息不能为空"));
         }
-
         try {
             Configuration c = JsonUtils.readValue(json, Configuration.class);
             c.setApplicationCode("");
             c.doValidation();
-            throw new RuntimeException("");
+            throw new DiscoveryException("");
         } catch (DiscoveryException e) {
             TestCase.assertTrue(e.getMessage().contains("应用编码信息不能为空"));
         }
-
         try {
             Configuration c = JsonUtils.readValue(json, Configuration.class);
             c.setPrivateKey("");
             c.doValidation();
-            throw new RuntimeException("");
+            throw new DiscoveryException("");
         } catch (DiscoveryException e) {
             TestCase.assertTrue(e.getMessage().contains("应用密钥信息不能为空"));
         }
@@ -77,7 +75,7 @@ public class SpringBoot2ApiTest {
             c.setPort(-1);
             c.setServerPort(-1);
             c.doValidation();
-            throw new RuntimeException("");
+            throw new DiscoveryException("");
         } catch (DiscoveryException e) {
             TestCase.assertTrue(e.getMessage().contains("应用端口信息不能为空"));
         }
