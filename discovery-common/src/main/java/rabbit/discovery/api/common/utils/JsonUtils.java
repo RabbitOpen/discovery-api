@@ -27,11 +27,7 @@ public class JsonUtils {
     }
 
     public static <T> T readValue(String json, Type type) {
-        try {
-            return inst.getMapper().readValue(json, getTypeFactory().constructType(type));
-        } catch (JsonProcessingException e) {
-            throw new DiscoveryException(e);
-        }
+        return readValue(json, getTypeFactory().constructType(type));
     }
 
     public static <T> T readValue(String json, JavaType type) {

@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import rabbit.discovery.api.common.Configuration;
 import rabbit.discovery.api.common.DefaultDiscoveryService;
+import rabbit.discovery.api.common.utils.JsonUtils;
 import rabbit.discovery.api.test.CoreCases;
 import rabbit.discovery.api.test.HttpRequestInterceptor;
 
@@ -38,6 +39,13 @@ public class SpringBoot2ApiTest {
         cases.restApiCase(applicationContext);
         cases.simpleDataTest(applicationContext);
         cases.retryCase(applicationContext);
+    }
+
+    @Test
+    public void configTest() {
+        String json = JsonUtils.writeObject(configuration);
+        Configuration c = JsonUtils.readValue(json, Configuration.class);
+        c.doValidation();
     }
 }
 
