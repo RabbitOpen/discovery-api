@@ -25,6 +25,11 @@ public class ApplicationInstance {
      */
     private String applicationCode;
 
+    /**
+     * 客户端版本号
+     */
+    private String clientVersion;
+
     public ApplicationInstance(String applicationCode) {
         this();
         this.applicationCode = applicationCode;
@@ -65,4 +70,11 @@ public class ApplicationInstance {
         this.applicationCode = applicationCode;
     }
 
+    public String getClientVersion() {
+        return clientVersion;
+    }
+
+    public void setClientVersion(String clientVersion) {
+        this.clientVersion = clientVersion;
+    }
 }

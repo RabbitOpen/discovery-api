@@ -42,8 +42,8 @@ public class DiscoveryServiceImpl implements HttpProtocolService {
 
     @Override
     public RegisterResult register(ApplicationInstance instance) {
-        logger.info("application[{}] instance[{}:{}] register success!", instance.getApplicationCode(),
-                instance.getHost(), instance.getPort());
+        logger.info("application[{}] instance[{}:{}].[{}] register success!", instance.getApplicationCode(),
+                instance.getHost(), instance.getPort(), instance.getClientVersion());
         Map<String, List<ServerNode>> clusterInstances = new HashMap<>();
         clusterInstances.computeIfAbsent("default", n -> new ArrayList<>())
                 .add(new ServerNode("http://localhost:1802"));

@@ -145,6 +145,7 @@ public class DefaultDiscoveryService implements DiscoveryService {
 
     private void initApplicationInstance() {
         instance = new ApplicationInstance(configuration.getApplicationCode());
+        instance.setClientVersion(Environment.getVersion());
         instance.setPort(configuration.getPort());
         instance.setClusterName(configuration.getClusterName());
         if (!StringUtils.isEmpty(configuration.getHost())) {
