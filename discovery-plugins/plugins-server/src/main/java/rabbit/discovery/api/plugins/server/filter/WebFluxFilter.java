@@ -46,6 +46,14 @@ public class WebFluxFilter extends HttpAuthenticationFilter implements WebFilter
     private HttpRequest createRequest(ServerHttpRequest request) {
         Map<String, String> headers = new HashMap<>();
         request.getHeaders().forEach((name, value) -> headers.put(name, value.get(0)));
-        return new HttpRequest(headers, request.getPath().value());
+        HttpRequest httpRequest = new HttpRequest(headers, request.getPath().value());
+        httpRequest.setRemoteHost(request.getRemoteAddress().getHostName());
+        httpRequest.setRemotePort(request.getRemoteAddress().getPort());
+        httpRequest.setLocalAddress(request.getLocalAddress().getHostName());
+        httpRequest.setLocalPort(request.getLocalAddress().getPort());
+        Map<String, String> queryParameters = new HashMap<>();
+        request.getQueryParams().forEach((k, values) -> queryParameters.put(k, values.get(0)));
+        httpRequest.setRequestParameters(queryParameters);
+        return httpRequest;
     }
 }

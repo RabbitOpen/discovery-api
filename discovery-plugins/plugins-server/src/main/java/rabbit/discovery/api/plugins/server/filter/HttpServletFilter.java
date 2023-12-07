@@ -43,7 +43,15 @@ public class HttpServletFilter extends HttpAuthenticationFilter implements Order
             String name = names.nextElement();
             headers.put(name, request.getHeader(name));
         }
-        return new HttpRequest(headers, request.getRequestURI());
+        HttpRequest httpRequest = new HttpRequest(headers, request.getRequestURI());
+        httpRequest.setRemoteHost(request.getRemoteHost());
+        httpRequest.setRemotePort(request.getRemotePort());
+        httpRequest.setLocalAddress(request.getLocalAddr());
+        httpRequest.setLocalPort(request.getLocalPort());
+        Map<String, String> queryParameters = new HashMap<>();
+        request.getParameterMap().forEach((k, values) -> queryParameters.put(k, values[0]));
+        httpRequest.setRequestParameters(queryParameters);
+        return httpRequest;
     }
 
     @Override
