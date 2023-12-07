@@ -78,11 +78,6 @@ public class ProtocolServiceWrapper {
             return;
         }
         inst.configuration = configuration;
-        if (CommunicationMode.TCP == configuration.getCommunicationMode()) {
-            inst.protocolService = RpcFactory.proxy(HttpProtocolService.class, configuration);
-        } else {
-            inst.protocolService = RequestFactory.proxy(HttpProtocolService.class, configuration);
-        }
         for (Method method : HttpProtocolService.class.getDeclaredMethods()) {
             inst.methodCache.put(method.getName(), method);
         }
@@ -97,12 +92,25 @@ public class ProtocolServiceWrapper {
      */
     private <T> T callMethod(String name, Object... args) {
         try {
-            return (T) inst.methodCache.get(name).invoke(inst.protocolService, args);
+            if (null == protocolService) {
+                initProtocolService();
+            }
+            return (T) methodCache.get(name).invoke(protocolService, args);
         } catch (Exception e) {
             if (null != e.getCause()) {
                 throw new DiscoveryException(e.getCause());
             } else {
                 throw new DiscoveryException(e.getMessage());
+            }
+        }
+    }
+
+    private synchronized void initProtocolService() {
+        if (null == protocolService) {
+            if (CommunicationMode.TCP == configuration.getCommunicationMode()) {
+                protocolService = RpcFactory.proxy(HttpProtocolService.class, configuration);
+            } else {
+                protocolService = RequestFactory.proxy(HttpProtocolService.class, configuration);
             }
         }
     }
