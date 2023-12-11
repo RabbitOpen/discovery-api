@@ -28,10 +28,10 @@ public class UtilTest {
     @Test
     public void gzipTest() {
         String text = "abc";
-        byte[] compress = GZipUtils.compress(text.getBytes());
-        byte[] bytes = GZipUtils.decompressIgnoreOriginalLength(compress, 1);
+        byte[] zipped = GZipUtils.zip(text.getBytes());
+        byte[] bytes = GZipUtils.unzipIgnoreOriginalLength(zipped, 1);
         TestCase.assertEquals(text, new String(bytes));
-        bytes = GZipUtils.decompressIgnoreOriginalLength(compress, 1024);
+        bytes = GZipUtils.unzipIgnoreOriginalLength(zipped, 1024);
         TestCase.assertEquals(text, new String(bytes));
     }
 
