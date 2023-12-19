@@ -5,6 +5,7 @@ import rabbit.discovery.api.rest.http.HttpResponse;
 import rabbit.flt.common.AbstractConfigFactory;
 import rabbit.flt.common.Headers;
 import rabbit.flt.common.context.TraceContext;
+import rabbit.flt.common.trace.MessageType;
 import rabbit.flt.common.trace.MethodStackInfo;
 import rabbit.flt.common.trace.TraceData;
 import rabbit.flt.plugins.common.plugin.PerformancePlugin;
@@ -66,6 +67,7 @@ public class ReactorHttpClientManagerPlugin extends PerformancePlugin {
         out.getHeaders().putAll(response.getHeaders());
         traceData.setCost(System.currentTimeMillis() - traceData.getRequestTime());
         traceData.setHttpResponse(out);
+        traceData.setMessageType(MessageType.WEBCLIENT.name());
         super.handleTraceData(traceData);
     }
 
