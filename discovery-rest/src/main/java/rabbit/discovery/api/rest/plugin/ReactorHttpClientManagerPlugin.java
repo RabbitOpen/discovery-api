@@ -67,7 +67,7 @@ public class ReactorHttpClientManagerPlugin extends PerformancePlugin {
         out.getHeaders().putAll(response.getHeaders());
         traceData.setCost(System.currentTimeMillis() - traceData.getRequestTime());
         traceData.setHttpResponse(out);
-        traceData.setMessageType(MessageType.WEBCLIENT.name());
+        traceData.setMessageType(MessageType.HTTP.name());
         super.handleTraceData(traceData);
     }
 
@@ -83,4 +83,8 @@ public class ReactorHttpClientManagerPlugin extends PerformancePlugin {
         // do nothing, 异步发送
     }
 
+    @Override
+    protected void fillTraceData(TraceData traceData, Object objectEnhanced, Method method, Object[] args, Object result) {
+        // do nothing, 防止traceData type被覆写成 METHOD
+    }
 }
