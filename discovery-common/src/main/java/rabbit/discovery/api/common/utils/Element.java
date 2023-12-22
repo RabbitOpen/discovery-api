@@ -110,7 +110,7 @@ public class Element {
         if (variablePrefix) {
             return true;
         }
-        return sb.length() == 0 || sb.toString().equals(elements.get(elements.size() - 1).getValue());
+        return 0 == sb.length() || sb.toString().equals(elements.get(elements.size() - 1).getValue());
     }
 
     public int getElementCount() {
