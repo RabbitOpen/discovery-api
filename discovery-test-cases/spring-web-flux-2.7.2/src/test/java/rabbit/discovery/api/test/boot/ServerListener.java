@@ -36,7 +36,7 @@ public class ServerListener implements ApplicationListener, Ordered {
                 .workerThreadCount(2)
                 .bossThreadCount(1)
                 .host("localhost").port(port)
-                .filter(new AuthenticationFilter())
+                .addFilter(new AuthenticationFilter())
                 .socketOption(StandardSocketOptions.SO_RCVBUF, 256 * 1024)
                 .socketOption(StandardSocketOptions.SO_REUSEADDR, true)
                 .registerHandler(ProtocolService.class, () -> Arrays.asList(new ServerNode("localhost", port)))
