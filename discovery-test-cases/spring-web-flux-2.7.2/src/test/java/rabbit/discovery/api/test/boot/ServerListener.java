@@ -15,6 +15,7 @@ import rabbit.flt.rpc.common.ServerNode;
 import rabbit.flt.rpc.common.rpc.ProtocolService;
 import rabbit.flt.rpc.server.Server;
 import rabbit.flt.rpc.server.ServerBuilder;
+import rabbit.flt.rpc.server.filter.AuthenticationFilter;
 import reactor.core.publisher.Mono;
 
 import java.net.StandardSocketOptions;
@@ -35,6 +36,7 @@ public class ServerListener implements ApplicationListener, Ordered {
                 .workerThreadCount(2)
                 .bossThreadCount(1)
                 .host("localhost").port(port)
+                .filter(new AuthenticationFilter())
                 .socketOption(StandardSocketOptions.SO_RCVBUF, 256 * 1024)
                 .socketOption(StandardSocketOptions.SO_REUSEADDR, true)
                 .registerHandler(ProtocolService.class, () -> Arrays.asList(new ServerNode("localhost", port)))
