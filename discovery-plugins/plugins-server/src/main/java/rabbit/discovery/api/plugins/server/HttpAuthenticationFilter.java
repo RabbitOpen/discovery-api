@@ -12,7 +12,6 @@ import rabbit.discovery.api.common.global.AuthorizationDetail;
 import rabbit.discovery.api.common.global.bean.AuthorizedURI;
 import rabbit.discovery.api.common.utils.HexUtils;
 import rabbit.discovery.api.common.utils.PathParser;
-import rabbit.discovery.api.common.utils.PathPattern;
 import rabbit.discovery.api.common.utils.RsaUtils;
 
 import java.security.PublicKey;

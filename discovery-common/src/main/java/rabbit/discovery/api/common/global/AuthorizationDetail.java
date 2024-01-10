@@ -1,7 +1,6 @@
 package rabbit.discovery.api.common.global;
 
 import rabbit.discovery.api.common.global.bean.AuthorizedURI;
-import rabbit.discovery.api.common.utils.PathPattern;
 
 import java.util.List;
 import java.util.Map;
