@@ -6,6 +6,7 @@ import rabbit.discovery.api.common.Privilege;
 import rabbit.discovery.api.common.RemoteConfig;
 import rabbit.discovery.api.common.ServerNode;
 import rabbit.discovery.api.common.enums.ConfigType;
+import rabbit.discovery.api.common.enums.HttpMethod;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
 import rabbit.discovery.api.common.protocol.ApplicationMeta;
 import rabbit.discovery.api.common.protocol.RegisterResult;
@@ -84,11 +85,10 @@ public class DiscoveryServiceImpl implements HttpProtocolService {
         data.setProvider(appCode);
         data.setConsumer(appCode);
         data.setPath("/black/authorized");
+        data.setMethod(HttpMethod.GET);
         list.add(data);
         return list;
     }
-
-    private long configVersion = 0L;
 
     private int age = 10;
 
@@ -148,7 +148,6 @@ public class DiscoveryServiceImpl implements HttpProtocolService {
     public void update(int age, String companyName) {
         this.age = age;
         this.companyName = companyName;
-        this.configVersion++;
     }
 
     public int getAge() {

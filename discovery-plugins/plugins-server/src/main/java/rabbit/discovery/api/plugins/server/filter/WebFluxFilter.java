@@ -9,6 +9,7 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
+import rabbit.discovery.api.common.enums.HttpMethod;
 import rabbit.discovery.api.common.exception.DiscoveryException;
 import rabbit.discovery.api.common.ext.HttpRequest;
 import rabbit.discovery.api.plugins.server.HttpAuthenticationFilter;
@@ -52,6 +53,7 @@ public class WebFluxFilter extends HttpAuthenticationFilter implements WebFilter
         httpRequest.setLocalAddress(request.getLocalAddress().getHostName());
         httpRequest.setLocalPort(request.getLocalAddress().getPort());
         Map<String, String> queryParameters = new HashMap<>();
+        httpRequest.setMethod(HttpMethod.valueOf(request.getMethod().name().toUpperCase()));
         request.getQueryParams().forEach((k, values) -> queryParameters.put(k, values.get(0)));
         httpRequest.setRequestParameters(queryParameters);
         return httpRequest;

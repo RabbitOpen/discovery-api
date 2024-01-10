@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import rabbit.discovery.api.common.exception.DiscoveryException;
 import rabbit.discovery.api.common.global.ApplicationMetaCache;
 import rabbit.discovery.api.common.global.AuthorizationDetail;
+import rabbit.discovery.api.common.global.bean.AuthorizedURI;
 import rabbit.discovery.api.common.protocol.ApplicationInstance;
 import rabbit.discovery.api.common.protocol.ApplicationMeta;
 import rabbit.discovery.api.common.protocol.RegisterResult;
@@ -99,10 +100,10 @@ public class DefaultDiscoveryService implements DiscoveryService {
         if (CollectionUtils.isEmpty(list)) {
             return;
         }
-        Map<String, List<PathPattern>> privilegeMap = new ConcurrentHashMap<>();
+        Map<String, List<AuthorizedURI>> privilegeMap = new ConcurrentHashMap<>();
         for (Privilege p : list) {
             privilegeMap.computeIfAbsent(p.getConsumer(), c -> new ArrayList<>())
-                    .add(PathParser.parsePattern(p.getPath()));
+                    .add(new AuthorizedURI(PathParser.parsePattern(p.getPath()), p.getMethod()));
         }
         AuthorizationDetail.setAuthorizationDetails(privilegeMap);
     }

@@ -9,6 +9,7 @@ import rabbit.discovery.api.common.ext.HttpRequest;
 import rabbit.discovery.api.common.ext.Interceptor;
 import rabbit.discovery.api.common.global.ApplicationMetaCache;
 import rabbit.discovery.api.common.global.AuthorizationDetail;
+import rabbit.discovery.api.common.global.bean.AuthorizedURI;
 import rabbit.discovery.api.common.utils.HexUtils;
 import rabbit.discovery.api.common.utils.PathParser;
 import rabbit.discovery.api.common.utils.PathPattern;
@@ -66,9 +67,9 @@ public abstract class HttpAuthenticationFilter extends SpringBeanSupplierHolder 
      * @return
      */
     private boolean isAuthorizedRequest(HttpRequest request) {
-        List<PathPattern> patternList = AuthorizationDetail.getAuthorizationDetails().getOrDefault(request.getConsumer(), new ArrayList<>());
-        for (PathPattern pattern : patternList) {
-            if (pattern.match(request.getUrl())) {
+        List<AuthorizedURI> uriList = AuthorizationDetail.getAuthorizationDetails().getOrDefault(request.getConsumer(), new ArrayList<>());
+        for (AuthorizedURI uri : uriList) {
+            if (uri.getPattern().match(request.getUrl()) && request.getMethod().equals(uri.getMethod())) {
                 return true;
             }
         }

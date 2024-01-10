@@ -1,5 +1,6 @@
 package rabbit.discovery.api.common.global;
 
+import rabbit.discovery.api.common.global.bean.AuthorizedURI;
 import rabbit.discovery.api.common.utils.PathPattern;
 
 import java.util.List;
@@ -16,15 +17,15 @@ public class AuthorizationDetail {
     /**
      * 消费方授权详情
      */
-    private Map<String, List<PathPattern>> authorizationDetails = new ConcurrentHashMap<>();
+    private Map<String, List<AuthorizedURI>> authorizationDetails = new ConcurrentHashMap<>();
 
     private AuthorizationDetail() {}
 
-    public static Map<String, List<PathPattern>> getAuthorizationDetails() {
+    public static Map<String, List<AuthorizedURI>> getAuthorizationDetails() {
         return detail.authorizationDetails;
     }
 
-    public static void setAuthorizationDetails(Map<String, List<PathPattern>> authorizationDetails) {
+    public static void setAuthorizationDetails(Map<String, List<AuthorizedURI>> authorizationDetails) {
         detail.authorizationDetails = authorizationDetails;
     }
 }

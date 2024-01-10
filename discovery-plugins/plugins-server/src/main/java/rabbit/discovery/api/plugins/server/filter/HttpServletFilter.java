@@ -3,6 +3,7 @@ package rabbit.discovery.api.plugins.server.filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
+import rabbit.discovery.api.common.enums.HttpMethod;
 import rabbit.discovery.api.common.exception.DiscoveryException;
 import rabbit.discovery.api.common.ext.HttpRequest;
 import rabbit.discovery.api.plugins.server.HttpAuthenticationFilter;
@@ -48,6 +49,7 @@ public class HttpServletFilter extends HttpAuthenticationFilter implements Order
         httpRequest.setRemotePort(request.getRemotePort());
         httpRequest.setLocalAddress(request.getLocalAddr());
         httpRequest.setLocalPort(request.getLocalPort());
+        httpRequest.setMethod(HttpMethod.valueOf(request.getMethod().toUpperCase()));
         Map<String, String> queryParameters = new HashMap<>();
         request.getParameterMap().forEach((k, values) -> queryParameters.put(k, values[0]));
         httpRequest.setRequestParameters(queryParameters);

@@ -1,6 +1,7 @@
 package rabbit.discovery.api.common.ext;
 
 import rabbit.discovery.api.common.Headers;
+import rabbit.discovery.api.common.enums.HttpMethod;
 
 import java.util.Map;
 
@@ -34,6 +35,8 @@ public class HttpRequest {
      * 业务端口
      */
     private int localPort;
+
+    private HttpMethod method;
 
     public HttpRequest(Map<String, String> headers, String url) {
         this.headers = headers;
@@ -94,5 +97,13 @@ public class HttpRequest {
 
     public void setLocalPort(int localPort) {
         this.localPort = localPort;
+    }
+
+    public HttpMethod getMethod() {
+        return method;
+    }
+
+    public void setMethod(HttpMethod method) {
+        this.method = method;
     }
 }
