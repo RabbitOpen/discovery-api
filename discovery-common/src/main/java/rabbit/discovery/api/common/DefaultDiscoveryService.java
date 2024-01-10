@@ -12,7 +12,6 @@ import rabbit.discovery.api.common.protocol.RegisterResult;
 import rabbit.discovery.api.common.rpc.ProtocolServiceWrapper;
 import rabbit.discovery.api.common.spi.ConfigChangeListener;
 import rabbit.discovery.api.common.utils.PathParser;
-import rabbit.discovery.api.common.utils.PathPattern;
 import rabbit.flt.common.Metrics;
 import rabbit.flt.common.utils.CollectionUtils;
 import rabbit.flt.common.utils.StringUtils;
